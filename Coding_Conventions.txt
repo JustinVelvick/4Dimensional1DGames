@@ -1,0 +1,8 @@
+Functions:
+	Names should be camelCased
+
+Classes:
+	Names should be capitalized
+	File names should be capitalized
+
+	
