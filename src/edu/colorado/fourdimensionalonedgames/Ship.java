@@ -8,6 +8,7 @@ public class Ship {
     // TODO: Understand encapsulation
     // TODO: Understand what these todo comments mean
     //hello there, general kenobi! sdfsdfdsf dsfdsfsdf d
+    //Team 4Dimensional1DGames, pair 2
     public  void show()     {     // dunno why this is here maybe it is just an example method
         System.out.println("IF you can't see this then something is severely wrong!!");
     }
