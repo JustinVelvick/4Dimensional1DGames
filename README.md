@@ -8,6 +8,12 @@ Assignment template
    <li>The pdf and code changes tagged with the tag "milestone1" </li>
  </ol>
  
+ ## Names: 
+ Harry Ainsworth
+ Justin Velvick
+ Kaden Ostendorf
+ Luke Phillips 
+ 
  ## After you are done with all the tasks for this Milestone, add a tag to the master branch. Name this tag "milestone1".
  ## This tag must be pushed by the deadline
    
