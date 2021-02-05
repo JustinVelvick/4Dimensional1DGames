@@ -5,4 +5,8 @@ Classes:
 	Names should be capitalized
 	File names should be capitalized
 
-	
+Indentation:
+	Should use tabs, not spaces
+
+Brackets:
+	Should open on same line as function/class declaration
