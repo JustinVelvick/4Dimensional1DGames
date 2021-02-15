@@ -8,5 +8,6 @@ module edu.colorado.fourdimensionalonedgames {
 
     opens edu.colorado.fourdimensionalonedgames to javafx.fxml;
     exports edu.colorado.fourdimensionalonedgames;
+    exports edu.colorado.fourdimensionalonedgames.gui;
 
 }
