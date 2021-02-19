@@ -18,13 +18,15 @@ public class Board {
 
     public GridPane grid;
     public Tile[][] tiles;
-
+    public Render renderer;
     private List<Ship> ships = new ArrayList<>();
 
     public Board(int columns, int rows, Render renderer) {
 
         this.rows = rows;
         this.columns = columns;
+
+        this.renderer = renderer;
 
         grid = new GridPane();
         tiles = new Tile[columns + 1][rows + 1];
@@ -96,16 +98,27 @@ public class Board {
         }
 
         for (Point2D coordinate : newCoordinates) {
-            if (coordinate.getX() < 0) return false;
+            if (coordinate.getX() < 1) return false;
             if (coordinate.getX() >= columns) return false;
-            if (coordinate.getY() < 0) return false;
+            if (coordinate.getY() < 1) return false;
             if (coordinate.getY() >= rows) return false;
         }
 
+
+        ShipTile newTile;
         for (Point2D coordinate : newCoordinates) {
             int x = (int) coordinate.getX();
             int y = (int) coordinate.getY();
-            ShipTile newTile = new ShipTile(x, y);
+            newTile = new ShipTile(x, y);
+
+            Tile oldTile = tiles[x][y];
+            renderer.unregister(oldTile);
+
+            renderer.register(newTile);
+
+            grid.getChildren().remove(oldTile);
+            grid.add(newTile, x, y);
+
             tiles[x][y] = newTile;
             newShip.addTile(newTile);
         }

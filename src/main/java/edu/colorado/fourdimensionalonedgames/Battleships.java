@@ -5,6 +5,7 @@ import java.util.Random;
 import edu.colorado.fourdimensionalonedgames.gui.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -14,6 +15,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Battleships extends Application {
     // fields
@@ -42,7 +45,27 @@ public class Battleships extends Application {
             Board blankBoard1 = new Board(columns, rows, renderer);
             Board blankBoard2 = new Board(columns, rows, renderer);
 
+            Orientation direction = Orientation.left;
+            double x = 5;
+            double y = 4;
+            Point2D origin = new Point2D(x,y);
+            Battleship newShip = new Battleship();
 
+            Orientation direction2 = Orientation.right;
+            double x2 = 7;
+            double y2 = 6;
+            Point2D origin2 = new Point2D(x2,y2);
+            Minesweeper newShip2 = new Minesweeper();
+
+            Orientation direction3 = Orientation.down;
+            double x3 = 2;
+            double y3 = 7;
+            Point2D origin3 = new Point2D(x3,y3);
+            Destroyer newShip3 = new Destroyer();
+
+            blankBoard1.placeShip(direction, origin, newShip);
+            blankBoard1.placeShip(direction2, origin2, newShip2);
+            blankBoard1.placeShip(direction3, origin3, newShip3);
 
 
 /*            StackPane player1Layout = new StackPane();
