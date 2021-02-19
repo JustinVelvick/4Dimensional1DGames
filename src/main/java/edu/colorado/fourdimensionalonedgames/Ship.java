@@ -1,13 +1,16 @@
 package edu.colorado.fourdimensionalonedgames;
 
-public class Ship {
+import javafx.geometry.Point2D;
 
-    //possible way to store damage values? Maybe have array size be size of the ship? ie. 5 squares?
-    private boolean[] flags;
+import java.util.List;
 
+public abstract class Ship implements IRenderable{
+
+    int size;
+    public List<ShipTile> shipTiles;
 
     //default constructor
-    public void Ship(){
+    public Ship(){
 
     }
 

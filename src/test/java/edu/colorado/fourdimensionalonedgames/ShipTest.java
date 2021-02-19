@@ -12,16 +12,16 @@ class ShipTest {
 
     @BeforeEach
     void setUp() {
-        testShip = new Ship();
-    }
-    @Test
-    void testAdd(){
-        int result = testShip.add(4,3);
-        assertEquals(7,result);
+        testShip = new Destroyer();
     }
 
     @Test
     void testDamageShip(){
+        fail("Not yet implemented");
+    }
 
+    @Test
+    void testShipDeath(){
+        fail("Not yet implemented");
     }
 }
