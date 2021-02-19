@@ -28,7 +28,7 @@ class shipPlacementTest {
     void placeValidShip(){
         Orientation direction = Orientation.up;
         double x = 3;
-        double y = 80;
+        double y = 4;
         Point2D origin = new Point2D(x,y);
 
         assertTrue(testBoard.placeShip(direction, origin, testShip));

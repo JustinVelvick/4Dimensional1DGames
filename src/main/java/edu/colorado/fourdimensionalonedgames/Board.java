@@ -19,6 +19,8 @@ public class Board {
     public GridPane grid;
     public Tile[][] tiles;
 
+    private List<Ship> ships = new ArrayList<>();
+
     public Board(int columns, int rows, Render renderer) {
 
         grid = new GridPane();
@@ -62,6 +64,52 @@ public class Board {
     }
 
     public boolean placeShip(Orientation direction, Point2D origin, Ship newShip){
-        return false;
+        List<Point2D> newCoordinates = new ArrayList<>();
+
+        double xCoordinate = origin.getX();
+        double yCoordinate = origin.getY();
+
+        switch (direction){
+            case up: //come back and check for overlaps
+                for(double y = yCoordinate; y > (yCoordinate - newShip.size); y--) {
+                    newCoordinates.add(new Point2D(xCoordinate, y));
+                }
+                break;
+
+            case down:
+                for(double y = yCoordinate; y < (yCoordinate + newShip.size); y++){
+                    newCoordinates.add(new Point2D(xCoordinate, y));
+                }
+                break;
+
+            case left:
+                for(double x = xCoordinate; x > (xCoordinate - newShip.size); x--){
+                    newCoordinates.add(new Point2D(x, yCoordinate));
+                }
+                break;
+            case right:
+                for(double x = xCoordinate; x < (xCoordinate + newShip.size); x++){
+                    newCoordinates.add(new Point2D(x, yCoordinate));
+                }
+                break;
+        }
+
+        for (Point2D coordinate : newCoordinates) {
+            if (coordinate.getX() < 0) return false;
+            if (coordinate.getX() >= columns) return false;
+            if (coordinate.getY() < 0) return false;
+            if (coordinate.getY() >= rows) return false;
+        }
+
+        for (Point2D coordinate : newCoordinates) {
+            int x = (int) coordinate.getX();
+            int y = (int) coordinate.getY();
+            tiles[x][y] = new ShipTile(x,y);
+            newShip.addTile((ShipTile) tiles[x][y]);
+        }
+
+        ships.add(newShip);
+
+        return true;
     }
 }

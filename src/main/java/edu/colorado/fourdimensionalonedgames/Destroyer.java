@@ -3,7 +3,7 @@ package edu.colorado.fourdimensionalonedgames;
 public class Destroyer extends Ship{
 
 
-    public void Destoyer(){
+    public Destroyer(){
         this.size = 3;
     }
     @Override
