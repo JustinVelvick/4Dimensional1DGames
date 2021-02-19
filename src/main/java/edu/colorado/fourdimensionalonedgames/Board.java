@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Board {
 
-    private int rows;
-    private int columns;
+    private final int rows;
+    private final int columns;
 
     public GridPane grid;
     public Tile[][] tiles;
@@ -22,6 +22,9 @@ public class Board {
     private List<Ship> ships = new ArrayList<>();
 
     public Board(int columns, int rows, Render renderer) {
+
+        this.rows = rows;
+        this.columns = columns;
 
         grid = new GridPane();
         tiles = new Tile[columns + 1][rows + 1];
@@ -59,8 +62,6 @@ public class Board {
                 grid.add(tile, i, j);
             }
         }
-
-
     }
 
     public boolean placeShip(Orientation direction, Point2D origin, Ship newShip){
@@ -104,8 +105,9 @@ public class Board {
         for (Point2D coordinate : newCoordinates) {
             int x = (int) coordinate.getX();
             int y = (int) coordinate.getY();
-            tiles[x][y] = new ShipTile(x,y);
-            newShip.addTile((ShipTile) tiles[x][y]);
+            ShipTile newTile = new ShipTile(x, y);
+            tiles[x][y] = newTile;
+            newShip.addTile(newTile);
         }
 
         ships.add(newShip);

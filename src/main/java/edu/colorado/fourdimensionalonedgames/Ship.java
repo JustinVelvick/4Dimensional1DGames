@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames;
 
 import javafx.geometry.Point2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Ship implements IRenderable{
@@ -11,7 +12,7 @@ public abstract class Ship implements IRenderable{
 
     //default constructor
     public Ship(){
-
+        shipTiles = new ArrayList<>();
     }
 
     public void addTile(ShipTile tile) {
