@@ -18,4 +18,29 @@ public abstract class Ship implements IRenderable{
     public void addTile(ShipTile tile) {
         shipTiles.add(tile);
     }
+
+    /**
+     * Calculate the damage done to the ship
+     *
+     * @return the number of damaged ship tiles in the ship
+     */
+    public int damage(){
+        int damage = 0;
+        for (ShipTile tile : shipTiles){
+            if (tile.shot) damage++;
+        }
+        return damage;
+    }
+
+    /**
+     * Determine if the ship has been destroyed (have all tiles been shot)
+     *
+     * @return boolean indicating if ship is destroyed
+     */
+    public boolean destroyed() {
+        for (ShipTile tile : shipTiles){
+            if (!tile.shot) return false;
+        }
+        return true;
+    }
 }
