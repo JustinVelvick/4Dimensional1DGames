@@ -8,10 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 
-class placeShipTest {
+class PlaceShipsTest {
 
-    Ship testShip;
-    Ship testShip2;
+    Ship testShip, testShip2, testShip3;
     Board testBoard;
     static int tileSize = 40;
     static int rows = 10;
@@ -24,6 +23,7 @@ class placeShipTest {
         testBoard = new Board(columns, rows, renderer);
         testShip = new Destroyer();
         testShip2 = new Minesweeper();
+        testShip3 = new Battleship();
     }
 
     @Test
