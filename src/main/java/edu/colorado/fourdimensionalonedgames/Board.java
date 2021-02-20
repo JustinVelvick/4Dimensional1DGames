@@ -97,11 +97,15 @@ public class Board {
                 break;
         }
 
+        // ensure no point in set falls off board or overlaps with existing ship tile
         for (Point2D coordinate : newCoordinates) {
             if (coordinate.getX() < 1) return false;
             if (coordinate.getX() >= columns) return false;
             if (coordinate.getY() < 1) return false;
             if (coordinate.getY() >= rows) return false;
+
+            Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()];
+            if (oldTile instanceof ShipTile) return false;
         }
 
 
