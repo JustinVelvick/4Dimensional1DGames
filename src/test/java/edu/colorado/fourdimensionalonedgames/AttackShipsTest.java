@@ -3,6 +3,7 @@ package edu.colorado.fourdimensionalonedgames;
 import static org.junit.jupiter.api.Assertions.*;
 
 import javafx.geometry.Point2D;
+import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +15,14 @@ public class AttackShipsTest {
     static int rows = 10;
     static int columns = 10;
     Render renderer;
+    GridPane gpane;
 
     @BeforeEach
     void setUp(){
+
+        gpane = new GridPane();
+        testBoard.initializeBoard(gpane);
+
         renderer = new Render();
         testBoard = new Board(columns, rows, renderer);
         testShip1 = new Destroyer();
@@ -25,11 +31,11 @@ public class AttackShipsTest {
 
         Orientation direction = Orientation.down;
         Point2D origin = new Point2D(2,2);
-        testBoard.placeShip(direction, origin, testShip1);
+        testBoard.placeShip(gpane, direction, origin, testShip1);
 
         direction = Orientation.right;
         origin = new Point2D(4,4);
-        testBoard.placeShip(direction, origin, testShip2);
+        testBoard.placeShip(gpane, direction, origin, testShip2);
     }
 
     @Test

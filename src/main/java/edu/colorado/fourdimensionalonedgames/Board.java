@@ -124,4 +124,23 @@ public class Board {
 
         return true;
     }
+
+    /**
+     * Mount an attack on the given coordinates
+     *
+     * @param attackCoords  the coordinates of tile on the board to be attacked
+     * @return              returns the ship that was hit, null if the attack misses
+     */
+    public Ship attack(Point2D attackCoords){
+        return null;
+    }
+
+    /**
+     * Determines if the game is over based on the board state
+     *
+     * @return  boolean indicating if game is over
+     */
+    public boolean gameOver(){
+        return false;
+    }
 }
