@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 //TODO - Create this popup box in scene builder and then FXML load it here
 public class AlertBox {
-    public static void display(String title, String message){
+    public static void display(String title, String message) {
         Stage popUp = new Stage();
         //Block events to other stages/windows
         popUp.initModality(Modality.APPLICATION_MODAL);

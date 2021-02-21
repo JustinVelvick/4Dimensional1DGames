@@ -4,21 +4,23 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Tile extends Canvas implements IRenderable{
+public class Tile extends Canvas implements IRenderable {
 
     public boolean shot;
     //private Canvas canvas;
     private int row;
     public int column;
 
-    public Tile(int column, int row){
+    public Tile(int column, int row) {
         super(40,40);
         this.row = row;
         this.column = column;
         this.shot = false;
     }
 
-    public Ship getShip() { return null; }
+    public Ship getShip() {
+        return null;
+    }
 
     public Color getColor() {
         return Color.CORNFLOWERBLUE;

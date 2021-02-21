@@ -2,10 +2,10 @@ package edu.colorado.fourdimensionalonedgames;
 
 import javafx.scene.paint.Color;
 
-public class Minesweeper extends Ship{
+public class Minesweeper extends Ship {
 
 
-    public Minesweeper(){
+    public Minesweeper() {
         this.size = 2;
     }
 

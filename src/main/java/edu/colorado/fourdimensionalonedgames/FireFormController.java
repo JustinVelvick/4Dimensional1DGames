@@ -37,7 +37,7 @@ public class FireFormController implements Initializable {
     }
 
     @FXML
-    public void handleConfirmButton(ActionEvent event) throws IOException{
+    public void handleConfirmButton(ActionEvent event) throws IOException {
         if(this.validateForm()){
             this.input.setWeaponChoice(weaponChoiceBox.getSelectionModel().getSelectedItem());
 
@@ -63,7 +63,7 @@ public class FireFormController implements Initializable {
 
 
     //helper method to validate form before populating a PlayerShipInput object
-    public boolean validateForm(){
+    public boolean validateForm() {
         Boolean result = true;
 
 

@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-public class ShipTile extends Tile implements IRenderable{
+public class ShipTile extends Tile implements IRenderable {
 
     private Ship parentShip;
 
@@ -15,7 +15,9 @@ public class ShipTile extends Tile implements IRenderable{
     }
 
     @Override
-    public Ship getShip(){ return parentShip; }
+    public Ship getShip() {
+        return parentShip;
+    }
 
     public Color getColor() {
         if (shot && !parentShip.destroyed()) {
@@ -27,7 +29,7 @@ public class ShipTile extends Tile implements IRenderable{
     }
 
     @Override
-    public void render(){
+    public void render() {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.setFill(getColor());
         Rectangle rect = new Rectangle(40,40);

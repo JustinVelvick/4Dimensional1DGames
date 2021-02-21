@@ -6,13 +6,13 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Ship implements IRenderable{
+public abstract class Ship implements IRenderable {
 
     int size;
     protected List<ShipTile> shipTiles;
 
     //default constructor
-    public Ship(){
+    public Ship() {
         shipTiles = new ArrayList<>();
     }
 
@@ -25,7 +25,7 @@ public abstract class Ship implements IRenderable{
      *
      * @return the number of damaged ship tiles in the ship
      */
-    public int damage(){
+    public int damage() {
         int damage = 0;
         for (ShipTile tile : shipTiles){
             if (tile.shot) damage++;

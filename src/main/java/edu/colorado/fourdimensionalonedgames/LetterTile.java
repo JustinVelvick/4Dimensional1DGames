@@ -3,7 +3,7 @@ package edu.colorado.fourdimensionalonedgames;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class LetterTile extends Tile implements IRenderable{
+public class LetterTile extends Tile implements IRenderable {
 
     private String letter;
 
@@ -18,7 +18,7 @@ public class LetterTile extends Tile implements IRenderable{
     }
 
     @Override
-    public void render(){
+    public void render() {
         GraphicsContext gc = this.getGraphicsContext2D();
 
         gc.setStroke(Color.BLACK);

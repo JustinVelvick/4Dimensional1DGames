@@ -33,7 +33,7 @@ public class Board {
 
     }
 
-    public void initializeBoard(GridPane existingBoard){
+    public void initializeBoard(GridPane existingBoard) {
 
         Tile tile;
 
@@ -74,14 +74,14 @@ public class Board {
      * @param newShip       the ship to be placed
      * @return              boolean indicating ship placement success
      */
-    public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip){
+    public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip) {
         List<Point2D> newCoordinates = new ArrayList<>();
 
         double xCoordinate = origin.getX();
         double yCoordinate = origin.getY();
 
         // get coordinate set of tiles ship would occupy if placed in given orientation
-        switch (direction){
+        switch (direction) {
             case up:
                 for(double y = yCoordinate; y > (yCoordinate - newShip.size); y--) {
                     newCoordinates.add(new Point2D(xCoordinate, y));
@@ -147,7 +147,7 @@ public class Board {
      * @param attackCoords  the coordinates of tile on the board to be attacked
      * @return              returns the ship that was hit, null if the attack misses
      */
-    public Ship attack(Point2D attackCoords){
+    public Ship attack(Point2D attackCoords) {
         int x = (int) attackCoords.getX();
         int y = (int) attackCoords.getY();
 
@@ -173,8 +173,8 @@ public class Board {
      *
      * @return  boolean indicating if game is over
      */
-    public boolean gameOver(){
-        for (Ship ship : ships){
+    public boolean gameOver() {
+        for (Ship ship : ships) {
             if (ship.destroyed() == false) return false;
         }
         return true;

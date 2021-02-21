@@ -10,11 +10,11 @@ public class Render {
 
 
 
-    public Render(){
+    public Render() {
 
     }
 
-    public void tick(){
+    public void tick() {
         for (IRenderable element : renderRegistry) {
             element.render();
         }

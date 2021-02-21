@@ -18,7 +18,7 @@ public class AttackShipsTest {
     GridPane gpane;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
 
         gpane = new GridPane();
         renderer = new Render();
@@ -39,7 +39,7 @@ public class AttackShipsTest {
     }
 
     @Test
-    void attackMiss(){
+    void attackMiss() {
         Point2D attackCoords = new Point2D(1,1);
         assertNull(testBoard.attack(attackCoords));
 
@@ -48,7 +48,7 @@ public class AttackShipsTest {
     }
 
     @Test
-    void attackHit(){
+    void attackHit() {
         Point2D attackCoords = new Point2D(2,2);
         Ship hitShip = testBoard.attack(attackCoords);
 
@@ -70,7 +70,7 @@ public class AttackShipsTest {
     }
 
     @Test
-    void offBoardAttack(){
+    void offBoardAttack() {
         // deal with attacks that fall off of the game board
         assertThrows(InvalidAttackException.class, () -> {
             Point2D attackCoords = new Point2D(0,0);
@@ -84,7 +84,7 @@ public class AttackShipsTest {
     }
 
     @Test
-    void edgeBoardAttack(){
+    void edgeBoardAttack() {
         // deal with attacks that barely don't fall off of the game board
         assertDoesNotThrow(() -> {
             Point2D attackCoords = new Point2D(1,1);
@@ -98,7 +98,7 @@ public class AttackShipsTest {
     }
 
     @Test
-    void duplicateAttack(){
+    void duplicateAttack() {
         // attack a tile that has already been attacked
         Point2D attackCoords = new Point2D(1, 1);
         testBoard.attack(attackCoords);
@@ -109,7 +109,7 @@ public class AttackShipsTest {
     }
 
     @Test
-    void gameOver(){
+    void gameOver() {
         assertFalse(testBoard.gameOver());
 
         // sink all ships on board

@@ -8,6 +8,8 @@ public class InvalidAttackException extends RuntimeException {
         msg = errorMsg;
     }
 
-    public String getErrorMsg() { return msg; }
+    public String getErrorMsg() {
+        return msg;
+    }
 
 }

@@ -22,7 +22,7 @@ class ShipTest {
     }
 
     @Test
-    void testDamageShip(){
+    void testDamageShip() {
         assertEquals(0, testShip.damage());
         tile1.shot = true;
         assertEquals(1, testShip.damage());
@@ -32,7 +32,7 @@ class ShipTest {
     }
 
     @Test
-    void testShipDeath(){
+    void testShipDeath() {
         // test undamaged, partially damaged, and destroyed ship
         assertFalse(testShip.destroyed());
         tile1.shot = true;

@@ -7,7 +7,7 @@ public class PlayerShipInput {
     private double yCord;
 
 
-    public PlayerShipInput(String dir, String shipC, String x, String y){
+    public PlayerShipInput(String dir, String shipC, String x, String y) {
         this.direction = dir;
         this.shipChoice = shipC;
         this.xCord = Double.parseDouble(x);

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainSceneController implements Initializable{
+public class MainSceneController implements Initializable {
 
     Board board1;
     Board board2;
@@ -145,7 +145,7 @@ public class MainSceneController implements Initializable{
         fireWeapon(userInput, this.board1, this.getGpane1());
     }
 
-    public void fireWeapon(PlayerFireInput input, Board board, GridPane gpane){
+    public void fireWeapon(PlayerFireInput input, Board board, GridPane gpane) {
         Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
         try{
             Ship attackedShip = board.attack(coordinate);
@@ -166,7 +166,7 @@ public class MainSceneController implements Initializable{
     }
 
     //place a predetermined valid ship on the board
-    public void placeShip(PlayerShipInput input, Board board, GridPane gpane){
+    public void placeShip(PlayerShipInput input, Board board, GridPane gpane) {
         Orientation direction = Orientation.down;
         double x =  input.getxCord();
         double y =  input.getyCord();

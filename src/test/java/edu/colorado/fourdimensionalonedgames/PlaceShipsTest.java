@@ -20,7 +20,7 @@ class PlaceShipsTest {
     GridPane gpane;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         gpane = new GridPane();
         renderer = new Render();
 
@@ -33,7 +33,7 @@ class PlaceShipsTest {
     }
 
     @Test
-    void placeValidShip(){
+    void placeValidShip() {
         Orientation direction = Orientation.up;
         double x = 3;
         double y = 4;
@@ -62,7 +62,7 @@ class PlaceShipsTest {
     }
 
     @Test
-    void placeInvalidShip(){
+    void placeInvalidShip() {
         // goes off top of board
         Orientation direction = Orientation.up;
         Point2D origin = new Point2D(1,1);
@@ -83,7 +83,7 @@ class PlaceShipsTest {
     }
 
     @Test
-    void placeOverlappingShips(){
+    void placeOverlappingShips() {
         // place first ship
         Orientation ship1Dir = Orientation.right;
         Point2D ship1Origin = new Point2D(1,1);

@@ -2,10 +2,10 @@ package edu.colorado.fourdimensionalonedgames;
 
 import javafx.scene.paint.Color;
 
-public class Destroyer extends Ship{
+public class Destroyer extends Ship {
 
 
-    public Destroyer(){
+    public Destroyer() {
         this.size = 3;
     }
 
