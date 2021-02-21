@@ -1,20 +1,15 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import java.util.Random;
-
-import edu.colorado.fourdimensionalonedgames.gui.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,53 +36,16 @@ public class Battleships extends Application {
             //grid extends JavaFx's Canvas class, which is effectively what we draw on
             Render renderer = new Render();
 
-
             Board blankBoard1 = new Board(columns, rows, renderer);
             Board blankBoard2 = new Board(columns, rows, renderer);
 
-            Orientation direction = Orientation.left;
-            double x = 5;
-            double y = 4;
-            Point2D origin = new Point2D(x,y);
-            Battleship newShip = new Battleship();
-
-            Orientation direction2 = Orientation.right;
-            double x2 = 7;
-            double y2 = 6;
-            Point2D origin2 = new Point2D(x2,y2);
-            Minesweeper newShip2 = new Minesweeper();
-
-            Orientation direction3 = Orientation.down;
-            double x3 = 2;
-            double y3 = 7;
-            Point2D origin3 = new Point2D(x3,y3);
-            Destroyer newShip3 = new Destroyer();
-
-            blankBoard1.placeShip(direction, origin, newShip);
-            blankBoard1.placeShip(direction2, origin2, newShip2);
-            blankBoard1.placeShip(direction3, origin3, newShip3);
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("scene1.fxml"));
+            HBox root = loader.load();
 
 
-/*            StackPane player1Layout = new StackPane();
-            player1Layout.getChildren().add();
-            SubScene player1SubScene = new SubScene(player1Layout, width, height);
+            FXMLController controller = loader.getController();
 
-            StackPane player2Layout = new StackPane();
-            player1Layout.getChildren().add();
-            SubScene player2SubScene = new SubScene(player2Layout, width, height);
-*/
-
-            //Stage >> Scene >> Container >> Node
-            HBox root = new HBox();
-            //HBox root = new HBox(10);
-            //root.setAlignment(Pos.CENTER);
-            //add our canvas/grid to the VBox container
-            root.getChildren().addAll(blankBoard1.grid, blankBoard2.grid);
-
-
-            //Both sides of the game will have its own Renderer
-
-
+            controller.initializeBoards(blankBoard1, blankBoard2);
 
 
 
@@ -110,8 +68,11 @@ public class Battleships extends Application {
 
             }.start();
 
-            Scene mainScene = new Scene(root, (width*2.5) , (height*1.2));
+            Scene mainScene = new Scene(root, (width*2.5) , (height*1.3));
 
+            //To change taskbar icon in client's OS
+            Image icon = new Image("icon.jpg");
+            primaryStage.getIcons().add(icon);
 
             primaryStage.setScene(mainScene);
             primaryStage.setTitle("Battleships");
