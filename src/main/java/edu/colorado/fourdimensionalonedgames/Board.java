@@ -149,7 +149,17 @@ public class Board {
         int x = (int) attackCoords.getX();
         int y = (int) attackCoords.getY();
 
+        // check that provided coords are on board, throw exception if not
+        if (x < 1 || x >= columns || y < 1 || y >= rows)
+            throw new InvalidAttackException("attack coordinates off of board");
+
+        // get tile to be attacked
         Tile attackedTile = tiles[x][y];
+
+        // if already attacked, throw exception
+        if (attackedTile.shot) throw new InvalidAttackException("tile has already been attacked");
+
+        // otherwise set shot flag and return ship that contains tile
         attackedTile.shot = true;
         return attackedTile.getShip();
     }
