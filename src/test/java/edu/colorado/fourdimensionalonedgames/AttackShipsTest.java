@@ -84,6 +84,20 @@ public class AttackShipsTest {
     }
 
     @Test
+    void edgeBoardAttack(){
+        // deal with attacks that barely don't fall off of the game board
+        assertDoesNotThrow(() -> {
+            Point2D attackCoords = new Point2D(1,1);
+            testBoard.attack(attackCoords);
+        });
+
+        assertDoesNotThrow(() -> {
+            Point2D attackCoords = new Point2D(10,10);
+            testBoard.attack(attackCoords);
+        });
+    }
+
+    @Test
     void duplicateAttack(){
         // attack a tile that has already been attacked
         Point2D attackCoords = new Point2D(1, 1);
