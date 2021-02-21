@@ -118,7 +118,7 @@ public class MainSceneController implements Initializable{
 
         stage.showAndWait();
 
-        fireWeapon(userInput, this.board1, this.getGpane1());
+        fireWeapon(userInput, this.board2, this.getGpane2());
     }
 
     public void handleFireWeapon2(ActionEvent event) throws IOException {
@@ -141,7 +141,7 @@ public class MainSceneController implements Initializable{
 
         stage.showAndWait();
 
-        fireWeapon(userInput, this.board2, this.getGpane2());
+        fireWeapon(userInput, this.board1, this.getGpane1());
     }
 
     public void fireWeapon(PlayerFireInput input, Board board, GridPane gpane){
