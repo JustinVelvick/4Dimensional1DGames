@@ -1,6 +1,7 @@
 package edu.colorado.fourdimensionalonedgames;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,4 +44,6 @@ public abstract class Ship implements IRenderable{
         }
         return true;
     }
+
+    public abstract Color getColor();
 }
