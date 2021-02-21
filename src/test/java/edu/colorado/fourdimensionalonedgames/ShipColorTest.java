@@ -1,9 +1,9 @@
 package edu.colorado.fourdimensionalonedgames;
 
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

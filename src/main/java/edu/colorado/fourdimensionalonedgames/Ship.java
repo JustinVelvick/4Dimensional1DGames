@@ -45,5 +45,9 @@ public abstract class Ship implements IRenderable{
         return true;
     }
 
+    /**
+     * Determine ship color based on ship type
+     * @return Color indicating ship color
+     */
     public abstract Color getColor();
 }
