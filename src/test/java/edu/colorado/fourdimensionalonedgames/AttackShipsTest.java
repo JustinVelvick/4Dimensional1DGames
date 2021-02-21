@@ -76,6 +76,11 @@ public class AttackShipsTest {
             Point2D attackCoords = new Point2D(0,0);
             testBoard.attack(attackCoords);
         });
+
+        assertThrows(InvalidAttackException.class, () -> {
+            Point2D attackCoords = new Point2D(11,11);
+            testBoard.attack(attackCoords);
+        });
     }
 
     @Test

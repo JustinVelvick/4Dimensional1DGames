@@ -107,9 +107,9 @@ public class Board {
         // check each coordinate to make sure not off board or occupied by other ship
         for (Point2D coordinate : newCoordinates) {
             if (coordinate.getX() < 1) return false;
-            if (coordinate.getX() >= columns) return false;
+            if (coordinate.getX() > columns) return false;
             if (coordinate.getY() < 1) return false;
-            if (coordinate.getY() >= rows) return false;
+            if (coordinate.getY() > rows) return false;
 
             Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()];
             if (oldTile instanceof ShipTile) return false;
