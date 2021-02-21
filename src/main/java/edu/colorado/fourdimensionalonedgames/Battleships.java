@@ -39,7 +39,9 @@ public class Battleships extends Application {
             Board blankBoard1 = new Board(columns, rows, renderer);
             Board blankBoard2 = new Board(columns, rows, renderer);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("scene1.fxml"));
+
+            //Load our main Stage/window
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("mainScene.fxml"));
             HBox root = loader.load();
 
 
