@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -34,6 +35,12 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private Button p2PlaceShip;
+
+    @FXML
+    private Button fireWeapon1;
+
+    @FXML
+    private Button fireWeapon2;
 
 
 
@@ -158,6 +165,10 @@ public class MainSceneController implements Initializable {
             }
             else {
                 AlertBox.display("Ship Hit", "Ship has been hit");
+            }
+
+            if(board.gameOver()){
+                AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
             }
         }
         catch (InvalidAttackException e){
