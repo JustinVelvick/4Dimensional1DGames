@@ -16,7 +16,6 @@ public class Board {
     private final int rows;
     private final int columns;
 
-    public GridPane grid;
     public Tile[][] tiles;
     public Render renderer;
     private List<Ship> ships = new ArrayList<>();
@@ -25,32 +24,30 @@ public class Board {
 
         this.rows = rows;
         this.columns = columns;
-
         this.renderer = renderer;
 
-        grid = new GridPane();
         tiles = new Tile[columns + 1][rows + 1];
 
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        //grid.setVgap(8);
-        //grid.setHgap(10);
 
+    }
+
+    public void initializeBoard(GridPane existingBoard){
 
         Tile tile;
 
         for (int j = 0; j <= columns; j++) {
             tile = new LetterTile(0, j, String.valueOf(j));
-            renderer.register(tile);
-            tiles[0][j] = tile;
-            grid.add(tile, 0, j);
+            this.renderer.register(tile);
+            this.tiles[0][j] = tile;
+            existingBoard.add(tile, 0, j);
         }
 
 
         for (int i = 1; i <= rows; i++) {
             tile = new LetterTile(i, 0, Character.toString((char) i + 64));
-            renderer.register(tile);
-            tiles[i][0] = tile;
-            grid.add(tile, i, 0);
+            this.renderer.register(tile);
+            this.tiles[i][0] = tile;
+            existingBoard.add(tile, i, 0);
         }
 
 
@@ -58,15 +55,15 @@ public class Board {
             for (int j = 1; j <= rows; j++) {
 
                 tile = new Tile(i, j);
-                renderer.register(tile);
-                tiles[i][j] = tile;
-                tiles[i][j].shot = false;
-                grid.add(tile, i, j);
+                this.renderer.register(tile);
+                this.tiles[i][j] = tile;
+                this.tiles[i][j].shot = false;
+                existingBoard.add(tile, i, j);
             }
         }
     }
 
-    public boolean placeShip(Orientation direction, Point2D origin, Ship newShip){
+    public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip){
         List<Point2D> newCoordinates = new ArrayList<>();
 
         double xCoordinate = origin.getX();
@@ -116,8 +113,8 @@ public class Board {
 
             renderer.register(newTile);
 
-            grid.getChildren().remove(oldTile);
-            grid.add(newTile, x, y);
+            currentBoard.getChildren().remove(oldTile);
+            currentBoard.add(newTile, x, y);
 
             tiles[x][y] = newTile;
             newShip.addTile(newTile);
