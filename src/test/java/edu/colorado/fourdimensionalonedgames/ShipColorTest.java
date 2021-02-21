@@ -44,7 +44,7 @@ public class ShipColorTest {
     @Test
     void testShipColors() {
         assertEquals(Color.BLUE, testDestroyer.getColor());
-        assertEquals(Color.HOTPINK, testBattleship.getColor());
+        assertEquals(Color.INDIGO, testBattleship.getColor());
         assertEquals(Color.GREEN, testMinesweeper.getColor());
     }
 

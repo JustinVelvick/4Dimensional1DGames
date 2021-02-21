@@ -16,6 +16,6 @@ public class Battleship extends Ship{
 
     @Override
     public Color getBaseColor() {
-        return Color.HOTPINK;
+        return Color.INDIGO;
     }
 }

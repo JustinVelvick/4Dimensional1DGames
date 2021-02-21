@@ -24,6 +24,8 @@ public class Tile extends Canvas implements IRenderable{
     public void render() {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
+        gc.setFill(Color.CORNFLOWERBLUE);
+        gc.fillRect(0, 0, 40, 40);
         gc.strokeLine(0,0,40,0);
         gc.strokeLine(40,0,40,40);
         gc.strokeLine(40,40,0,40);
