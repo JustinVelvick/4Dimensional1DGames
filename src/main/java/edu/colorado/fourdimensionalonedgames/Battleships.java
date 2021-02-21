@@ -3,10 +3,7 @@ package edu.colorado.fourdimensionalonedgames;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.scene.Parent;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -45,7 +42,7 @@ public class Battleships extends Application {
             HBox root = loader.load();
 
 
-            FXMLController controller = loader.getController();
+            MainSceneController controller = loader.getController();
 
             controller.initializeBoards(blankBoard1, blankBoard2);
 

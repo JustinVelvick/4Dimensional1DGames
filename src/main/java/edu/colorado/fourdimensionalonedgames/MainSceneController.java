@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class FXMLController implements Initializable{
+public class MainSceneController implements Initializable{
 
     Board board1;
     Board board2;
@@ -98,6 +98,56 @@ public class FXMLController implements Initializable{
         placeShip(userInput, this.board2, this.getGpane2());
     }
 
+    public void handleFireWeapon1(ActionEvent event) throws IOException {
+
+        //not sure if this line of code is correct, or if there's an existing controller object to grab
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fireForm.fxml"));
+        Pane root = loader.load();
+
+        FireFormController formController = loader.getController();
+
+
+        //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
+        PlayerFireInput userInput = formController.display();
+
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Fire Weapon Form");
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.showAndWait();
+
+        fireWeapon(userInput, this.board1, this.getGpane1());
+    }
+
+    public void handleFireWeapon2(ActionEvent event) throws IOException {
+
+        //not sure if this line of code is correct, or if there's an existing controller object to grab
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fireForm.fxml"));
+        Pane root = loader.load();
+
+        FireFormController formController = loader.getController();
+
+
+        //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
+        PlayerFireInput userInput = formController.display();
+
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Fire Weapon Form");
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.showAndWait();
+
+        fireWeapon(userInput, this.board2, this.getGpane2());
+    }
+
+    public void fireWeapon(PlayerFireInput input, Board board, GridPane gpane){
+        Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
+        board.attack(coordinate);
+    }
 
     //place a predetermined valid ship on the board
     public void placeShip(PlayerShipInput input, Board board, GridPane gpane){

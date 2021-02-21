@@ -1,8 +1,10 @@
 package edu.colorado.fourdimensionalonedgames;
 
 
+import edu.colorado.fourdimensionalonedgames.gui.AlertBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -161,6 +163,15 @@ public class Board {
 
         // otherwise set shot flag and return ship that contains tile
         attackedTile.shot = true;
+
+        if(attackedTile.getShip() == null){
+            AlertBox.display("Miss", "Your shot missed");
+        }
+        else{
+            AlertBox.display("Hit!", "Your shot hit an enemy ship!");
+        }
+
+
         return attackedTile.getShip();
     }
 
