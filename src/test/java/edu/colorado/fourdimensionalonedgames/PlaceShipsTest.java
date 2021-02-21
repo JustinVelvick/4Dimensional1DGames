@@ -40,6 +40,23 @@ class PlaceShipsTest {
         Point2D origin = new Point2D(x,y);
 
         assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
+
+        // goes at bottom of board
+        origin = new Point2D(10, 10);
+        assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
+
+        // goes at right of board
+        direction = Orientation.left;
+        assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
+
+        // goes at top of board
+        origin = new Point2D(1, 1);
+        direction = Orientation.down;
+        assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
+
+        // goes at left of board
+        direction = Orientation.right;
+        assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
     }
 
     @Test
@@ -55,7 +72,7 @@ class PlaceShipsTest {
 
         // goes off bottom of board
         direction = Orientation.down;
-        origin = new Point2D(10, 10);
+        origin = new Point2D(11, 11);
         assertFalse(testBoard.placeShip(gpane, direction, origin, testShip));
 
         // goes off right side of board
