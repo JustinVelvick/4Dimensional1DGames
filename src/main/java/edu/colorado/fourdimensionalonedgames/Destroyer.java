@@ -15,7 +15,7 @@ public class Destroyer extends Ship{
     }
 
     @Override
-    public Color getColor() {
+    public Color getBaseColor() {
         return Color.BLUE;
     }
 }

@@ -45,5 +45,13 @@ public abstract class Ship implements IRenderable{
         return true;
     }
 
-    public abstract Color getColor();
+    protected abstract Color getBaseColor();
+
+    public Color getColor() {
+        if (this.destroyed()) {
+            return Color.RED;
+        } else {
+            return this.getBaseColor();
+        }
+    }
 }
