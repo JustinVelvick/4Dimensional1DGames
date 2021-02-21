@@ -18,4 +18,9 @@ public class Minesweeper extends Ship {
     public Color getBaseColor() {
         return Color.GREEN;
     }
+
+    @Override
+    public String getType() {
+        return "Minesweeper";
+    }
 }

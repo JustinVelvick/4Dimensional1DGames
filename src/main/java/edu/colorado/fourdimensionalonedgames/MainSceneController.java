@@ -154,24 +154,24 @@ public class MainSceneController implements Initializable {
 
     public void fireWeapon(PlayerFireInput input, Board board, GridPane gpane) {
         Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
-        try{
+        try {
             Ship attackedShip = board.attack(coordinate);
 
-            if (attackedShip == null){
+            if (attackedShip == null) {
                 AlertBox.display("Miss", "Shot missed");
             }
-            else if (attackedShip.destroyed()){
-                AlertBox.display("Ship Sunk", "Ship has been sunk!");
+            else if (attackedShip.destroyed()) {
+                AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
             }
             else {
                 AlertBox.display("Ship Hit", "Ship has been hit");
             }
 
-            if(board.gameOver()){
+            if(board.gameOver()) {
                 AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
             }
         }
-        catch (InvalidAttackException e){
+        catch (InvalidAttackException e) {
             AlertBox.display("Invalid Coordinates", e.getErrorMsg());
         }
     }
@@ -188,7 +188,7 @@ public class MainSceneController implements Initializable {
         String shipChoice = input.getShipChoice();
         String orientationChoice = input.getDirection();
 
-        switch (shipChoice){
+        switch (shipChoice) {
             case "Battleship(4)":
                 newShip = new Battleship();
                 break;
@@ -202,7 +202,7 @@ public class MainSceneController implements Initializable {
                 break;
         }
 
-        switch (orientationChoice){
+        switch (orientationChoice) {
             case "Up":
                 direction = Orientation.up;
                 break;

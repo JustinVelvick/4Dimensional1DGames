@@ -54,4 +54,6 @@ public abstract class Ship implements IRenderable {
             return this.getBaseColor();
         }
     }
+
+    public abstract String getType();
 }

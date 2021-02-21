@@ -18,4 +18,9 @@ public class Battleship extends Ship {
     public Color getBaseColor() {
         return Color.INDIGO;
     }
+
+    @Override
+    public String getType() {
+        return "Battleship";
+    }
 }
