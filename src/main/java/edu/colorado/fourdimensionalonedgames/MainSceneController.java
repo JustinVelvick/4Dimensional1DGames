@@ -1,5 +1,6 @@
 package edu.colorado.fourdimensionalonedgames;
 
+import edu.colorado.fourdimensionalonedgames.gui.AlertBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -146,7 +147,22 @@ public class MainSceneController implements Initializable{
 
     public void fireWeapon(PlayerFireInput input, Board board, GridPane gpane){
         Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
-        board.attack(coordinate);
+        try{
+            Ship attackedShip = board.attack(coordinate);
+
+            if (attackedShip == null){
+                AlertBox.display("Miss", "Shot missed");
+            }
+            else if (attackedShip.destroyed()){
+                AlertBox.display("Ship Sunk", "Ship has been sunk!");
+            }
+            else {
+                AlertBox.display("Ship Hit", "Ship has been hit");
+            }
+        }
+        catch (InvalidAttackException e){
+            AlertBox.display("Invalid Coordinates", e.getErrorMsg());
+        }
     }
 
     //place a predetermined valid ship on the board

@@ -164,13 +164,6 @@ public class Board {
         // otherwise set shot flag and return ship that contains tile
         attackedTile.shot = true;
 
-        if(attackedTile.getShip() == null){
-            AlertBox.display("Miss", "Your shot missed");
-        }
-        else{
-            AlertBox.display("Hit!", "Your shot hit an enemy ship!");
-        }
-
 
         return attackedTile.getShip();
     }
