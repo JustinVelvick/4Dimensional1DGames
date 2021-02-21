@@ -21,10 +21,10 @@ public class AttackShipsTest {
     void setUp(){
 
         gpane = new GridPane();
-        testBoard.initializeBoard(gpane);
-
         renderer = new Render();
         testBoard = new Board(columns, rows, renderer);
+        testBoard.initializeBoard(gpane);
+
         testShip1 = new Destroyer();
         testShip2 = new Minesweeper();
         testShip3 = new Battleship();

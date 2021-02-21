@@ -120,7 +120,7 @@ public class Board {
         for (Point2D coordinate : newCoordinates) {
             int x = (int) coordinate.getX();
             int y = (int) coordinate.getY();
-            newTile = new ShipTile(x, y);
+            newTile = new ShipTile(newShip, x, y);
 
             Tile oldTile = tiles[x][y];
             renderer.unregister(oldTile);
@@ -146,7 +146,12 @@ public class Board {
      * @return              returns the ship that was hit, null if the attack misses
      */
     public Ship attack(Point2D attackCoords){
-        return null;
+        int x = (int) attackCoords.getX();
+        int y = (int) attackCoords.getY();
+
+        Tile attackedTile = tiles[x][y];
+        attackedTile.shot = true;
+        return attackedTile.getShip();
     }
 
     /**
@@ -155,6 +160,9 @@ public class Board {
      * @return  boolean indicating if game is over
      */
     public boolean gameOver(){
-        return false;
+        for (Ship ship : ships){
+            if (ship.destroyed() == false) return false;
+        }
+        return true;
     }
 }
