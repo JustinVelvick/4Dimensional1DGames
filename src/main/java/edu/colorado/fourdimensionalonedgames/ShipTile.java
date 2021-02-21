@@ -18,7 +18,12 @@ public class ShipTile extends Tile implements IRenderable{
     public Ship getShip(){ return parentShip; }
 
     public Color getColor() {
-        return parentShip.getColor();
+        if (shot && !parentShip.destroyed()) {
+            return Color.HOTPINK;
+        } else {
+            return parentShip.getColor();
+
+        }
     }
 
     @Override
