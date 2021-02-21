@@ -63,14 +63,24 @@ public class Board {
         }
     }
 
+    /**
+     * Place a new ship on the board given a placement orientation
+     *
+     * @param currentBoard  ???
+     * @param direction     direction the ship points in from the origin
+     * @param origin        the origin of the placement
+     * @param newShip       the ship to be placed
+     * @return              boolean indicating ship placement success
+     */
     public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip){
         List<Point2D> newCoordinates = new ArrayList<>();
 
         double xCoordinate = origin.getX();
         double yCoordinate = origin.getY();
 
+        // get coordinate set of tiles ship would occupy if placed in given orientation
         switch (direction){
-            case up: //come back and check for overlaps
+            case up:
                 for(double y = yCoordinate; y > (yCoordinate - newShip.size); y--) {
                     newCoordinates.add(new Point2D(xCoordinate, y));
                 }
@@ -94,19 +104,23 @@ public class Board {
                 break;
         }
 
+        // check each coordinate to make sure not off board or occupied by other ship
         for (Point2D coordinate : newCoordinates) {
             if (coordinate.getX() < 1) return false;
             if (coordinate.getX() >= columns) return false;
             if (coordinate.getY() < 1) return false;
             if (coordinate.getY() >= rows) return false;
+
+            Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()];
+            if (oldTile instanceof ShipTile) return false;
         }
 
-
+        // if verified that placement is valid, add ship tiles to board
         ShipTile newTile;
         for (Point2D coordinate : newCoordinates) {
             int x = (int) coordinate.getX();
             int y = (int) coordinate.getY();
-            newTile = new ShipTile(x, y);
+            newTile = new ShipTile(newShip, x, y);
 
             Tile oldTile = tiles[x][y];
             renderer.unregister(oldTile);
@@ -132,7 +146,22 @@ public class Board {
      * @return              returns the ship that was hit, null if the attack misses
      */
     public Ship attack(Point2D attackCoords){
-        return null;
+        int x = (int) attackCoords.getX();
+        int y = (int) attackCoords.getY();
+
+        // check that provided coords are on board, throw exception if not
+        if (x < 1 || x >= columns || y < 1 || y >= rows)
+            throw new InvalidAttackException("attack coordinates off of board");
+
+        // get tile to be attacked
+        Tile attackedTile = tiles[x][y];
+
+        // if already attacked, throw exception
+        if (attackedTile.shot) throw new InvalidAttackException("tile has already been attacked");
+
+        // otherwise set shot flag and return ship that contains tile
+        attackedTile.shot = true;
+        return attackedTile.getShip();
     }
 
     /**
@@ -141,6 +170,9 @@ public class Board {
      * @return  boolean indicating if game is over
      */
     public boolean gameOver(){
-        return false;
+        for (Ship ship : ships){
+            if (ship.destroyed() == false) return false;
+        }
+        return true;
     }
 }

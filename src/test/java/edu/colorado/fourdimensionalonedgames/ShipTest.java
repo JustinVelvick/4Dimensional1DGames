@@ -10,13 +10,12 @@ class ShipTest {
     Ship testShip;
     ShipTile tile1, tile2, tile3;
 
-
     @BeforeEach
     void setUp() {
         testShip = new Destroyer();
-        tile1 = new ShipTile(1,1);
-        tile2 = new ShipTile(1,2);
-        tile3 = new ShipTile(1,3);
+        tile1 = new ShipTile(testShip, 1,1);
+        tile2 = new ShipTile(testShip, 1,2);
+        tile3 = new ShipTile(testShip, 1,3);
         testShip.addTile(tile1);
         testShip.addTile(tile2);
         testShip.addTile(tile3);

@@ -6,10 +6,16 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class ShipTile extends Tile implements IRenderable{
-    public ShipTile(int column, int row) {
 
+    private Ship parentShip;
+
+    public ShipTile(Ship parentShip, int column, int row) {
         super(column, row);
+        this.parentShip = parentShip;
     }
+
+    @Override
+    public Ship getShip(){ return parentShip; }
 
     @Override
     public void render(){

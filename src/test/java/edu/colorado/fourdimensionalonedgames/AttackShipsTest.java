@@ -21,10 +21,10 @@ public class AttackShipsTest {
     void setUp(){
 
         gpane = new GridPane();
-        testBoard.initializeBoard(gpane);
-
         renderer = new Render();
         testBoard = new Board(columns, rows, renderer);
+        testBoard.initializeBoard(gpane);
+
         testShip1 = new Destroyer();
         testShip2 = new Minesweeper();
         testShip3 = new Battleship();
@@ -67,6 +67,26 @@ public class AttackShipsTest {
         assertSame(testShip1, hitShip);
         assertEquals(3, hitShip.damage());
         assertTrue(hitShip.destroyed());
+    }
+
+    @Test
+    void offBoardAttack(){
+        // deal with attacks that fall off of the game board
+        assertThrows(InvalidAttackException.class, () -> {
+            Point2D attackCoords = new Point2D(0,0);
+            testBoard.attack(attackCoords);
+        });
+    }
+
+    @Test
+    void duplicateAttack(){
+        // attack a tile that has already been attacked
+        Point2D attackCoords = new Point2D(1, 1);
+        testBoard.attack(attackCoords);
+
+        assertThrows(InvalidAttackException.class, () -> {
+            testBoard.attack(attackCoords);
+        });
     }
 
     @Test

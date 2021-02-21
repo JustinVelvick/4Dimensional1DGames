@@ -18,6 +18,8 @@ public class Tile extends Canvas implements IRenderable{
         this.shot = false;
     }
 
+    public Ship getShip() { return null; }
+
     @Override
     public void render() {
         GraphicsContext gc = this.getGraphicsContext2D();
