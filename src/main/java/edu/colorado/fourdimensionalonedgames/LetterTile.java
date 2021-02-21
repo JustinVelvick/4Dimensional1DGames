@@ -13,6 +13,11 @@ public class LetterTile extends Tile implements IRenderable{
     }
 
     @Override
+    public Color getColor() {
+        return Color.TRANSPARENT;
+    }
+
+    @Override
     public void render(){
         GraphicsContext gc = this.getGraphicsContext2D();
 
