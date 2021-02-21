@@ -20,6 +20,10 @@ public class Tile extends Canvas implements IRenderable{
 
     public Ship getShip() { return null; }
 
+    public Color getColor() {
+        return Color.CORNFLOWERBLUE;
+    }
+
     @Override
     public void render() {
         GraphicsContext gc = this.getGraphicsContext2D();

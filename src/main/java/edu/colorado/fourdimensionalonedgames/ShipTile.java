@@ -17,10 +17,14 @@ public class ShipTile extends Tile implements IRenderable{
     @Override
     public Ship getShip(){ return parentShip; }
 
+    public Color getColor() {
+        return parentShip.getColor();
+    }
+
     @Override
     public void render(){
         GraphicsContext gc = this.getGraphicsContext2D();
-        gc.setFill(parentShip.getColor());
+        gc.setFill(getColor());
         Rectangle rect = new Rectangle(40,40);
         gc.fillRect(0, 0, rect.getWidth(), rect.getHeight());
     }

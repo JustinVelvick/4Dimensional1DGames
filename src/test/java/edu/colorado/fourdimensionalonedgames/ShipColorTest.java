@@ -61,4 +61,19 @@ public class ShipColorTest {
         assertEquals(Color.RED, testBattleship.getColor());
         assertEquals(Color.RED, testMinesweeper.getColor());
     }
+
+    @Test
+    void testDamagedTileColors() {
+        Point2D origin;
+        for (int x = 1; x <= 3; x++) {
+            origin = new Point2D(x, 1);
+            testBoard.attack(origin);
+        }
+        assertEquals(Color.HOTPINK, testBoard.tiles[1][1].getColor());
+        assertEquals(Color.HOTPINK, testBoard.tiles[2][1].getColor());
+        assertEquals(Color.HOTPINK, testBoard.tiles[3][1].getColor());
+        assertEquals(Color.GREEN, testBoard.tiles[1][2].getColor());
+        assertEquals(Color.BLUE, testBoard.tiles[2][2].getColor());
+        assertEquals(Color.INDIGO, testBoard.tiles[3][2].getColor());
+    }
 }
