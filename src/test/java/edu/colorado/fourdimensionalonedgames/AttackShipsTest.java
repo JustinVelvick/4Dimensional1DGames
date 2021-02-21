@@ -70,6 +70,26 @@ public class AttackShipsTest {
     }
 
     @Test
+    void offBoardAttack(){
+        // deal with attacks that fall off of the game board
+        assertThrows(InvalidAttackException.class, () -> {
+            Point2D attackCoords = new Point2D(0,0);
+            testBoard.attack(attackCoords);
+        });
+    }
+
+    @Test
+    void duplicateAttack(){
+        // attack a tile that has already been attacked
+        Point2D attackCoords = new Point2D(1, 1);
+        testBoard.attack(attackCoords);
+
+        assertThrows(InvalidAttackException.class, () -> {
+            testBoard.attack(attackCoords);
+        });
+    }
+
+    @Test
     void gameOver(){
         assertFalse(testBoard.gameOver());
 
