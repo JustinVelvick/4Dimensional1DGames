@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ShipColorTest {
+public class ColorTest {
 
     Ship testMinesweeper, testDestroyer, testBattleship;
     Board testBoard;
@@ -75,5 +75,11 @@ public class ShipColorTest {
         assertEquals(Color.GREEN, testBoard.tiles[1][2].getColor());
         assertEquals(Color.BLUE, testBoard.tiles[2][2].getColor());
         assertEquals(Color.INDIGO, testBoard.tiles[3][2].getColor());
+    }
+
+    @Test
+    void testNonShipTileColors() {
+        assertEquals(Color.CORNFLOWERBLUE, testBoard.tiles[1][3].getColor());
+        assertEquals(Color.TRANSPARENT, testBoard.tiles[0][0].getColor());
     }
 }
