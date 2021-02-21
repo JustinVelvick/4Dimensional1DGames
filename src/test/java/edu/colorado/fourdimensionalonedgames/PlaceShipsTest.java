@@ -46,6 +46,7 @@ class PlaceShipsTest {
         assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
 
         // goes at right of board
+        origin = new Point2D(8, 10);
         direction = Orientation.left;
         assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
 
@@ -55,6 +56,7 @@ class PlaceShipsTest {
         assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
 
         // goes at left of board
+        origin = new Point2D(3, 1);
         direction = Orientation.right;
         assertTrue(testBoard.placeShip(gpane, direction, origin, testShip));
     }

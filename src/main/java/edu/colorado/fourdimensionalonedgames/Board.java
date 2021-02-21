@@ -150,7 +150,7 @@ public class Board {
         int y = (int) attackCoords.getY();
 
         // check that provided coords are on board, throw exception if not
-        if (x < 1 || x >= columns || y < 1 || y >= rows)
+        if (x < 1 || x > columns || y < 1 || y > rows)
             throw new InvalidAttackException("attack coordinates off of board");
 
         // get tile to be attacked
