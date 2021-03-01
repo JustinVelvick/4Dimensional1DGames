@@ -10,4 +10,11 @@ public class AttackResult {
         this.type = type;
         this.ship = ship;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AttackResult)) return false;
+        AttackResult result = (AttackResult) o;
+        return result.type == this.type && result.ship == this.ship;
+    }
 }

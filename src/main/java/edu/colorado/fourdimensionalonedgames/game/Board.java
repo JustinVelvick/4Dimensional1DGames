@@ -180,4 +180,12 @@ public class Board {
         }
         return true;
     }
+
+    public boolean isWithinBounds(Point2D coords) {
+        int x = (int) coords.getX();
+        int y = (int) coords.getY();
+
+        // check that provided coords are on board, throw exception if not
+        return !(x < 1 || x > columns || y < 1 || y > rows);
+    }
 }

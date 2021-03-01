@@ -68,7 +68,7 @@ public class AttackShipsTest {
         AttackResult result = testPlayer.attack(testBoard, attackCoords);
 
         // assertions after one hit
-        assertSame(new AttackResult(AttackResultType.HIT, testShip1), result);
+        assertEquals(new AttackResult(AttackResultType.HIT, testShip1), result);
         assertEquals(1, result.ship.damage());
 
         // sink ship
@@ -78,7 +78,7 @@ public class AttackShipsTest {
         result = testPlayer.attack(testBoard, attackCoords);
 
         // assertions after ship is sunk
-        assertSame(new AttackResult(AttackResultType.SUNK, testShip1), result);
+        assertEquals(new AttackResult(AttackResultType.SUNK, testShip1), result);
         assertEquals(3, result.ship.damage());
     }
 
