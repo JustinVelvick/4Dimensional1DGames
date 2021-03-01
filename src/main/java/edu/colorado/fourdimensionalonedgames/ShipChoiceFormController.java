@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 
 //TODO - Create this popup box in scene builder and then FXML load it here
-public class ShipChoiceForm implements Initializable {
+public class ShipChoiceFormController implements Initializable {
 
     @FXML
     private TextField xCord;

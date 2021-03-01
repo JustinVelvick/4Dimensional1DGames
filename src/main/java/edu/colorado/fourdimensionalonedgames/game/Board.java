@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.ship.Fleet;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
@@ -21,14 +22,14 @@ public class Board {
 
     public Tile[][] tiles;
     public Render renderer;
-    private List<Ship> ships = new ArrayList<>();
+    private Fleet fleet;
 
     public Board(int columns, int rows, Render renderer) {
 
         this.rows = rows;
         this.columns = columns;
         this.renderer = renderer;
-
+        this.fleet = new Fleet();
         tiles = new Tile[columns + 1][rows + 1];
 
 
@@ -137,7 +138,7 @@ public class Board {
             newShip.addTile(newTile);
         }
 
-        ships.add(newShip);
+        fleet.addShip(newShip);
 
         return true;
     }
@@ -175,7 +176,7 @@ public class Board {
      * @return  boolean indicating if game is over
      */
     public boolean gameOver() {
-        for (Ship ship : ships) {
+        for (Ship ship : fleet.getShips()) {
             if (ship.destroyed() == false) return false;
         }
         return true;

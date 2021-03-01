@@ -71,7 +71,7 @@ public class Battleships extends Application {
             //Set up our JavaFX scene and stage
             Scene mainScene = new Scene(root, (width*2.5) , (height*1.3));
 
-            //To change taskbar icon in client's OS
+            //Change taskbar icon in client's OS
             Image icon = new Image("icon.jpg");
             primaryStage.getIcons().add(icon);
 

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="212.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.colorado.fourdimensionalonedgames.ShipChoiceForm">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="212.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.colorado.fourdimensionalonedgames.ShipChoiceFormController">
    <children>
       <TextField layoutX="14.0" layoutY="110.0" prefHeight="26.0" prefWidth="65.0" promptText="x-Coord" fx:id="xCord" />
       <TextField fx:id="yCord" layoutX="89.0" layoutY="110.0" prefHeight="26.0" prefWidth="65.0" promptText="y-Coord" />

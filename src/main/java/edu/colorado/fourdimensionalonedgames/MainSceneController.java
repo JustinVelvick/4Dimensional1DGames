@@ -74,7 +74,7 @@ public class MainSceneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("shipChoiceForm.fxml"));
         Pane root = loader.load();
 
-        ShipChoiceForm formController = loader.getController();
+        ShipChoiceFormController formController = loader.getController();
 
 
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
@@ -97,7 +97,7 @@ public class MainSceneController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("shipChoiceForm.fxml"));
         Pane root = loader.load();
 
-        ShipChoiceForm formController = loader.getController();
+        ShipChoiceFormController formController = loader.getController();
 
 
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
@@ -124,7 +124,7 @@ public class MainSceneController implements Initializable {
 
 
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
-        PlayerFireInput userInput = formController.display();
+        PlayerFireInput userInput = formController.userInput();
 
 
         Stage stage = new Stage();
@@ -147,7 +147,7 @@ public class MainSceneController implements Initializable {
 
 
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
-        PlayerFireInput userInput = formController.display();
+        PlayerFireInput userInput = formController.userInput();
 
 
         Stage stage = new Stage();
@@ -157,6 +157,7 @@ public class MainSceneController implements Initializable {
 
         stage.showAndWait();
 
+        //once we get here, the form was just closed, so pass user input to fireWeapon
         fireWeapon(userInput, this.board1, this.getGpane1());
     }
 

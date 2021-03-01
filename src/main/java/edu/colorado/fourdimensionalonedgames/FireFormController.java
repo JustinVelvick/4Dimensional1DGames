@@ -33,7 +33,7 @@ public class FireFormController implements Initializable {
 
 
 
-    public PlayerFireInput display() throws IOException {
+    public PlayerFireInput userInput() throws IOException {
         return this.input;
     }
 
