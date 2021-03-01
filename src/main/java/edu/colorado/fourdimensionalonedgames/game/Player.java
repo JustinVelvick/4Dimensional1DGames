@@ -13,7 +13,7 @@ public class Player {
     public Board board;
 
     public Player (Board board) {
-
+        this.board = board;
     }
 
     public AttackResult attack(Board opponent, Point2D attackCoords) {
@@ -42,5 +42,9 @@ public class Player {
         if (ship.destroyed()) return new AttackResult(AttackResultType.SUNK, ship);
 
         return new AttackResult(AttackResultType.HIT, ship);
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }
