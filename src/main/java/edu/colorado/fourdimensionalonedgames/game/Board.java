@@ -1,14 +1,15 @@
-package edu.colorado.fourdimensionalonedgames;
+package edu.colorado.fourdimensionalonedgames.game;
 
 
-import edu.colorado.fourdimensionalonedgames.gui.AlertBox;
-import javafx.geometry.Insets;
+import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
+import edu.colorado.fourdimensionalonedgames.render.Render;
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.tile.LetterTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;

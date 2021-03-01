@@ -1,13 +1,21 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.gui.AlertBox;
+import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
+import edu.colorado.fourdimensionalonedgames.game.Board;
+import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.ship.Battleship;
+import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
+import edu.colorado.fourdimensionalonedgames.game.ship.Minesweeper;
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
+import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
+import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;

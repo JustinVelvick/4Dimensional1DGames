@@ -1,6 +1,7 @@
-package edu.colorado.fourdimensionalonedgames;
+package edu.colorado.fourdimensionalonedgames.game.ship;
 
-import javafx.geometry.Point2D;
+import edu.colorado.fourdimensionalonedgames.render.IRenderable;
+import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public abstract class Ship implements IRenderable {
 
-    int size;
+    public int size;
     protected List<ShipTile> shipTiles;
 
     //default constructor

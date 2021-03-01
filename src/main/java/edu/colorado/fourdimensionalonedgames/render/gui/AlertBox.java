@@ -1,4 +1,4 @@
-package edu.colorado.fourdimensionalonedgames.gui;
+package edu.colorado.fourdimensionalonedgames.render.gui;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

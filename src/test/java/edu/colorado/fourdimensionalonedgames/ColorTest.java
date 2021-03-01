@@ -1,5 +1,8 @@
 package edu.colorado.fourdimensionalonedgames;
 
+import edu.colorado.fourdimensionalonedgames.game.Board;
+import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.render.Render;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;

@@ -1,4 +1,4 @@
-package edu.colorado.fourdimensionalonedgames;
+package edu.colorado.fourdimensionalonedgames.render.gui;
 
 public class PlayerFireInput {
     private String weaponChoice;

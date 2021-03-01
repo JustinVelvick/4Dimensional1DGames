@@ -1,4 +1,4 @@
-package edu.colorado.fourdimensionalonedgames;
+package edu.colorado.fourdimensionalonedgames.game.attack;
 
 public class InvalidAttackException extends RuntimeException {
 

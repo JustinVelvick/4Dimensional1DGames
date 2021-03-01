@@ -1,5 +1,7 @@
-package edu.colorado.fourdimensionalonedgames;
+package edu.colorado.fourdimensionalonedgames.render;
 
+
+import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 
 import java.util.ArrayList;
 import java.util.List;

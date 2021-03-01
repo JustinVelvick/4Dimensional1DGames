@@ -1,4 +1,6 @@
-package edu.colorado.fourdimensionalonedgames;
+package edu.colorado.fourdimensionalonedgames.game.attack;
+
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 
 public class AttackResult {
     public final AttackResultType type;

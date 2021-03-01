@@ -1,4 +1,4 @@
-package edu.colorado.fourdimensionalonedgames;
+package edu.colorado.fourdimensionalonedgames.game.ship;
 
 import javafx.scene.paint.Color;
 

@@ -2,12 +2,13 @@ package edu.colorado.fourdimensionalonedgames;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.colorado.fourdimensionalonedgames.game.Board;
+import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.render.Render;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 class PlaceShipsTest {
 
