@@ -4,6 +4,5 @@ public enum AttackResultType {
     MISS,
     HIT,
     SUNK,
-    SURRENDER,
-    INVALID
+    SURRENDER
 }

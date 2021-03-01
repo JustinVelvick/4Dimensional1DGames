@@ -25,7 +25,7 @@ public class AttackShipsTest {
     static int columns = 10;
     Render renderer;
     GridPane gpane;
-    AttackResult simpleMiss, simpleInvalid;
+    AttackResult simpleMiss;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +39,6 @@ public class AttackShipsTest {
         testPlayer = new Player(testPlayerBoard);
 
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
-        simpleInvalid = new AttackResult(AttackResultType.INVALID, null);
 
         testShip1 = new Destroyer();
         testShip2 = new Minesweeper();
@@ -95,14 +94,6 @@ public class AttackShipsTest {
             Point2D attackCoords = new Point2D(11,11);
             testPlayer.attack(testBoard, attackCoords);
         });
-
-        Point2D attackCoords = new Point2D(0,0);
-        AttackResult result = testPlayer.attack(testBoard, attackCoords);
-        assertEquals(result, simpleInvalid);
-
-        attackCoords = new Point2D(11,11);
-        result = testPlayer.attack(testBoard, attackCoords);
-        assertEquals(result, simpleInvalid);
     }
 
     @Test
@@ -117,22 +108,13 @@ public class AttackShipsTest {
             Point2D attackCoords = new Point2D(10,10);
             testBoard.attack(attackCoords);
         });
-
-        Point2D attackCoords = new Point2D(1,1);
-        AttackResult result = testPlayer.attack(testBoard, attackCoords);
-        assertNotEquals(result, simpleInvalid);
-
-        attackCoords = new Point2D(10,10);
-        result = testPlayer.attack(testBoard, attackCoords);
-        assertNotEquals(result, simpleInvalid);
     }
 
     @Test
     void duplicateAttack() {
         // attack a tile that has already been attacked
         Point2D attackCoords = new Point2D(1, 1);
-        AttackResult result = testPlayer.attack(testBoard, attackCoords);
-        assertEquals(result, simpleInvalid);
+        testPlayer.attack(testBoard, attackCoords);
 
         assertThrows(InvalidAttackException.class, () -> {
             testPlayer.attack(testBoard, attackCoords);
