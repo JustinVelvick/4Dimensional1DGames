@@ -3,18 +3,31 @@ package edu.colorado.fourdimensionalonedgames.game;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.attack.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
+import edu.colorado.fourdimensionalonedgames.render.tile.LetterTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 
-public class Player {
-    public Board board;
+import java.util.ArrayList;
+import java.util.List;
 
+public class Player {
+    //account specific info
+    private String ign;
+    private int victories;
+
+    private Board board;
+    private List<Weapon> weapons = new ArrayList<>();
+
+    //constructor
     public Player (Board board) {
         this.board = board;
     }
+
+
 
     /**
      * Mount an attack on the given enemy tile
@@ -49,6 +62,8 @@ public class Player {
 
         return new AttackResult(AttackResultType.HIT, ship);
     }
+
+
 
     public Board getBoard() {
         return board;
