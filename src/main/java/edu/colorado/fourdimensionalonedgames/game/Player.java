@@ -3,13 +3,10 @@ package edu.colorado.fourdimensionalonedgames.game;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
-import edu.colorado.fourdimensionalonedgames.game.attack.Weapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
-import edu.colorado.fourdimensionalonedgames.render.Render;
-import edu.colorado.fourdimensionalonedgames.render.tile.LetterTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
-import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.List;
