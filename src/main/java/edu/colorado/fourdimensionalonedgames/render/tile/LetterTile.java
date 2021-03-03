@@ -4,7 +4,7 @@ import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class LetterTile extends Tile implements IRenderable {
+public class LetterTile extends Tile {
 
     private String letter;
 

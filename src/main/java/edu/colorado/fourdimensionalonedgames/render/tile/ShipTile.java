@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class ShipTile extends Tile implements IRenderable {
+public class ShipTile extends Tile {
 
     private Ship parentShip;
 
