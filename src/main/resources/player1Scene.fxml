@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.colorado.fourdimensionalonedgames.MainSceneController">
+<HBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.colorado.fourdimensionalonedgames.Player1Controller">
    <children>
       <VBox>
          <children>
-            <GridPane fx:id="gpane1" maxHeight="440.0" maxWidth="440.0" minHeight="440.0" minWidth="440.0" prefHeight="440.0" prefWidth="440.0">
+            <GridPane fx:id="playergpane" maxHeight="440.0" maxWidth="440.0" minHeight="440.0" minWidth="440.0" prefHeight="440.0" prefWidth="440.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
                   <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
@@ -43,15 +43,15 @@
             </GridPane>
             <Pane prefHeight="68.0" prefWidth="440.0">
                <children>
-                  <Button fx:id="p1PlaceShip" layoutX="357.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePlaceShip1" text="Place Ship" />
-                  <Button fx:id="fireWeapon1" layoutX="225.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleFireWeapon1" text="Fire Weapon" />
+                  <Button fx:id="placeShipButton" layoutX="357.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePlaceShipButton" text="Place Ship" />
+                  <Button fx:id="fireWeaponButton" layoutX="225.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleFireWeaponButton" text="Fire Weapon" />
                </children>
             </Pane>
          </children>
       </VBox>
       <VBox>
          <children>
-            <GridPane fx:id="gpane2" maxHeight="440.0" maxWidth="440.0" minHeight="440.0" minWidth="440.0" prefHeight="440.0" prefWidth="440.0">
+            <GridPane fx:id="enemygpane" maxHeight="440.0" maxWidth="440.0" minHeight="440.0" minWidth="440.0" prefHeight="440.0" prefWidth="440.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
                   <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
@@ -81,12 +81,7 @@
                   <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
                </rowConstraints>
             </GridPane>
-            <Pane prefHeight="68.0" prefWidth="440.0">
-               <children>
-                  <Button fx:id="p2PlaceShip" layoutX="357.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePlaceShip2" text="Place Ship" />
-                  <Button fx:id="fireWeapon2" layoutX="225.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleFireWeapon2" text="Fire Weapon" />
-               </children>
-            </Pane>
+            <Pane prefHeight="68.0" prefWidth="440.0" />
          </children>
       </VBox>
    </children>

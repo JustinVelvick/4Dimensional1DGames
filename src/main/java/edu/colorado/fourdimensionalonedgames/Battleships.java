@@ -33,17 +33,8 @@ public class Battleships extends Application {
             Render renderer = new Render();
 
             //Create the game object
-            Game newGame = new Game(renderer, numberOfPlayers, speed, tileSize, columns, rows);
+            Game newGame = new Game(primaryStage, renderer, numberOfPlayers, tileSize, columns, rows);
 
-
-
-            //Load our main scene and set up it's controller
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("mainScene.fxml"));
-            HBox root = loader.load();
-
-            MainSceneController controller = loader.getController();
-
-            controller.initializeBoards(newGame.getPlayers().get(0).getBoard(), newGame.getPlayers().get(1).getBoard());
 
 
 
@@ -68,16 +59,7 @@ public class Battleships extends Application {
             }.start();
 
 
-            //Set up our JavaFX scene and stage
-            Scene mainScene = new Scene(root, (width*2.5) , (height*1.3));
 
-            //Change taskbar icon in client's OS
-            Image icon = new Image("icon.jpg");
-            primaryStage.getIcons().add(icon);
-
-            primaryStage.setScene(mainScene);
-            primaryStage.setTitle("Battleships");
-            primaryStage.show();
 
         } catch (Exception e) {
             e.printStackTrace();

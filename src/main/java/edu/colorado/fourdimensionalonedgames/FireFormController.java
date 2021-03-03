@@ -1,5 +1,6 @@
 package edu.colorado.fourdimensionalonedgames;
 
+import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,9 @@ import java.util.ResourceBundle;
 //TODO - Create this popup box in scene builder and then FXML load it here
 public class FireFormController implements Initializable {
 
+
+    private Game game;
+
     @FXML
     private TextField xCord;
 
@@ -32,34 +36,44 @@ public class FireFormController implements Initializable {
     private PlayerFireInput input;
 
 
+    public void initialize(Game game) {
 
-    public PlayerFireInput userInput() throws IOException {
+        //field initialization on form creation
+        this.input = new PlayerFireInput("","0","0");
+        this.game = game;
+
+        weaponChoiceBox.getItems().removeAll(weaponChoiceBox.getItems());
+        weaponChoiceBox.getItems().addAll("Default", "Cross Bomb", "UAV");
+        weaponChoiceBox.getSelectionModel().select("Default");
+    }
+
+
+    public PlayerFireInput userInput(){
         return this.input;
     }
 
     @FXML
     public void handleConfirmButton(ActionEvent event) throws IOException {
         if(this.validateForm()){
-            this.input.setWeaponChoice(weaponChoiceBox.getSelectionModel().getSelectedItem());
 
+            //store form data into the PlayerInput object
+            this.input.setWeaponChoice(weaponChoiceBox.getSelectionModel().getSelectedItem());
             this.input.setxCord(Double.parseDouble(xCord.getText()));
             this.input.setyCord(Double.parseDouble(yCord.getText()));
 
+            //Close this window (Stage)
             Stage currentStage = (Stage) confirmButton.getScene().getWindow();
             currentStage.close();
+
+            //Turn is over upon firing a weapon
+            this.game.passTurn();
+
         }
     }
 
     //JavaFX calls this at the creation of any new form
     public void initialize(URL location, ResourceBundle resources) {
 
-        //field initialization on form creation
-        this.input = new PlayerFireInput("","0","0");
-
-
-        weaponChoiceBox.getItems().removeAll(weaponChoiceBox.getItems());
-        weaponChoiceBox.getItems().addAll("Default", "Cross Bomb", "UAV");
-        weaponChoiceBox.getSelectionModel().select("Default");
     }
 
 

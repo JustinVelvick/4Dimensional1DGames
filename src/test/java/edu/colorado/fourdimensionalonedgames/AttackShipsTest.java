@@ -36,7 +36,7 @@ public class AttackShipsTest {
         testBoard.initializeBoard(gpane);
         testPlayerBoard = new Board(columns, rows, renderer);
         testPlayerBoard.initializeBoard(gpane);
-        testPlayer = new Player(testPlayerBoard);
+        testPlayer = new Player(testPlayerBoard, testBoard);
 
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
 

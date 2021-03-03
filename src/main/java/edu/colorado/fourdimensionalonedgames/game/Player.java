@@ -20,11 +20,13 @@ public class Player {
     private int victories;
 
     private Board board;
+    private Board enemyBoard;
     private List<Weapon> weapons = new ArrayList<>();
 
     //constructor
-    public Player (Board board) {
+    public Player (Board board, Board enemyBoard) {
         this.board = board;
+        this.enemyBoard = enemyBoard;
     }
 
 
@@ -32,7 +34,7 @@ public class Player {
     /**
      * Mount an attack on the given enemy tile
      *
-     * @param //targetTile  the enemy tile which the player desires to target
+     *
      * @return   returns AttackResult object in the form of {AttackResultType enum, Ship(if applicable)}
      */
     public AttackResult attack(Board opponent, Point2D attackCoords) {
@@ -65,7 +67,13 @@ public class Player {
 
 
 
+
+
     public Board getBoard() {
         return board;
+    }
+
+    public Board getEnemyBoard() {
+        return enemyBoard;
     }
 }

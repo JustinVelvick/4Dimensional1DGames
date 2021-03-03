@@ -1,7 +1,10 @@
-package edu.colorado.fourdimensionalonedgames.game;
+package edu.colorado.fourdimensionalonedgames;
 
 import edu.colorado.fourdimensionalonedgames.FireFormController;
 import edu.colorado.fourdimensionalonedgames.ShipChoiceFormController;
+import edu.colorado.fourdimensionalonedgames.game.Board;
+import edu.colorado.fourdimensionalonedgames.game.Game;
+import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
@@ -12,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -51,28 +55,10 @@ public class MenuSceneController implements Initializable {
         the form to close itself, ie. when the Confirm button is clicked, the form will call
         handleConfirmButton and close itself, returning what the user had inputed
     */
+    @FXML
+    public void handleStartGameButton(ActionEvent event){
 
-    public void handleStartGameButton(ActionEvent event) throws IOException {
-
-        //not sure if this line of code is correct, or if there's an existing controller object to grab
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("player1Scene.fxml"));
-        HBox root = loader.load();
-
-        ShipChoiceFormController formController = loader.getController();
-
-
-        //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
-        PlayerShipInput userInput = formController.display();
-
-
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Player 1's Turn");
-        stage.initModality(Modality.APPLICATION_MODAL);
-
-        stage.showAndWait();
-
-
+        game.passTurn();
     }
 
     @Override

@@ -35,6 +35,7 @@ public class Board {
 
     }
 
+    //Only called once upon game creation to make a sea of blank tile objects
     public void initializeBoard(GridPane existingBoard) {
 
         Tile tile;
@@ -70,7 +71,7 @@ public class Board {
     /**
      * Place a new ship on the board given a placement orientation
      *
-     * @param currentBoard  ???
+     * @param currentBoard  JavaFX Gpane object to place tile canvases onto
      * @param direction     direction the ship points in from the origin
      * @param origin        the origin of the placement
      * @param newShip       the ship to be placed
