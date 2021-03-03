@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.colorado.fourdimensionalonedgames.Player2Controller">
+   <children>
+      <VBox>
+         <children>
+            <GridPane fx:id="enemygpane" maxHeight="440.0" maxWidth="440.0" minHeight="440.0" minWidth="440.0" prefHeight="440.0" prefWidth="440.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+              </rowConstraints>
+            </GridPane>
+            <Pane prefHeight="68.0" prefWidth="440.0" />
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <GridPane fx:id="playergpane" maxHeight="440.0" maxWidth="440.0" minHeight="440.0" minWidth="440.0" prefHeight="440.0" prefWidth="440.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+               </rowConstraints>
+            </GridPane>
+            <Pane prefHeight="68.0" prefWidth="440.0">
+               <children>
+                  <Button fx:id="placeShipButton" layoutX="350.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePlaceShipButton" text="Place Ship" />
+                  <Button fx:id="fireWeaponButton" layoutX="218.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleFireWeaponButton" text="Fire Weapon" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</HBox>
