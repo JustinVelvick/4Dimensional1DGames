@@ -3,7 +3,9 @@ package edu.colorado.fourdimensionalonedgames;
 import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
+import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.event.ActionEvent;
@@ -13,8 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -30,7 +30,7 @@ public class Player1Controller implements Initializable {
 
     private Game game;
     private Player player1;
-
+    private Player player2;
 
     @FXML
     private GridPane playergpane;
@@ -49,6 +49,7 @@ public class Player1Controller implements Initializable {
     public void initialize(Game game) {
         this.game = game;
         this.player1 = game.getPlayers().get(0);
+        this.player2 = game.getPlayers().get(1);
     }
 
     @FXML
@@ -71,12 +72,46 @@ public class Player1Controller implements Initializable {
 
         stage.showAndWait();
 
-      //  fireWeapon(userInput, this.board2, this.getGpane2());
+        //fire weapon at player2's board, but also "attack" player1's enemy board
+        fireWeapon(userInput, player2.getBoard(), player1.getEnemyBoard());
+        //Turn is over upon firing a weapon
+        this.game.passTurn();
     }
+
+    public void fireWeapon(PlayerFireInput input, Board board, Board enemyBoard) {
+        Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
+
+        int x = (int) input.getyCord();
+        int y = (int) input.getyCord();
+
+        try {
+            //attack both your own enemy board, and player2's actual board
+            Ship attackedShip = enemyBoard.attack(coordinate);
+            attackedShip = board.attack(coordinate);
+
+            if (attackedShip == null) {
+                AlertBox.display("Miss", "Shot missed");
+
+            }
+            else if (attackedShip.destroyed()) {
+                AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
+            }
+            else {
+                AlertBox.display("Ship Hit", "Ship has been hit");
+            }
+
+            if(board.gameOver()) {
+                AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
+            }
+        }
+        catch (InvalidAttackException e) {
+            AlertBox.display("Invalid Coordinates", e.getErrorMsg());
+        }
+    }
+
 
     public void handlePlaceShipButton(ActionEvent event) throws IOException{
 
-        //not sure if this line of code is correct, or if there's an existing controller object to grab
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("shipChoiceForm.fxml"));
         Pane root = loader.load();
 
@@ -140,8 +175,11 @@ public class Player1Controller implements Initializable {
                 break;
         }
 
-
+        //place a ship down on player1's actual board
         player1.getBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
+
+        //place the same ship down on player2's enemy board
+        player2.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
     }
 
     //JavaFX calls this at the creation of any new form

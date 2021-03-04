@@ -7,6 +7,7 @@ import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.tile.LetterTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
@@ -36,7 +37,7 @@ public class Board {
     }
 
     //Only called once upon game creation to make a sea of blank tile objects
-    public void initializeBoard(GridPane existingBoard) {
+    public void initializeBoard(GridPane gpane) {
 
         Tile tile;
 
@@ -44,7 +45,7 @@ public class Board {
             tile = new LetterTile(0, j, String.valueOf(j));
             this.renderer.register(tile);
             this.tiles[0][j] = tile;
-            existingBoard.add(tile, 0, j);
+            gpane.add(tile, 0, j);
         }
 
 
@@ -52,18 +53,37 @@ public class Board {
             tile = new LetterTile(i, 0, Character.toString((char) i + 64));
             this.renderer.register(tile);
             this.tiles[i][0] = tile;
-            existingBoard.add(tile, i, 0);
+            gpane.add(tile, i, 0);
         }
 
 
         for (int i = 1; i <= columns; i++) {
             for (int j = 1; j <= rows; j++) {
-
-                tile = new Tile(i, j);
+                tile = new SeaTile(i, j);
                 this.renderer.register(tile);
                 this.tiles[i][j] = tile;
                 this.tiles[i][j].shot = false;
-                existingBoard.add(tile, i, j);
+                gpane.add(tile, i, j);
+            }
+        }
+    }
+
+    public void updateEnemyGpane(GridPane gpane){
+        Tile oldTile;
+        Tile newTile;
+        for (int i = 1; i <= columns; i++) {
+            for (int j = 1; j <= rows; j++) {
+                oldTile = this.tiles[i][j];
+                //if any tile was shot, we need to display it on the other player's enemy grid
+                if(oldTile.shot){
+                    newTile = new SeaTile(i, j);
+                    this.renderer.unregister(oldTile);
+                    this.renderer.register(newTile);
+                    this.tiles[i][j].shot = false;
+                    gpane.getChildren().remove(oldTile);
+                    gpane.add(newTile, i, j);
+                }
+
             }
         }
     }
@@ -166,6 +186,7 @@ public class Board {
 
         // otherwise set shot flag and return ship that contains tile
         attackedTile.shot = true;
+
 
 
         return attackedTile.getShip();

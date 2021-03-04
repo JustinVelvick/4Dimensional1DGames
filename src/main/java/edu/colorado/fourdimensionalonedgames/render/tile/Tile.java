@@ -6,7 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Tile extends Canvas implements IRenderable {
+public abstract class Tile extends Canvas implements IRenderable {
 
     public boolean shot;
     //private Canvas canvas;
@@ -24,15 +24,13 @@ public class Tile extends Canvas implements IRenderable {
         return null;
     }
 
-    public Color getColor() {
-        return Color.CORNFLOWERBLUE;
-    }
+    public abstract Color getColor();
 
     @Override
     public void render() {
         GraphicsContext gc = this.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
-        gc.setFill(Color.CORNFLOWERBLUE);
+        gc.setFill(getColor());
         gc.fillRect(0, 0, 40, 40);
         gc.strokeLine(0,0,40,0);
         gc.strokeLine(40,0,40,40);

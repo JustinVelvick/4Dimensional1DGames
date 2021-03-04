@@ -53,7 +53,7 @@ public class FireFormController implements Initializable {
     }
 
     @FXML
-    public void handleConfirmButton(ActionEvent event) throws IOException {
+    public void handleConfirmButton(ActionEvent event){
         if(this.validateForm()){
 
             //store form data into the PlayerInput object
@@ -64,10 +64,6 @@ public class FireFormController implements Initializable {
             //Close this window (Stage)
             Stage currentStage = (Stage) confirmButton.getScene().getWindow();
             currentStage.close();
-
-            //Turn is over upon firing a weapon
-            this.game.passTurn();
-
         }
     }
 

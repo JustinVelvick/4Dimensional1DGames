@@ -4,9 +4,12 @@ import edu.colorado.fourdimensionalonedgames.MenuSceneController;
 import edu.colorado.fourdimensionalonedgames.Player1Controller;
 import edu.colorado.fourdimensionalonedgames.Player2Controller;
 import edu.colorado.fourdimensionalonedgames.render.*;
+import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -69,11 +72,7 @@ public class Game {
             this.players.add(newPlayer);
         }
 
-
-
-
         startGame(primaryStage);
-
     }
 
 
@@ -129,13 +128,14 @@ public class Game {
     }
 
 
-
-
-
     private void initializeBoardVisuals(){
+        //Player 1's own gpane
         players.get(0).getBoard().initializeBoard(player1Controller.getPlayergpane());
+        //Player 1's enemy gpane
         players.get(0).getEnemyBoard().initializeBoard(player1Controller.getEnemygpane());
+        //Player 2's own gpane
         players.get(1).getBoard().initializeBoard(player2Controller.getPlayergpane());
+        //Player 2's enemy gpane
         players.get(1).getEnemyBoard().initializeBoard(player2Controller.getEnemygpane());
     }
 
@@ -147,7 +147,7 @@ public class Game {
         //have JavaFX open up our player1Scene.fxml
         if(this.player1Turn){
 
-
+            updateEnemyGpane(getPlayers().get(0).getEnemyBoard(), player1Controller.getEnemygpane());
             this.primaryStage.setTitle("Player 1's Turn");
             this.primaryStage.setScene(this.player1Scene);
             this.primaryStage.show();
@@ -155,14 +155,31 @@ public class Game {
         //have JavaFX open up our player2Scene.fxml
         else{
 
-
-
-
+            updateEnemyGpane(getPlayers().get(1).getEnemyBoard(), player2Controller.getEnemygpane());
             this.primaryStage.setTitle("Player 2's Turn");
             this.primaryStage.setScene(this.player2Scene);
             this.primaryStage.show();
         }
 
+    }
+
+    public void updateEnemyGpane(Board board, GridPane gpane){
+        Tile newtile;
+        Tile oldTile;
+        for (int i = 1; i <= columns; i++) {
+            for (int j = 1; j <= rows; j++) {
+
+                oldTile = board.tiles[i][j];
+                //tile we will be adding to enemy gpane is actual tile on the enemy's board if its been shot
+                if(oldTile.shot){
+                    newtile = board.tiles[i][j];
+                    gpane.getChildren().remove(oldTile);
+                    gpane.add(newtile, i, j);
+                    this.renderer.unregister(oldTile);
+                    this.renderer.register(newtile);
+                }
+            }
+        }
     }
 
     //checks if someone has won the game
@@ -176,5 +193,13 @@ public class Game {
 
     public Render getRenderer() {
         return renderer;
+    }
+
+    public Player1Controller getPlayer1Controller() {
+        return player1Controller;
+    }
+
+    public Player2Controller getPlayer2Controller() {
+        return player2Controller;
     }
 }
