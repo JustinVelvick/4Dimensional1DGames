@@ -42,6 +42,9 @@ public class Player1Controller implements Initializable {
     private Button placeShipButton;
 
     @FXML
+    private Button passTurnButton;
+
+    @FXML
     private Button fireWeaponButton;
 
 
@@ -61,6 +64,8 @@ public class Player1Controller implements Initializable {
         FireFormController formController = loader.getController();
         formController.initialize(this.game);
 
+        //populate weapons list
+        formController.populateFireForm(player1.getWeapons());
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
         PlayerFireInput userInput = formController.userInput();
 
@@ -74,8 +79,6 @@ public class Player1Controller implements Initializable {
 
         //fire weapon at player2's board, but also "attack" player1's enemy board
         fireWeapon(userInput, player2.getBoard(), player1.getEnemyBoard());
-        //Turn is over upon firing a weapon
-        this.game.passTurn();
     }
 
     public void fireWeapon(PlayerFireInput input, Board board, Board enemyBoard) {
@@ -179,6 +182,11 @@ public class Player1Controller implements Initializable {
         //place the same ship down on player2's enemy board if placement succeeded
         player2.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
 
+    }
+
+    public void handlePassTurnButton(ActionEvent e){
+        //Turn is over when button is pressed
+        this.game.passTurn();
     }
 
     //JavaFX calls this at the creation of any new form

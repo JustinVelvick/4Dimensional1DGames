@@ -1,6 +1,8 @@
 package edu.colorado.fourdimensionalonedgames;
 
 import edu.colorado.fourdimensionalonedgames.game.Game;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -41,12 +45,27 @@ public class FireFormController implements Initializable {
         //field initialization on form creation
         this.input = new PlayerFireInput("","0","0");
         this.game = game;
-
-        weaponChoiceBox.getItems().removeAll(weaponChoiceBox.getItems());
-        weaponChoiceBox.getItems().addAll("Default", "Cross Bomb", "UAV");
-        weaponChoiceBox.getSelectionModel().select("Default");
     }
 
+    public void populateFireForm(List<Weapon> weapons){
+        //Delete existing to create a fresh set of choices
+        weaponChoiceBox.getItems().removeAll(weaponChoiceBox.getItems());
+        List<String> choices = new ArrayList<>();
+        for(Weapon weapon : weapons){
+            choices.add(weapon.getType());
+        }
+        //add all choices to the dropdown
+        weaponChoiceBox.getItems().addAll(choices);
+
+        //if there are no choices left, hide the dropdown
+        if(weaponChoiceBox.getItems().isEmpty()){
+            weaponChoiceBox.hide();
+        }
+        else{
+            //Display the first choice as dropdown default
+            weaponChoiceBox.getSelectionModel().select(choices.get(0));
+        }
+    }
 
     public PlayerFireInput userInput(){
         return this.input;

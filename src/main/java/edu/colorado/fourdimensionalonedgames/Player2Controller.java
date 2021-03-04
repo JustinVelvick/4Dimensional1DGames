@@ -15,8 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -47,6 +45,9 @@ public class Player2Controller implements Initializable {
     @FXML
     private Button fireWeaponButton;
 
+    @FXML
+    private Button passTurnButton;
+
 
     //We call this at the creation of any new Player1Scene
     public void initialize(Game game) {
@@ -64,6 +65,8 @@ public class Player2Controller implements Initializable {
         FireFormController formController = loader.getController();
         formController.initialize(this.game);
 
+        //populate weapons list
+        formController.populateFireForm(player2.getWeapons());
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
         PlayerFireInput userInput = formController.userInput();
 
@@ -76,8 +79,6 @@ public class Player2Controller implements Initializable {
         stage.showAndWait();
 
         fireWeapon(userInput, player1.getBoard(), player2.getEnemyBoard());
-        //Turn is over upon firing a weapon
-        this.game.passTurn();
     }
 
     public void fireWeapon(PlayerFireInput input, Board board, Board enemyBoard) {
@@ -182,6 +183,11 @@ public class Player2Controller implements Initializable {
 
         //place the same ship down on player1's enemy board
         player1.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
+    }
+
+    public void handlePassTurnButton(ActionEvent e){
+        //Turn is over when button is pressed
+        this.game.passTurn();
     }
 
 

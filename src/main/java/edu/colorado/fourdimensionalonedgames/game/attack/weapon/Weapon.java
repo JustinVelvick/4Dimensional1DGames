@@ -9,4 +9,6 @@ public abstract class Weapon {
     protected IAttackBehavior behavior;
 
     public abstract AttackResult useAt(Board board, Point2D position);
+
+    public abstract String getType();
 }

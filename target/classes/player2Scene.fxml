@@ -78,8 +78,9 @@
             </GridPane>
             <Pane prefHeight="68.0" prefWidth="440.0">
                <children>
-                  <Button fx:id="placeShipButton" layoutX="350.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePlaceShipButton" text="Place Ship" />
-                  <Button fx:id="fireWeaponButton" layoutX="218.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleFireWeaponButton" text="Fire Weapon" />
+                  <Button fx:id="placeShipButton" layoutX="22.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePlaceShipButton" text="Place Ship" />
+                  <Button fx:id="fireWeaponButton" layoutX="131.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleFireWeaponButton" text="Fire Weapon" />
+                  <Button fx:id="passTurnButton" layoutX="323.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePassTurnButton" text="Pass Turn" />
                </children>
             </Pane>
          </children>

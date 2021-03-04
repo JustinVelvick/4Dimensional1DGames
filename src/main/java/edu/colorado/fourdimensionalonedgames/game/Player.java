@@ -3,6 +3,7 @@ package edu.colorado.fourdimensionalonedgames.game;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SingleShot;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
@@ -27,12 +28,17 @@ public class Player {
         this.board = board;
         this.enemyBoard = enemyBoard;
         generateShips();
+        generateWeapons();
     }
 
     private void generateShips(){
         shipsToPlace.add(new Minesweeper());
         shipsToPlace.add(new Destroyer());
         shipsToPlace.add(new Battleship());
+    }
+
+    private void generateWeapons(){
+        weapons.add(new SingleShot());
     }
 
 
@@ -101,4 +107,6 @@ public class Player {
     public void removeShipToPlace(Ship ship){
         this.shipsToPlace.remove(ship);
     }
+
+    public List<Weapon> getWeapons(){return weapons;}
 }
