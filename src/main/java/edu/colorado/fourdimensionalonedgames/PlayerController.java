@@ -4,7 +4,9 @@ import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
-import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
+import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
@@ -25,12 +27,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class Player1Controller implements Initializable {
+public class PlayerController implements Initializable {
 
 
     private Game game;
-    private Player player1;
-    private Player player2;
+    private Player player;
+    private Player enemyPlayer;
 
     @FXML
     private GridPane playergpane;
@@ -49,10 +51,12 @@ public class Player1Controller implements Initializable {
 
 
     //We call this at the creation of any new Player1Scene
-    public void initialize(Game game) {
+    //The controller needs the game class in order to inform it that the pass turn button has been pressed
+    //PARAMS: game class, player that owns this controller, enemy player of this controller
+    public void initialize(Game game, Player thisPlayer, Player enemyPlayer) {
         this.game = game;
-        this.player1 = game.getPlayers().get(0);
-        this.player2 = game.getPlayers().get(1);
+        this.player = thisPlayer;
+        this.enemyPlayer = enemyPlayer;
     }
 
     @FXML
@@ -65,7 +69,7 @@ public class Player1Controller implements Initializable {
         formController.initialize(this.game);
 
         //populate weapons list
-        formController.populateFireForm(player1.getWeapons());
+        formController.populateFireForm(this.player.getWeapons());
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
         PlayerFireInput userInput = formController.userInput();
 
@@ -77,8 +81,8 @@ public class Player1Controller implements Initializable {
 
         stage.showAndWait();
 
-        //fire weapon at player2's board, but also "attack" player1's enemy board
-        fireWeapon(userInput, player2.getBoard(), player1.getEnemyBoard());
+        //fire weapon at enemy's actual board, but also "attack" your own enemy board to mirror
+        fireWeapon(userInput, enemyPlayer.getBoard(), this.player.getEnemyBoard());
     }
 
     public void fireWeapon(PlayerFireInput input, Board board, Board enemyBoard) {
@@ -121,7 +125,7 @@ public class Player1Controller implements Initializable {
         ShipChoiceFormController formController = loader.getController();
 
         //initialize form fields with updated list of ships in player's shipsToPlace
-        formController.populateShipForm(player1.getShipsToPlace());
+        formController.populateShipForm(this.player.getShipsToPlace());
 
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
         PlayerShipInput userInput = formController.display();
@@ -149,7 +153,7 @@ public class Player1Controller implements Initializable {
         String orientationChoice = input.getDirection();
 
 
-        for(Ship ship : player1.getShipsToPlace()){
+        for(Ship ship : this.player.getShipsToPlace()){
             if(shipChoice == ship.getType()){
                 newShip = ship;
             }
@@ -175,12 +179,12 @@ public class Player1Controller implements Initializable {
         }
 
         //place a ship down on player1's actual board
-        if(!player1.placeShip(this.getPlayergpane(), direction, origin, newShip)){
+        if(!this.player.placeShip(this.getPlayergpane(), direction, origin, newShip)){
             //ship placement did not succeed
         }
 
         //place the same ship down on player2's enemy board if placement succeeded
-        player2.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
+        enemyPlayer.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
 
     }
 

@@ -1,10 +1,8 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.MenuSceneController;
-import edu.colorado.fourdimensionalonedgames.Player1Controller;
-import edu.colorado.fourdimensionalonedgames.Player2Controller;
+import edu.colorado.fourdimensionalonedgames.PlayerController;
 import edu.colorado.fourdimensionalonedgames.render.*;
-import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,9 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +19,8 @@ public class Game {
 
     private Stage primaryStage;
     private MenuSceneController menuSceneController;
-    private Player1Controller player1Controller;
-    private Player2Controller player2Controller;
+    private PlayerController player1Controller;
+    private PlayerController player2Controller;
 
     private Scene player1Scene;
     private Scene player2Scene;
@@ -97,7 +93,7 @@ public class Game {
         this.player1Scene = new Scene(player1Root, (width*2.5) , (height*1.3));
 
         this.player1Controller = loader.getController();
-        this.player1Controller.initialize(this);
+        this.player1Controller.initialize(this, getPlayers().get(0), getPlayers().get(1));
 
 
         //Load our player2Scene and accompying controller and store them
@@ -106,7 +102,7 @@ public class Game {
         this.player2Scene = new Scene(player2Root, (width*2.5) , (height*1.3));
 
         this.player2Controller= loader.getController();
-        this.player2Controller.initialize(this);
+        this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
 
 
         //initialize both player's boards (visually)
@@ -195,11 +191,11 @@ public class Game {
         return renderer;
     }
 
-    public Player1Controller getPlayer1Controller() {
+    public PlayerController getPlayer1Controller() {
         return player1Controller;
     }
 
-    public Player2Controller getPlayer2Controller() {
+    public PlayerController getPlayer2Controller() {
         return player2Controller;
     }
 }
