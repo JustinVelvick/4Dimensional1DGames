@@ -109,7 +109,7 @@ public class Player1Controller implements Initializable {
         }
     }
 
-
+    //spawn a ShipChoiceForm, populate it's fields, and retrieve user input from ShipChoiceForm when it closes
     public void handlePlaceShipButton(ActionEvent event) throws IOException{
 
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("shipChoiceForm.fxml"));
@@ -117,6 +117,8 @@ public class Player1Controller implements Initializable {
 
         ShipChoiceFormController formController = loader.getController();
 
+        //initialize form fields with updated list of ships in player's shipsToPlace
+        formController.populateShipForm(player1.getShipsToPlace());
 
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
         PlayerShipInput userInput = formController.display();
@@ -143,19 +145,13 @@ public class Player1Controller implements Initializable {
         String shipChoice = input.getShipChoice();
         String orientationChoice = input.getDirection();
 
-        switch (shipChoice) {
-            case "Battleship(4)":
-                newShip = new Battleship();
-                break;
 
-            case "Destroyer(3)":
-                newShip = new Destroyer();
-                break;
-
-            case "Minesweeper(2)":
-                newShip = new Minesweeper();
-                break;
+        for(Ship ship : player1.getShipsToPlace()){
+            if(shipChoice == ship.getType()){
+                newShip = ship;
+            }
         }
+
 
         switch (orientationChoice) {
             case "Up":
@@ -176,10 +172,13 @@ public class Player1Controller implements Initializable {
         }
 
         //place a ship down on player1's actual board
-        player1.getBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
+        if(!player1.placeShip(this.getPlayergpane(), direction, origin, newShip)){
+            //ship placement did not succeed
+        }
 
-        //place the same ship down on player2's enemy board
+        //place the same ship down on player2's enemy board if placement succeeded
         player2.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
+
     }
 
     //JavaFX calls this at the creation of any new form

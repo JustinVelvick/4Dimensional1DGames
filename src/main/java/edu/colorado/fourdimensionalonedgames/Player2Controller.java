@@ -117,6 +117,8 @@ public class Player2Controller implements Initializable {
 
         ShipChoiceFormController formController = loader.getController();
 
+        //initialize form fields with updated list of ships in player's shipsToPlace
+        formController.populateShipForm(player2.getShipsToPlace());
 
         //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
         PlayerShipInput userInput = formController.display();
@@ -149,18 +151,10 @@ public class Player2Controller implements Initializable {
         String shipChoice = input.getShipChoice();
         String orientationChoice = input.getDirection();
 
-        switch (shipChoice) {
-            case "Battleship(4)":
-                newShip = new Battleship();
-                break;
-
-            case "Destroyer(3)":
-                newShip = new Destroyer();
-                break;
-
-            case "Minesweeper(2)":
-                newShip = new Minesweeper();
-                break;
+        for(Ship ship : player2.getShipsToPlace()){
+            if(shipChoice == ship.getType()){
+                newShip = ship;
+            }
         }
 
         switch (orientationChoice) {
@@ -181,8 +175,10 @@ public class Player2Controller implements Initializable {
                 break;
         }
 
-        //place a ship down on player2's actual board
-        player2.getBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
+        //place a ship down on player1's actual board
+        if(!player2.placeShip(this.getPlayergpane(), direction, origin, newShip)){
+            //ship placement did not succeed
+        }
 
         //place the same ship down on player1's enemy board
         player1.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);

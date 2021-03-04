@@ -1,5 +1,9 @@
 package edu.colorado.fourdimensionalonedgames;
 
+import edu.colorado.fourdimensionalonedgames.game.ship.Battleship;
+import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
+import edu.colorado.fourdimensionalonedgames.game.ship.Minesweeper;
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -53,22 +59,30 @@ public class ShipChoiceFormController implements Initializable {
         }
     }
 
-    //JavaFX calls this at the creation of any new form
-    public void initialize(URL location, ResourceBundle resources) {
-
-        //field initialization on form creation
-        this.input = new PlayerShipInput("","","0","0");
 
 
+    public void populateShipForm(List<Ship> ships){
+
+        //Delete existing to create a fresh set of choices
         shipChoiceBox.getItems().removeAll(shipChoiceBox.getItems());
-        shipChoiceBox.getItems().addAll("Minesweeper(2)", "Destroyer(3)", "Battleship(4)");
-        shipChoiceBox.getSelectionModel().select("Minesweeper(2)");
+        List<String> choices = new ArrayList<>();
+        for(Ship ship : ships){
+            choices.add(ship.getType());
+        }
+        //add all choices to the dropdown
+        shipChoiceBox.getItems().addAll(choices);
 
-        directionChoiceBox.getItems().removeAll(directionChoiceBox.getItems());
-        directionChoiceBox.getItems().addAll("Up", "Down", "Left", "Right");
-        directionChoiceBox.getSelectionModel().select("Up");
+        //if there are no choices left, hide the dropdown
+        if(shipChoiceBox.getItems().isEmpty()){
+            shipChoiceBox.hide();
+        }
+        else{
+            //Display the first choice as dropdown default
+            shipChoiceBox.getSelectionModel().select(choices.get(0));
+        }
 
     }
+
 
 
     //helper method to validate form before populating a PlayerShipInput object
@@ -78,5 +92,15 @@ public class ShipChoiceFormController implements Initializable {
 
 
         return result;
+    }
+
+    //JavaFX calls this at the creation of any new form
+    public void initialize(URL location, ResourceBundle resources) {
+        //field initialization on form creation
+        this.input = new PlayerShipInput("","","0","0");
+
+        directionChoiceBox.getItems().removeAll(directionChoiceBox.getItems());
+        directionChoiceBox.getItems().addAll("Up", "Down", "Left", "Right");
+        directionChoiceBox.getSelectionModel().select("Up");
     }
 }
