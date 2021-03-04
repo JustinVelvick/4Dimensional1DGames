@@ -115,11 +115,6 @@ public class Game {
 
         this.primaryStage.setScene(menuScene);
         this.primaryStage.setTitle("Battleships");
-//        this.primaryStage.setMinHeight(250);
-//        this.primaryStage.setMinWidth(500);
-//
-//        this.primaryStage.setMaxHeight(500);
-//        this.primaryStage.setMaxWidth(1000);
         this.primaryStage.show();
     }
 

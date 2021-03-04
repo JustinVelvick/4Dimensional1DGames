@@ -82,7 +82,7 @@ public class PlayerController implements Initializable {
         stage.showAndWait();
 
         //fire weapon at enemy's actual board, but also "attack" your own enemy board to mirror
-        fireWeapon(userInput, enemyPlayer.getBoard(), this.player.getEnemyBoard());
+        fireWeapon(userInput, enemyPlayer.getBoard(), player.getEnemyBoard());
     }
 
     public void fireWeapon(PlayerFireInput input, Board board, Board enemyBoard) {
@@ -92,24 +92,29 @@ public class PlayerController implements Initializable {
         int y = (int) input.getyCord();
 
         try {
-            //attack both your own enemy board, and player2's actual board
-            Ship attackedShip = enemyBoard.attack(coordinate);
-            attackedShip = board.attack(coordinate);
+            //your enemy's real board and your own view of their board
+            Ship attackedShip = enemyPlayer.getBoard().attack(coordinate);
+            player.getEnemyBoard().attack(coordinate);
 
             if (attackedShip == null) {
                 AlertBox.display("Miss", "Shot missed");
 
             }
-            else if (attackedShip.destroyed()) {
-                AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
-            }
-            else {
-                AlertBox.display("Ship Hit", "Ship has been hit");
+            else{
+                this.game.updateEnemyGpane(enemyPlayer.getBoard(), getEnemygpane());
+                if (attackedShip.destroyed()) {
+                    AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
+                }
+                else {
+                    AlertBox.display("Ship Hit", "Ship has been hit");
+                }
+
+                if(board.gameOver()) {
+                    AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
+                }
             }
 
-            if(board.gameOver()) {
-                AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
-            }
+
         }
         catch (InvalidAttackException e) {
             AlertBox.display("Invalid Coordinates", e.getErrorMsg());
@@ -154,7 +159,7 @@ public class PlayerController implements Initializable {
 
 
         for(Ship ship : this.player.getShipsToPlace()){
-            if(shipChoice == ship.getType()){
+            if(shipChoice.equals(ship.getType())){
                 newShip = ship;
             }
         }
