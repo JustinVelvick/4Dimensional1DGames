@@ -7,7 +7,8 @@ import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SingleShot;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.Render;
@@ -17,7 +18,8 @@ import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class SingleShotWeaponTest {
 
@@ -59,22 +61,22 @@ public class SingleShotWeaponTest {
         origin = new Point2D(4,4);
         testBoard.placeShip(testgpane, direction, origin, testMinesweeper);
 
-        singleShot = new SingleShot();
+        singleShot = new SmallWeapon(new Attack(), "Single Shot");
     }
 
     @Test
     void attackMiss() {
         Point2D attackCoords = new Point2D(1,1);
-        assertEquals(testPlayer.attack(testBoard, attackCoords, singleShot), simpleMiss);
+        assertEquals(testPlayer.attack(testBoard, attackCoords, singleShot).get(0), simpleMiss);
 
         attackCoords = new Point2D(2,2);
-        assertNotEquals(testPlayer.attack(testBoard, attackCoords, singleShot), simpleMiss);
+        assertNotEquals(testPlayer.attack(testBoard, attackCoords, singleShot).get(0), simpleMiss);
     }
 
     @Test
     void attackHit() {
         Point2D attackCoords = new Point2D(2,2);
-        AttackResult result = testPlayer.attack(testBoard, attackCoords, singleShot);
+        AttackResult result = testPlayer.attack(testBoard, attackCoords, singleShot).get(0);
 
         // assertions after one hit
         assertEquals(new AttackResult(AttackResultType.HIT, testDestroyer), result);
@@ -82,9 +84,9 @@ public class SingleShotWeaponTest {
 
         // sink ship
         attackCoords = new Point2D(2,3);
-        result = testPlayer.attack(testBoard, attackCoords, singleShot);
+        result = testPlayer.attack(testBoard, attackCoords, singleShot).get(0);
         attackCoords = new Point2D(2,4);
-        result = testPlayer.attack(testBoard, attackCoords, singleShot);
+        result = testPlayer.attack(testBoard, attackCoords, singleShot).get(0);
 
         // assertions after ship is sunk
         assertEquals(new AttackResult(AttackResultType.SUNK, testDestroyer), result);
@@ -188,7 +190,7 @@ public class SingleShotWeaponTest {
         attackCoords = new Point2D(4,4);
         testPlayer.attack(testBoard, attackCoords, singleShot);
         attackCoords = new Point2D(5,4);
-        AttackResult result = testPlayer.attack(testBoard, attackCoords, singleShot);
+        AttackResult result = testPlayer.attack(testBoard, attackCoords, singleShot).get(0);
 
         assertEquals(result.type, AttackResultType.SURRENDER);
     }

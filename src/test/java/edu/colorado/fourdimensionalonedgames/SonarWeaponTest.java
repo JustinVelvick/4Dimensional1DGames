@@ -4,8 +4,8 @@ import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SingleShot;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Sonar;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.Render;
@@ -13,8 +13,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,7 +55,7 @@ public class SonarWeaponTest {
         origin = new Point2D(4,4);
         testBoard.placeShip(testgpane, direction, origin, testMinesweeper);
 
-        sonar = new Sonar();
+        sonar = new LargeWeapon(new Reveal(), "Sonar");
     }
 
     @Test

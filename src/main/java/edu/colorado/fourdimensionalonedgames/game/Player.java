@@ -3,7 +3,10 @@ package edu.colorado.fourdimensionalonedgames.game;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SingleShot;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
@@ -38,7 +41,8 @@ public class Player {
     }
 
     private void generateWeapons(){
-        weapons.add(new SingleShot());
+        weapons.add(new SmallWeapon(new Attack(), "Single Shot"));
+        weapons.add(new LargeWeapon(new Reveal(), "Sonar"));
     }
 
 
@@ -49,32 +53,8 @@ public class Player {
      *
      * @return   returns AttackResult object in the form of {AttackResultType enum, Ship(if applicable)}
      */
-    public AttackResult attack(Board opponent, Point2D attackCoords, Weapon weapon) {
-        int x = (int) attackCoords.getX();
-        int y = (int) attackCoords.getY();
-
-        // check that provided coords are on board, throw exception if not
-        if (!opponent.isWithinBounds(attackCoords))
-            throw new InvalidAttackException("attack coordinates off of board");
-
-        // get tile to be attacked
-        Tile attackedTile = opponent.tiles[x][y];
-
-        // if already attacked, throw exception
-        if (attackedTile.shot) throw new InvalidAttackException("tile has already been attacked");
-
-        // otherwise set shot flag and return ship that contains tile
-        attackedTile.shot = true;
-
-        Ship ship = attackedTile.getShip();
-
-        if (ship == null) return new AttackResult(AttackResultType.MISS, null);
-
-        if (opponent.gameOver()) return new AttackResult(AttackResultType.SURRENDER, ship);
-
-        if (ship.destroyed()) return new AttackResult(AttackResultType.SUNK, ship);
-
-        return new AttackResult(AttackResultType.HIT, ship);
+    public List<AttackResult> attack(Board opponent, Point2D attackCoords, Weapon weapon) {
+        return weapon.useAt(board, attackCoords);
     }
 
 

@@ -5,10 +5,20 @@ import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.IAttackBehavior;
 import javafx.geometry.Point2D;
 
+import java.util.List;
+
 public abstract class Weapon {
-    protected IAttackBehavior behavior;
+    protected final IAttackBehavior behavior;
+    protected final String weaponName;
 
-    public abstract AttackResult useAt(Board board, Point2D position);
+    public Weapon(IAttackBehavior behavior, String weaponName) {
+        this.behavior = behavior;
+        this.weaponName = weaponName;
+    }
 
-    public abstract String getType();
+    public abstract List<AttackResult> useAt(Board board, Point2D position);
+
+    public String getType() {
+        return weaponName;
+    }
 }

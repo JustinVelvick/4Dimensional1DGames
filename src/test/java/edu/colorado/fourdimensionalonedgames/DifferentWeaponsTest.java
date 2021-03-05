@@ -1,16 +1,10 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.Board;
-import edu.colorado.fourdimensionalonedgames.game.Player;
-import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
-import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SingleShot;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Sonar;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
-import edu.colorado.fourdimensionalonedgames.game.ship.*;
-import edu.colorado.fourdimensionalonedgames.render.Render;
-import javafx.geometry.Point2D;
-import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,8 +16,8 @@ public class DifferentWeaponsTest {
 
     @BeforeEach
     void setUp() {
-        singleShot = new SingleShot();
-        sonar = new Sonar();
+        singleShot = new SmallWeapon(new Attack(), "Single Shot");
+        sonar = new LargeWeapon(new Reveal(), "Sonar");
     }
 
     @Test
