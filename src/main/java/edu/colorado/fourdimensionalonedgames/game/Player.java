@@ -49,7 +49,7 @@ public class Player {
      *
      * @return   returns AttackResult object in the form of {AttackResultType enum, Ship(if applicable)}
      */
-    public AttackResult attack(Board opponent, Point2D attackCoords) {
+    public AttackResult attack(Board opponent, Point2D attackCoords, Weapon weapon) {
         int x = (int) attackCoords.getX();
         int y = (int) attackCoords.getY();
 
