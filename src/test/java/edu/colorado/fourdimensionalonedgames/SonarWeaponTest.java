@@ -22,13 +22,12 @@ public class SonarWeaponTest {
     Board testPlayerBoard;
     Player testPlayer;
     Ship testDestroyer, testMinesweeper, testBattleship;
-    static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
     Render renderer;
     GridPane testgpane;
     AttackResult simpleMiss;
-    Weapon sonar;
+    String sonar;
 
     @BeforeEach
     void setUp() {
@@ -55,7 +54,7 @@ public class SonarWeaponTest {
         origin = new Point2D(4,4);
         testBoard.placeShip(testgpane, direction, origin, testMinesweeper);
 
-        sonar = new LargeWeapon(new Reveal(), "Sonar");
+        sonar = "Sonar Pulse";
     }
 
     @Test

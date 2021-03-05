@@ -183,10 +183,10 @@ public class Board {
     /**
      * Mount an attack on the given coordinates
      *
-     * @param attackCoords  the coordinates of tile on the board to be attacked
+     * @param
      * @return              returns the ship that was hit, null if the attack misses
      */
-    public Ship attack(Point2D attackCoords) {
+/*    public Ship attack(Point2D attackCoords) {
         int x = (int) attackCoords.getX();
         int y = (int) attackCoords.getY();
 
@@ -223,7 +223,7 @@ public class Board {
         attackedTile.revealed = true;
 
         return attackedTile.getShip();
-    }
+    }*/
 
     //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
     private void swapTile(Tile newTile, GridPane gpane){

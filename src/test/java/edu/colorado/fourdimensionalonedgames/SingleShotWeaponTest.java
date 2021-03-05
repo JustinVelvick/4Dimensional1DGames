@@ -47,7 +47,7 @@ public class SingleShotWeaponTest {
     Player player1;
     Player player2;
 
-    Weapon singleShot;
+    String singleShot;
     AttackResult simpleMiss;
     Ship player2Minesweeper;
     Ship player2Destroyer;
@@ -80,20 +80,26 @@ public class SingleShotWeaponTest {
         player2Destroyer = player2.getShipsToPlace().get(1);
         player2Battleship = player2.getShipsToPlace().get(2);
 
-        singleShot = new SmallWeapon(new Attack(), "Single Shot");
+        singleShot = "Single Shot";
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
 
-        //player 2 placing a ship down
+        //player 2 placing a minesweeper down
         Orientation direction = Orientation.down;
         Point2D origin = new Point2D(1,1);
 
         player2.placeShip(player2gpane, direction, origin, player2Minesweeper);
 
-        //player 2 placing a ship down
+        //player 2 placing a destroyer down
         direction = Orientation.down;
         origin = new Point2D(4,4);
 
         player2.placeShip(player2gpane, direction, origin, player2Destroyer);
+
+        //player 2 placing a battleship down
+        direction = Orientation.down;
+        origin = new Point2D(5,5);
+
+        player2.placeShip(player2gpane, direction, origin, player2Battleship);
     }
 
     @Test
@@ -120,9 +126,7 @@ public class SingleShotWeaponTest {
     @Test
     //player1 attacking player2
     void attackHit() {
-
-
-        Point2D attackCoords = new Point2D(1,1);
+        Point2D attackCoords = new Point2D(1,2);
         AttackResult result = player1.attack(player2.getBoard(), attackCoords, singleShot).get(0);
         AttackResult expected = new AttackResult(AttackResultType.HIT, player2Minesweeper);
         // assertions after one hit
@@ -130,12 +134,11 @@ public class SingleShotWeaponTest {
         assertEquals(1, result.ship.damage());
 
         // sink minesweeper ship
-        attackCoords = new Point2D(1,2);
+        attackCoords = new Point2D(1,1);
         result = player1.attack(player2.getBoard(), attackCoords, singleShot).get(0);
 
         expected = new AttackResult(AttackResultType.SUNK, player2Minesweeper);
         // assertions after ship is sunk
-        System.out.println(result.type);
         assertEquals(expected, result);
         assertEquals(2, result.ship.damage());
     }
@@ -169,20 +172,21 @@ public class SingleShotWeaponTest {
             player1.attack(player2.getBoard(), attackCoords, singleShot);
         });
     }
-/*
+
     @Test
     void captainsQuartersDamaged(){
-        //minesweeper is located at (4,4) down
+        //destroyer is located at (4,4) down
         //CaptainsQuarters will be at (4,5) for a destroyer placed here
 
         Point2D cord1 = new Point2D(4,5);
         player1.attack(player2.getBoard(), cord1, singleShot);
 
         CaptainsQuartersTile tile = (CaptainsQuartersTile)player2Destroyer.getShipTiles().get(1);
+        System.out.println(tile.getHp());
         assertTrue(tile.getHp() == 1);
         assertFalse(player2Destroyer.destroyed());
     }
-
+/*
     @Test
     void captainsQuartersSunk(){
         //destroyer ship is located at (2,2) down

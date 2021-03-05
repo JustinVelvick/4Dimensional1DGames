@@ -3,6 +3,7 @@ package edu.colorado.fourdimensionalonedgames;
 import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
+import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
@@ -24,6 +25,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -86,15 +89,21 @@ public class PlayerController implements Initializable {
     }
 
     public void fireWeapon(PlayerFireInput input) {
+        //convert input coordinate strings into a single Point2D, then turn that singular coordinate into a list of size 1
         Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
+        List<Point2D> listofCoordinates = new ArrayList<>();
+        listofCoordinates.add(coordinate);
 
         int x = (int) input.getyCord();
         int y = (int) input.getyCord();
 
         try {
             //your enemy's real board and your own view of their board
-            Ship attackedShip = enemyPlayer.getBoard().attack(coordinate);
-            player.getEnemyBoard().attack(coordinate);
+            AttackResult result = player.attack(enemyPlayer.getBoard(), coordinate, input.getWeaponChoice()).get(0);
+            //just need to attack enemy board, we don't care or use the returned AttackResult
+            AttackResult uselessResult = player.attack(player.getEnemyBoard(), coordinate, input.getWeaponChoice()).get(0);
+
+            Ship attackedShip = result.ship;
 
             this.game.updateEnemyGpane(player.getEnemyBoard(), getEnemygpane());
             if (attackedShip == null) {

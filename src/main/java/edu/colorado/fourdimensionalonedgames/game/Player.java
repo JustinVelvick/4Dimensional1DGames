@@ -53,8 +53,26 @@ public class Player {
      *
      * @return   returns AttackResult object in the form of {AttackResultType enum, Ship(if applicable)}
      */
-    public List<AttackResult> attack(Board opponent, Point2D attackCoords, Weapon weapon) {
+    public List<AttackResult> attack(Board opponent, Point2D attackCoords, String weaponChoice) {
+        Weapon weapon = stringToWeapon(weaponChoice);
+
         return weapon.useAt(opponent, attackCoords);
+    }
+
+    private Weapon stringToWeapon(String weaponChoice){
+        Weapon weapon = new SmallWeapon(new Attack(), "error");
+        switch (weaponChoice){
+            case "Single Shot":
+                weapon = new SmallWeapon(new Attack(), weaponChoice);
+                break;
+            case "Sonar Pulse":
+                weapon = new LargeWeapon(new Reveal(), weaponChoice);
+                break;
+            default:
+                break;
+        }
+
+        return weapon;
     }
 
 

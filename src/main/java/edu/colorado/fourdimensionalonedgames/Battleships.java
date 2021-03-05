@@ -31,9 +31,6 @@ public class Battleships extends Application {
             //Create the game object
             Game newGame = new Game(primaryStage, renderer, numberOfPlayers, tileSize, columns, rows);
 
-
-
-
             //To give a refresh rate to our display
             new AnimationTimer() {
                 long lastTick = 0;
