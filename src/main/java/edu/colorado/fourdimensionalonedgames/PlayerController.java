@@ -98,7 +98,6 @@ public class PlayerController implements Initializable {
 
             if (attackedShip == null) {
                 AlertBox.display("Miss", "Shot missed");
-
             }
             else{
                 this.game.updateEnemyGpane(enemyPlayer.getBoard(), getEnemygpane());

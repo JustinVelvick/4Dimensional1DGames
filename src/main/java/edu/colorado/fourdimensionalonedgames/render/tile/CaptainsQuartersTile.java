@@ -27,4 +27,7 @@ public class CaptainsQuartersTile extends ShipTile{
     public int getHp() {
         return hp;
     }
+    public void damage(){
+        hp-=1;
+    }
 }

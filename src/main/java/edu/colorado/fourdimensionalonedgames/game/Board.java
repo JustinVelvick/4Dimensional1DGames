@@ -177,7 +177,7 @@ public class Board {
 
     private void generateCaptainsQuarters(List<ShipTile> tiles){
 
-        Ship parentShip = tiles.get(0).getParentShip();
+        Ship parentShip = tiles.get(0).getShip();
         ShipTile newTile;
         Tile tileToReplace;
         switch (parentShip.getType()) {
@@ -215,9 +215,24 @@ public class Board {
 
         // get tile to be attacked
         Tile attackedTile = tiles[x][y];
-
         // if already attacked, throw exception
         if (attackedTile.shot) throw new InvalidAttackException("Tile has already been attacked");
+
+        //if we hit a captains quarters, we have special rules for that
+        if(attackedTile instanceof CaptainsQuartersTile){
+
+            ((CaptainsQuartersTile) attackedTile).damage(); //subtracts 1 from captain's quarter's hp
+
+            if(((CaptainsQuartersTile) attackedTile).getHp() == 0){
+                attackedTile.shot = true;
+                attackedTile.getShip().destroy();
+            }
+            else{
+                //we return null in case of a miss, and we treat armored captains quarters hits as a miss
+                //additionally, we do not set the .shot flag for this "miss"
+                return null;
+            }
+        }
 
         // otherwise set shot flag and return ship that contains tile
         attackedTile.shot = true;

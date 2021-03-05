@@ -36,8 +36,4 @@ public class ShipTile extends Tile {
         Rectangle rect = new Rectangle(40,40);
         gc.fillRect(0, 0, rect.getWidth(), rect.getHeight());
     }
-
-    public Ship getParentShip() {
-        return parentShip;
-    }
 }

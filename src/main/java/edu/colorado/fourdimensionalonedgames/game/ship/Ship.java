@@ -11,6 +11,7 @@ public abstract class Ship implements IRenderable {
 
     public int size;
     protected List<ShipTile> shipTiles;
+    private boolean destroyed;
 
     //default constructor
     public Ship() {
@@ -40,10 +41,22 @@ public abstract class Ship implements IRenderable {
      * @return boolean indicating if ship is destroyed
      */
     public boolean destroyed() {
+        Boolean allTilesShot = true;
         for (ShipTile tile : shipTiles){
-            if (!tile.shot) return false;
+            if (!tile.shot){
+                allTilesShot = false;
+                break;
+            }
         }
-        return true;
+
+        return (allTilesShot || this.destroyed);
+    }
+
+    public void destroy(){
+        this.destroyed = true;
+        for (ShipTile tile : shipTiles){
+            tile.shot = true;
+        }
     }
 
     protected abstract Color getBaseColor();
