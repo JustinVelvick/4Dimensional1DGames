@@ -57,4 +57,8 @@ public abstract class Ship implements IRenderable {
     }
 
     public abstract String getType();
+
+    public List<ShipTile> getShipTiles() {
+        return shipTiles;
+    }
 }

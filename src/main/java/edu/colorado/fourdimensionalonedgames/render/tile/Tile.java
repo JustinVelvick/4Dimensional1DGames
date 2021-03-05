@@ -9,9 +9,8 @@ import javafx.scene.paint.Color;
 public abstract class Tile extends Canvas implements IRenderable {
 
     public boolean shot;
-    //private Canvas canvas;
     private int row;
-    public int column;
+    private int column;
 
     public Tile(int column, int row) {
         super(40,40);
@@ -36,5 +35,13 @@ public abstract class Tile extends Canvas implements IRenderable {
         gc.strokeLine(40,0,40,40);
         gc.strokeLine(40,40,0,40);
         gc.strokeLine(0,40,0,0);
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
     }
 }

@@ -6,10 +6,7 @@ import edu.colorado.fourdimensionalonedgames.game.ship.Fleet;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
-import edu.colorado.fourdimensionalonedgames.render.tile.LetterTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
+import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 
@@ -140,28 +137,66 @@ public class Board {
             if (oldTile instanceof ShipTile) return false;
         }
 
-        // if verified that placement is valid, add ship tiles to board
-        ShipTile newTile;
+        // if verified that placement is valid, generate tiles with proper x and y values
+        List<ShipTile> tilesToAdd = new ArrayList<>();
+
         for (Point2D coordinate : newCoordinates) {
             int x = (int) coordinate.getX();
             int y = (int) coordinate.getY();
-            newTile = new ShipTile(newShip, x, y);
-
-            Tile oldTile = tiles[x][y];
-            renderer.unregister(oldTile);
-
-            renderer.register(newTile);
-
-            currentBoard.getChildren().remove(oldTile);
-            currentBoard.add(newTile, x, y);
-
-            tiles[x][y] = newTile;
-            newShip.addTile(newTile);
+            tilesToAdd.add(new ShipTile(newShip, x, y));
         }
 
+        //replace one tile with an appropriate CaptainsQuartersTile
+        generateCaptainsQuarters(tilesToAdd);
+
+        //now actually add this correct list of tilesToAdd to the Ship object, the Board tiles array, and the gpanes
+        Tile oldTile;
+        for(ShipTile tile : tilesToAdd){
+            int x = tile.getColumn();
+            int y = tile.getRow();
+
+            //get the old tile object from the board tile array
+            oldTile = tiles[x][y];
+
+            //re-register that spot with the renderer
+            renderer.unregister(oldTile);
+            renderer.register(tile);
+
+            currentBoard.getChildren().remove(oldTile);
+            currentBoard.add(tile, x, y);
+
+            tiles[x][y] = tile;
+            newShip.addTile(tile);
+        }
+
+        //add this completed, built ship to the fleet
         fleet.addShip(newShip);
 
         return true;
+    }
+
+    private void generateCaptainsQuarters(List<ShipTile> tiles){
+
+        Ship parentShip = tiles.get(0).getParentShip();
+        ShipTile newTile;
+        Tile tileToReplace;
+        switch (parentShip.getType()) {
+            case "Minesweeper":
+                tileToReplace = tiles.get(0);
+                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 1);
+                tiles.set(0, newTile);
+                break;
+            case "Destroyer":
+                tileToReplace = tiles.get(1);
+                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
+                tiles.set(1, newTile);
+                break;
+            case "Battleship":
+                tileToReplace = tiles.get(2);
+                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
+                tiles.set(2, newTile);
+                break;
+        }
     }
 
     /**
