@@ -12,6 +12,12 @@ import edu.colorado.fourdimensionalonedgames.render.Render;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SonarWeaponTest {
     Board testBoard;
@@ -52,5 +58,21 @@ public class SonarWeaponTest {
         testBoard.placeShip(testgpane, direction, origin, testMinesweeper);
 
         sonar = new Sonar();
+    }
+
+    @Test
+    void testSonar() {
+        Point2D attackPos = new Point2D(5, 5);
+        testPlayer.attack(testBoard, attackPos, sonar);
+        for (int x = -2; x <= 2; x++) {
+            for (int y = -2; y <= 2; y++) {
+                // math to check if it's in the diamond
+                if (!((Math.abs(x) == 1 && Math.abs(y) == 2) || (Math.abs(x) == 2 && Math.abs(y) == 1)) && (Math.abs(x) != 2 || Math.abs(y) != 2)) {
+                    assertTrue(testBoard.tiles[5+x][5+y].revealed);
+                } else {
+                    assertFalse(testBoard.tiles[5+x][5+y].revealed);
+                }
+            }
+        }
     }
 }

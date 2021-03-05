@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 public abstract class Tile extends Canvas implements IRenderable {
 
     public boolean shot;
+    public boolean revealed;
     private int row;
     private int column;
 
