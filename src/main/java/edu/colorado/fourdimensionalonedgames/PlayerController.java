@@ -82,10 +82,10 @@ public class PlayerController implements Initializable {
         stage.showAndWait();
 
         //fire weapon at enemy's actual board, but also "attack" your own enemy board to mirror
-        fireWeapon(userInput, enemyPlayer.getBoard(), player.getEnemyBoard());
+        fireWeapon(userInput);
     }
 
-    public void fireWeapon(PlayerFireInput input, Board board, Board enemyBoard) {
+    public void fireWeapon(PlayerFireInput input) {
         Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
 
         int x = (int) input.getyCord();
@@ -96,11 +96,12 @@ public class PlayerController implements Initializable {
             Ship attackedShip = enemyPlayer.getBoard().attack(coordinate);
             player.getEnemyBoard().attack(coordinate);
 
+            this.game.updateEnemyGpane(player.getEnemyBoard(), getEnemygpane());
             if (attackedShip == null) {
                 AlertBox.display("Miss", "Shot missed");
             }
             else{
-                this.game.updateEnemyGpane(enemyPlayer.getBoard(), getEnemygpane());
+
                 if (attackedShip.destroyed()) {
                     AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
                 }
@@ -108,7 +109,7 @@ public class PlayerController implements Initializable {
                     AlertBox.display("Ship Hit", "Ship has been hit");
                 }
 
-                if(board.gameOver()) {
+                if(enemyPlayer.getBoard().gameOver()) {
                     AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
                 }
             }

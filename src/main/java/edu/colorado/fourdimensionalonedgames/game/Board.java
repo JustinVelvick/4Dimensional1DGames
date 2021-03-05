@@ -65,25 +65,6 @@ public class Board {
         }
     }
 
-    public void updateEnemyGpane(GridPane gpane){
-        Tile oldTile;
-        Tile newTile;
-        for (int i = 1; i <= columns; i++) {
-            for (int j = 1; j <= rows; j++) {
-                oldTile = this.tiles[i][j];
-                //if any tile was shot, we need to display it on the other player's enemy grid
-                if(oldTile.shot){
-                    newTile = new SeaTile(i, j);
-                    this.renderer.unregister(oldTile);
-                    this.renderer.register(newTile);
-                    this.tiles[i][j].shot = false;
-                    gpane.getChildren().remove(oldTile);
-                    gpane.add(newTile, i, j);
-                }
-
-            }
-        }
-    }
 
     /**
      * Place a new ship on the board given a placement orientation
@@ -216,9 +197,11 @@ public class Board {
         // get tile to be attacked
         Tile attackedTile = tiles[x][y];
         // if already attacked, throw exception
-        if (attackedTile.shot) throw new InvalidAttackException("Tile has already been attacked");
+        if (attackedTile.shot && !(attackedTile instanceof ShipTile)) throw new InvalidAttackException("Tile has already been attacked");
 
-        //if we hit a captains quarters, we have special rules for that
+        //if we hit a captains quarters, we must subtract hp first, then see if CC was destroyed,
+            //if yes, destroy entire ship
+            //if no, miss and create a miss tile
         if(attackedTile instanceof CaptainsQuartersTile){
 
             ((CaptainsQuartersTile) attackedTile).damage(); //subtracts 1 from captain's quarter's hp
@@ -238,6 +221,26 @@ public class Board {
         attackedTile.shot = true;
 
         return attackedTile.getShip();
+    }
+
+    //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
+    private void swapTile(Tile newTile, GridPane gpane){
+        Tile oldTile;
+
+        int x = newTile.getColumn();
+        int y = newTile.getRow();
+
+        //get the old tile object from the board tile array
+        oldTile = tiles[x][y];
+
+        //re-register that spot with the renderer
+        renderer.unregister(oldTile);
+        renderer.register(newTile);
+
+        gpane.getChildren().remove(oldTile);
+        gpane.add(newTile, x, y);
+
+        tiles[x][y] = newTile;
     }
 
     /**

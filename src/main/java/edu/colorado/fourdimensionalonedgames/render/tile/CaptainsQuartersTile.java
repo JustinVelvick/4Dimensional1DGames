@@ -7,10 +7,12 @@ import javafx.scene.shape.Rectangle;
 
 public class CaptainsQuartersTile extends ShipTile{
 
+    private int startingHP;
     private int hp;
     public CaptainsQuartersTile(Ship parentShip, int column, int row, int hp) {
         super(parentShip, column, row);
         this.hp = hp;
+        this.startingHP = hp;
     }
 
     @Override
@@ -20,8 +22,17 @@ public class CaptainsQuartersTile extends ShipTile{
         Rectangle rect = new Rectangle(40,40);
         gc.fillRect(0, 0, rect.getWidth(), rect.getHeight());
         gc.setStroke(Color.BLACK);
-        gc.strokeLine(0,0,rect.getWidth(), rect.getHeight());
-        gc.strokeLine(rect.getWidth(),0,0, rect.getHeight());
+        gc.strokeOval(5,5,30,30);
+        gc.strokeOval(10,10,20,20);
+    }
+
+    @Override
+    public Color getColor() {
+        if (hp < startingHP) {
+            return Color.ORANGE;
+        } else {
+            return parentShip.getColor();
+        }
     }
 
     public int getHp() {

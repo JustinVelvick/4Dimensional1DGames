@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 
 public class ShipTile extends Tile {
 
-    private Ship parentShip;
+    protected Ship parentShip;
 
     public ShipTile(Ship parentShip, int column, int row) {
         super(column, row);
@@ -19,6 +19,7 @@ public class ShipTile extends Tile {
     public Ship getShip() {
         return parentShip;
     }
+
 
     public Color getColor() {
         if (shot && !parentShip.destroyed()) {
