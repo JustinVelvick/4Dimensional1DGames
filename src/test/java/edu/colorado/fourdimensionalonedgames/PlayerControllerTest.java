@@ -4,20 +4,19 @@ import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.Render;
+import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class SonarWeaponTest {
+public class PlayerControllerTest {
+
     Board testBoard;
     Board testPlayerBoard;
     Player testPlayer;
@@ -28,7 +27,6 @@ public class SonarWeaponTest {
     Render renderer;
     GridPane testgpane;
     AttackResult simpleMiss;
-    Weapon sonar;
 
     @BeforeEach
     void setUp() {
@@ -54,24 +52,7 @@ public class SonarWeaponTest {
         direction = Orientation.right;
         origin = new Point2D(4,4);
         testBoard.placeShip(testgpane, direction, origin, testMinesweeper);
-
-        sonar = new LargeWeapon(new Reveal(), "Sonar");
     }
 
-    @Test
-    void testSonar() {
-        Point2D attackPos = new Point2D(5, 5);
-        testPlayer.attack(testBoard, attackPos, sonar);
-        for (int x = -2; x <= 2; x++) {
-            for (int y = -2; y <= 2; y++) {
-                // math to check if it's in the diamond
-                System.out.println();
-                if (!((Math.abs(x) == 1 && Math.abs(y) == 2) || (Math.abs(x) == 2 && Math.abs(y) == 1)) && (Math.abs(x) != 2 || Math.abs(y) != 2)) {
-                    assertTrue(testBoard.tiles[5+x][5+y].revealed);
-                } else {
-                    assertFalse(testBoard.tiles[5+x][5+y].revealed);
-                }
-            }
-        }
-    }
+
 }

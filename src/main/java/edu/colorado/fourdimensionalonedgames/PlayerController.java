@@ -113,8 +113,6 @@ public class PlayerController implements Initializable {
                     AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
                 }
             }
-
-
         }
         catch (InvalidAttackException e) {
             AlertBox.display("Invalid Coordinates", e.getErrorMsg());

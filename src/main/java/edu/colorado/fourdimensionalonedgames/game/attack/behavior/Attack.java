@@ -15,16 +15,16 @@ public class Attack implements IAttackBehavior {
     @Override
     public List<AttackResult> attackAt(Board board, List<Point2D> positions, Point2D origin) {
         // attack tile on board at position
-        int x = (int) origin.getX();
-        int y = (int) origin.getY();
+        //int x = (int) origin.getX();
+        //int y = (int) origin.getY();
 
         // check that provided coords are on board, throw exception if not
         if (!board.isWithinBounds(origin))
-            throw new InvalidAttackException("attack coordinates off of board");
+            throw new InvalidAttackException("Attack coordinates off of board");
 
-        Tile originTile = board.tiles[x][y];
+        //Tile originTile = board.tiles[x][y];
         // if already attacked, throw exception
-        if (originTile.shot) throw new InvalidAttackException("tile has already been attacked");
+        //if (originTile.shot) throw new InvalidAttackException("tile has already been attacked");
 
         List<AttackResult> ret = new ArrayList<>();
 
@@ -39,11 +39,19 @@ public class Attack implements IAttackBehavior {
             attackedTile.shot = true;
 
             Ship ship = attackedTile.getShip();
+            if (ship == null) {
+                ret.add(new AttackResult(AttackResultType.MISS, null));
+            }
+            else if (board.gameOver()){
+                ret.add(new AttackResult(AttackResultType.SURRENDER, ship));
+            }
+            else if (ship.destroyed()){
+                ret.add(new AttackResult(AttackResultType.SUNK, ship));
+            }
+            else{
+                ret.add(new AttackResult(AttackResultType.HIT, ship));
+            }
 
-            if (ship == null) ret.add(new AttackResult(AttackResultType.MISS, null));
-            else if (board.gameOver()) ret.add(new AttackResult(AttackResultType.SURRENDER, ship));
-            else if (ship.destroyed()) ret.add(new AttackResult(AttackResultType.SUNK, ship));
-            else ret.add(new AttackResult(AttackResultType.HIT, ship));
         }
 
         return ret;

@@ -1,5 +1,4 @@
 package edu.colorado.fourdimensionalonedgames.render.tile;
-
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

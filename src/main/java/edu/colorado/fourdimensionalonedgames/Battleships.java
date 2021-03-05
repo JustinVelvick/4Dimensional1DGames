@@ -21,10 +21,6 @@ public class Battleships extends Application {
     static int columns = 10;
     static int numberOfPlayers = 2;
 
-    //width and height of each player's board/grid
-    static int width = columns*tileSize;
-    static int height = rows*tileSize;
-
 
     public void start(Stage primaryStage) {
         try {

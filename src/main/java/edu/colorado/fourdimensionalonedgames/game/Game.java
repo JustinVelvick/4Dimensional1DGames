@@ -162,7 +162,7 @@ public class Game {
 
                 oldTile = board.tiles[i][j];
                 //tile we will be adding to enemy gpane is actual tile on the enemy's board if its been shot
-                if(oldTile.shot){
+                if(oldTile.revealed){
                     newtile = board.tiles[i][j];
                     gpane.getChildren().remove(oldTile);
                     gpane.add(newtile, i, j);

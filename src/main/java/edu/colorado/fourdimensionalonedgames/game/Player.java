@@ -54,7 +54,7 @@ public class Player {
      * @return   returns AttackResult object in the form of {AttackResultType enum, Ship(if applicable)}
      */
     public List<AttackResult> attack(Board opponent, Point2D attackCoords, Weapon weapon) {
-        return weapon.useAt(board, attackCoords);
+        return weapon.useAt(opponent, attackCoords);
     }
 
 

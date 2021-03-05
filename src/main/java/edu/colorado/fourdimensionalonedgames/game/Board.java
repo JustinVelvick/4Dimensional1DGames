@@ -208,6 +208,7 @@ public class Board {
 
             if(((CaptainsQuartersTile) attackedTile).getHp() == 0){
                 attackedTile.shot = true;
+                attackedTile.revealed = true;
                 attackedTile.getShip().destroy();
             }
             else{
@@ -219,6 +220,7 @@ public class Board {
 
         // otherwise set shot flag and return ship that contains tile
         attackedTile.shot = true;
+        attackedTile.revealed = true;
 
         return attackedTile.getShip();
     }
