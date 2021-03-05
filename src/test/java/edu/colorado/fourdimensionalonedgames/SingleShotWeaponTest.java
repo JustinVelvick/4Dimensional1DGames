@@ -55,9 +55,8 @@ public class SingleShotWeaponTest {
 
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp(){
         renderer = new Render();
-
 
         player1Board = new Board(columns, rows, renderer);
         player1EnemyBoard = new Board(columns, rows, renderer);
@@ -84,12 +83,22 @@ public class SingleShotWeaponTest {
         singleShot = new SmallWeapon(new Attack(), "Single Shot");
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
 
+        //player 2 placing a ship down
+        Orientation direction = Orientation.down;
+        Point2D origin = new Point2D(1,1);
+
+        player2.placeShip(player2gpane, direction, origin, player2Minesweeper);
+
+        //player 2 placing a ship down
+        direction = Orientation.down;
+        origin = new Point2D(4,4);
+
+        player2.placeShip(player2gpane, direction, origin, player2Destroyer);
     }
 
     @Test
     //player1 attacking player2
     void attackMiss() {
-
         //player 2 placing a ship down
         Orientation direction = Orientation.down;
         Point2D origin = new Point2D(1,1);
@@ -108,65 +117,70 @@ public class SingleShotWeaponTest {
         assertEquals(result, simpleMiss);
     }
 
-/*    @Test
+    @Test
+    //player1 attacking player2
     void attackHit() {
-        Point2D attackCoords = new Point2D(2,2);
-        AttackResult result = testPlayer.attack(testBoard, attackCoords, singleShot).get(0);
 
+
+        Point2D attackCoords = new Point2D(1,1);
+        AttackResult result = player1.attack(player2.getBoard(), attackCoords, singleShot).get(0);
+        AttackResult expected = new AttackResult(AttackResultType.HIT, player2Minesweeper);
         // assertions after one hit
-        assertEquals(new AttackResult(AttackResultType.HIT, testDestroyer), result);
+        assertEquals(expected, result);
         assertEquals(1, result.ship.damage());
 
-        // sink ship
-        attackCoords = new Point2D(2,3);
-        result = testPlayer.attack(testBoard, attackCoords, singleShot).get(0);
-        attackCoords = new Point2D(2,4);
-        result = testPlayer.attack(testBoard, attackCoords, singleShot).get(0);
+        // sink minesweeper ship
+        attackCoords = new Point2D(1,2);
+        result = player1.attack(player2.getBoard(), attackCoords, singleShot).get(0);
 
+        expected = new AttackResult(AttackResultType.SUNK, player2Minesweeper);
         // assertions after ship is sunk
-        assertEquals(new AttackResult(AttackResultType.SUNK, testDestroyer), result);
-        assertEquals(3, result.ship.damage());
+        System.out.println(result.type);
+        assertEquals(expected, result);
+        assertEquals(2, result.ship.damage());
     }
 
+    //player1 attacking player 2
     @Test
     void offBoardAttack() {
         // deal with attacks that fall off of the game board
         assertThrows(InvalidAttackException.class, () -> {
             Point2D attackCoords = new Point2D(0,0);
-            testPlayer.attack(testBoard, attackCoords, singleShot);
+            player1.attack(player2.getBoard(), attackCoords, singleShot);
         });
 
         assertThrows(InvalidAttackException.class, () -> {
             Point2D attackCoords = new Point2D(11,11);
-            testPlayer.attack(testBoard, attackCoords, singleShot);
+            player1.attack(player2.getBoard(), attackCoords, singleShot);
         });
     }
 
+    //player1 attacking player 2
     @Test
     void edgeBoardAttack() {
         // deal with attacks that barely don't fall off of the game board
         assertDoesNotThrow(() -> {
             Point2D attackCoords = new Point2D(1,1);
-            testBoard.attack(attackCoords);
+            player1.attack(player2.getBoard(), attackCoords, singleShot);
         });
 
         assertDoesNotThrow(() -> {
             Point2D attackCoords = new Point2D(10,10);
-            testBoard.attack(attackCoords);
+            player1.attack(player2.getBoard(), attackCoords, singleShot);
         });
     }
-
+/*
     @Test
     void captainsQuartersDamaged(){
-        //public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip)
-        //destroyer ship is located at (2,2) down
-        //CaptainsQuarters should be in the middle for destroyers, so (2,3)
-        Point2D cord1 = new Point2D(2,3);
-        testBoard.attack(cord1);
+        //minesweeper is located at (4,4) down
+        //CaptainsQuarters will be at (4,5) for a destroyer placed here
 
-        CaptainsQuartersTile tile = (CaptainsQuartersTile)testDestroyer.getShipTiles().get(1);
+        Point2D cord1 = new Point2D(4,5);
+        player1.attack(player2.getBoard(), cord1, singleShot);
+
+        CaptainsQuartersTile tile = (CaptainsQuartersTile)player2Destroyer.getShipTiles().get(1);
         assertTrue(tile.getHp() == 1);
-        assertTrue(testDestroyer.destroyed() == false);
+        assertFalse(player2Destroyer.destroyed());
     }
 
     @Test
