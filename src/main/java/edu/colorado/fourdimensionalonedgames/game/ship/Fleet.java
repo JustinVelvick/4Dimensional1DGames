@@ -23,8 +23,6 @@ public class Fleet {
     public List<Ship> getShips(){
         return this.fleet;
     }
-
-
     //check if any ships exist
     public boolean hasShip(){
         if(fleet.isEmpty()){

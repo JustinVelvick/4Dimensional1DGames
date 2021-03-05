@@ -53,13 +53,29 @@ public class ColorTest {
 
     @Test
     void testDestroyedShipColors() {
-        Point2D origin;
-        for (int x = 1; x <= 3; x++) {
-            for (int y = 1; y <= x + 1; y++) {
-                origin = new Point2D(x, y);
-                testBoard.attack(origin);
-            }
+        Point2D coord;
+        //damage all of destroyer
+        for (int y = 1; y <= 3; y++) {
+            coord = new Point2D(2, y);
+            testBoard.attack(coord);
         }
+        //one more for CC
+        coord = new Point2D(2, 2);
+        testBoard.attack(coord);
+
+        //hit minesweeper's CC which one shots it
+        coord = new Point2D(1, 1);
+        testBoard.attack(coord);
+
+        //damage all of battleship
+        for (int y = 1; y <= 4; y++) {
+            coord = new Point2D(3, y);
+            testBoard.attack(coord);
+        }
+        //one more for CC
+        coord = new Point2D(3, 3);
+        testBoard.attack(coord);
+
         assertEquals(Color.RED, testDestroyer.getColor());
         assertEquals(Color.RED, testBattleship.getColor());
         assertEquals(Color.RED, testMinesweeper.getColor());
@@ -67,15 +83,23 @@ public class ColorTest {
 
     @Test
     void testDamagedTileColors() {
-        Point2D origin;
-        for (int x = 1; x <= 3; x++) {
-            origin = new Point2D(x, 1);
-            testBoard.attack(origin);
-        }
-        assertEquals(Color.HOTPINK, testBoard.tiles[1][1].getColor());
+        //damage minesweeper
+        Point2D coord;
+        coord = new Point2D(1, 2); //non CC tile for minesweeper
+        testBoard.attack(coord);
+        //damage destroyer
+        coord = new Point2D(2, 1);
+        testBoard.attack(coord);
+
+        //damage battleship
+        coord = new Point2D(3, 1);
+        testBoard.attack(coord);
+
+
+        assertEquals(Color.HOTPINK, testBoard.tiles[1][2].getColor());
         assertEquals(Color.HOTPINK, testBoard.tiles[2][1].getColor());
         assertEquals(Color.HOTPINK, testBoard.tiles[3][1].getColor());
-        assertEquals(Color.GREEN, testBoard.tiles[1][2].getColor());
+        assertEquals(Color.GREEN, testBoard.tiles[1][1].getColor());
         assertEquals(Color.BLUE, testBoard.tiles[2][2].getColor());
         assertEquals(Color.INDIGO, testBoard.tiles[3][2].getColor());
     }

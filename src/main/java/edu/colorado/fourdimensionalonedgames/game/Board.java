@@ -6,10 +6,7 @@ import edu.colorado.fourdimensionalonedgames.game.ship.Fleet;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
-import edu.colorado.fourdimensionalonedgames.render.tile.LetterTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
+import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 
@@ -68,25 +65,6 @@ public class Board {
         }
     }
 
-    public void updateEnemyGpane(GridPane gpane){
-        Tile oldTile;
-        Tile newTile;
-        for (int i = 1; i <= columns; i++) {
-            for (int j = 1; j <= rows; j++) {
-                oldTile = this.tiles[i][j];
-                //if any tile was shot, we need to display it on the other player's enemy grid
-                if(oldTile.shot){
-                    newTile = new SeaTile(i, j);
-                    this.renderer.unregister(oldTile);
-                    this.renderer.register(newTile);
-                    this.tiles[i][j].shot = false;
-                    gpane.getChildren().remove(oldTile);
-                    gpane.add(newTile, i, j);
-                }
-
-            }
-        }
-    }
 
     /**
      * Place a new ship on the board given a placement orientation
@@ -140,28 +118,66 @@ public class Board {
             if (oldTile instanceof ShipTile) return false;
         }
 
-        // if verified that placement is valid, add ship tiles to board
-        ShipTile newTile;
+        // if verified that placement is valid, generate tiles with proper x and y values
+        List<ShipTile> tilesToAdd = new ArrayList<>();
+
         for (Point2D coordinate : newCoordinates) {
             int x = (int) coordinate.getX();
             int y = (int) coordinate.getY();
-            newTile = new ShipTile(newShip, x, y);
-
-            Tile oldTile = tiles[x][y];
-            renderer.unregister(oldTile);
-
-            renderer.register(newTile);
-
-            currentBoard.getChildren().remove(oldTile);
-            currentBoard.add(newTile, x, y);
-
-            tiles[x][y] = newTile;
-            newShip.addTile(newTile);
+            tilesToAdd.add(new ShipTile(newShip, x, y));
         }
 
+        //replace one tile with an appropriate CaptainsQuartersTile
+        generateCaptainsQuarters(tilesToAdd);
+
+        //now actually add this correct list of tilesToAdd to the Ship object, the Board tiles array, and the gpanes
+        Tile oldTile;
+        for(ShipTile tile : tilesToAdd){
+            int x = tile.getColumn();
+            int y = tile.getRow();
+
+            //get the old tile object from the board tile array
+            oldTile = tiles[x][y];
+
+            //re-register that spot with the renderer
+            renderer.unregister(oldTile);
+            renderer.register(tile);
+
+            currentBoard.getChildren().remove(oldTile);
+            currentBoard.add(tile, x, y);
+
+            tiles[x][y] = tile;
+            newShip.addTile(tile);
+        }
+
+        //add this completed, built ship to the fleet
         fleet.addShip(newShip);
 
         return true;
+    }
+
+    private void generateCaptainsQuarters(List<ShipTile> tiles){
+
+        Ship parentShip = tiles.get(0).getShip();
+        ShipTile newTile;
+        Tile tileToReplace;
+        switch (parentShip.getType()) {
+            case "Minesweeper":
+                tileToReplace = tiles.get(0);
+                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 1);
+                tiles.set(0, newTile);
+                break;
+            case "Destroyer":
+                tileToReplace = tiles.get(1);
+                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
+                tiles.set(1, newTile);
+                break;
+            case "Battleship":
+                tileToReplace = tiles.get(2);
+                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
+                tiles.set(2, newTile);
+                break;
+        }
     }
 
     /**
@@ -180,14 +196,51 @@ public class Board {
 
         // get tile to be attacked
         Tile attackedTile = tiles[x][y];
-
         // if already attacked, throw exception
-        if (attackedTile.shot) throw new InvalidAttackException("Tile has already been attacked");
+        if (attackedTile.shot && !(attackedTile instanceof ShipTile)) throw new InvalidAttackException("Tile has already been attacked");
+
+        //if we hit a captains quarters, we must subtract hp first, then see if CC was destroyed,
+            //if yes, destroy entire ship
+            //if no, miss and create a miss tile
+        if(attackedTile instanceof CaptainsQuartersTile){
+
+            ((CaptainsQuartersTile) attackedTile).damage(); //subtracts 1 from captain's quarter's hp
+
+            if(((CaptainsQuartersTile) attackedTile).getHp() == 0){
+                attackedTile.shot = true;
+                attackedTile.getShip().destroy();
+            }
+            else{
+                //we return null in case of a miss, and we treat armored captains quarters hits as a miss
+                //additionally, we do not set the .shot flag for this "miss"
+                return null;
+            }
+        }
 
         // otherwise set shot flag and return ship that contains tile
         attackedTile.shot = true;
 
         return attackedTile.getShip();
+    }
+
+    //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
+    private void swapTile(Tile newTile, GridPane gpane){
+        Tile oldTile;
+
+        int x = newTile.getColumn();
+        int y = newTile.getRow();
+
+        //get the old tile object from the board tile array
+        oldTile = tiles[x][y];
+
+        //re-register that spot with the renderer
+        renderer.unregister(oldTile);
+        renderer.register(newTile);
+
+        gpane.getChildren().remove(oldTile);
+        gpane.add(newTile, x, y);
+
+        tiles[x][y] = newTile;
     }
 
     /**
