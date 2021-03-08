@@ -95,5 +95,4 @@ class PlaceShipsTest {
         Point2D ship2Origin = new Point2D(2, 2);
         assertFalse(testBoard.placeShip(gpane, ship2Dir, ship2Origin, testShip2));
     }
-
 }

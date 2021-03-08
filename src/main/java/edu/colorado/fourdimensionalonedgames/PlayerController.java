@@ -32,7 +32,6 @@ import java.util.ResourceBundle;
 
 public class PlayerController implements Initializable {
 
-
     private Game game;
     private Player player;
     private Player enemyPlayer;
@@ -154,50 +153,16 @@ public class PlayerController implements Initializable {
     }
 
     public void placeShip(PlayerShipInput input) {
-        Orientation direction = Orientation.down;
-        double x =  input.getxCord();
-        double y =  input.getyCord();
-        Point2D origin = new Point2D(x, y);
-
-        Ship newShip = new Destroyer();
-
-        String shipChoice = input.getShipChoice();
-        String orientationChoice = input.getDirection();
-
-
-        for(Ship ship : this.player.getShipsToPlace()){
-            if(shipChoice.equals(ship.getType())){
-                newShip = ship;
-            }
-        }
-
-
-        switch (orientationChoice) {
-            case "Up":
-                direction = Orientation.up;
-                break;
-
-            case "Down":
-                direction = Orientation.down;
-                break;
-
-            case "Left":
-                direction = Orientation.left;
-                break;
-
-            case "Right":
-                direction = Orientation.right;
-                break;
-        }
 
         //place a ship down on player1's actual board
-        if(!this.player.placeShip(this.getPlayergpane(), direction, origin, newShip)){
+        if(!this.player.placeShipNew(this.getPlayergpane(), input)){
             //ship placement did not succeed
         }
 
-        //place the same ship down on player2's enemy board if placement succeeded
-        enemyPlayer.getEnemyBoard().placeShip(this.getPlayergpane(), direction, origin, newShip);
-
+        else{
+            //place the same ship down on player2's enemy board if placement succeeded
+            enemyPlayer.placeEnemyShip(this.getPlayergpane(), input);
+        }
     }
 
     public void handlePassTurnButton(ActionEvent e){
@@ -209,16 +174,6 @@ public class PlayerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
 
-    }
-
-
-    //helper method to validate form before populating a PlayerShipInput object
-    public boolean validateForm() {
-        Boolean result = true;
-
-
-
-        return result;
     }
 
     public GridPane getPlayergpane() {

@@ -29,8 +29,6 @@ public class Board {
         this.renderer = renderer;
         this.fleet = new Fleet();
         tiles = new Tile[columns + 1][rows + 1];
-
-
     }
 
     //Only called once upon game creation to make a sea of blank tile objects
@@ -76,32 +74,70 @@ public class Board {
      * @return              boolean indicating ship placement success
      */
     public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip) {
-        List<Point2D> newCoordinates = new ArrayList<>();
 
+        // placeable returns a list of coordinates when placement is valid, null when not valid
+        List<Point2D> generatedCoordinates = placeable(origin, direction, newShip.size);
+
+        if(generatedCoordinates != null){
+
+            Tile oldTile;
+            ShipTile currentTile;
+           //update newShip's tiles to have newly generatedCoordinates
+            List<ShipTile> tilesToAdd = newShip.getShipTiles();
+            for(int i = 0; i < newShip.size; i++){
+                int x = (int) generatedCoordinates.get(i).getX();
+                int y = (int) generatedCoordinates.get(i).getY();
+                currentTile = tilesToAdd.get(i);
+                tilesToAdd.get(i).setColumn(x);
+                tilesToAdd.get(i).setRow(y);
+
+                //get the old tile object from the board tile array
+                oldTile = tiles[x][y];
+                tiles[x][y] = currentTile;
+
+                //re-register that spot with the renderer
+                renderer.unregister(oldTile);
+                renderer.register(currentTile);
+
+                currentBoard.getChildren().remove(oldTile);
+                currentBoard.add(currentTile, x, y);
+            }
+            //add this completed, built ship to the fleet
+            fleet.addShip(newShip);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    //given a ship length, origin, and direction, placeable returns true if valid placement
+    private List<Point2D> placeable(Point2D origin, Orientation direction, int shipSize) {
         double xCoordinate = origin.getX();
         double yCoordinate = origin.getY();
 
+        List<Point2D> newCoordinates = new ArrayList<>();
         // get coordinate set of tiles ship would occupy if placed in given orientation
         switch (direction) {
             case up:
-                for(double y = yCoordinate; y > (yCoordinate - newShip.size); y--) {
+                for(double y = yCoordinate; y > (yCoordinate - shipSize); y--) {
                     newCoordinates.add(new Point2D(xCoordinate, y));
                 }
                 break;
 
             case down:
-                for(double y = yCoordinate; y < (yCoordinate + newShip.size); y++){
+                for(double y = yCoordinate; y < (yCoordinate + shipSize); y++){
                     newCoordinates.add(new Point2D(xCoordinate, y));
                 }
                 break;
 
             case left:
-                for(double x = xCoordinate; x > (xCoordinate - newShip.size); x--){
+                for(double x = xCoordinate; x > (xCoordinate - shipSize); x--){
                     newCoordinates.add(new Point2D(x, yCoordinate));
                 }
                 break;
             case right:
-                for(double x = xCoordinate; x < (xCoordinate + newShip.size); x++){
+                for(double x = xCoordinate; x < (xCoordinate + shipSize); x++){
                     newCoordinates.add(new Point2D(x, yCoordinate));
                 }
                 break;
@@ -109,75 +145,15 @@ public class Board {
 
         // check each coordinate to make sure not off board or occupied by other ship
         for (Point2D coordinate : newCoordinates) {
-            if (coordinate.getX() < 1) return false;
-            if (coordinate.getX() > columns) return false;
-            if (coordinate.getY() < 1) return false;
-            if (coordinate.getY() > rows) return false;
+            if (coordinate.getX() < 1) return null;
+            if (coordinate.getX() > columns) return null;
+            if (coordinate.getY() < 1) return null;
+            if (coordinate.getY() > rows) return null;
 
             Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()];
-            if (oldTile instanceof ShipTile) return false;
+            if (oldTile instanceof ShipTile) return null;
         }
-
-        // if verified that placement is valid, generate tiles with proper x and y values
-        List<ShipTile> tilesToAdd = new ArrayList<>();
-
-        for (Point2D coordinate : newCoordinates) {
-            int x = (int) coordinate.getX();
-            int y = (int) coordinate.getY();
-            tilesToAdd.add(new ShipTile(newShip, x, y));
-        }
-
-        //replace one tile with an appropriate CaptainsQuartersTile
-        generateCaptainsQuarters(tilesToAdd);
-
-        //now actually add this correct list of tilesToAdd to the Ship object, the Board tiles array, and the gpanes
-        Tile oldTile;
-        for(ShipTile tile : tilesToAdd){
-            int x = tile.getColumn();
-            int y = tile.getRow();
-
-            //get the old tile object from the board tile array
-            oldTile = tiles[x][y];
-
-            //re-register that spot with the renderer
-            renderer.unregister(oldTile);
-            renderer.register(tile);
-
-            currentBoard.getChildren().remove(oldTile);
-            currentBoard.add(tile, x, y);
-
-            tiles[x][y] = tile;
-            newShip.addTile(tile);
-        }
-
-        //add this completed, built ship to the fleet
-        fleet.addShip(newShip);
-
-        return true;
-    }
-
-    private void generateCaptainsQuarters(List<ShipTile> tiles){
-
-        Ship parentShip = tiles.get(0).getShip();
-        ShipTile newTile;
-        Tile tileToReplace;
-        switch (parentShip.getType()) {
-            case "Minesweeper":
-                tileToReplace = tiles.get(0);
-                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 1);
-                tiles.set(0, newTile);
-                break;
-            case "Destroyer":
-                tileToReplace = tiles.get(1);
-                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
-                tiles.set(1, newTile);
-                break;
-            case "Battleship":
-                tileToReplace = tiles.get(2);
-                newTile = new CaptainsQuartersTile(parentShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
-                tiles.set(2, newTile);
-                break;
-        }
+        return newCoordinates;
     }
 
     /**

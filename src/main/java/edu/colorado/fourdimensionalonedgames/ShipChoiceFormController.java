@@ -48,7 +48,7 @@ public class ShipChoiceFormController implements Initializable {
 
     @FXML
     public void handleConfirmButton(ActionEvent event) throws IOException {
-        if(this.validateForm()){
+        if(this.validateForm(this.input)){
             this.input.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
             this.input.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
             this.input.setxCord(Double.parseDouble(xCord.getText()));
@@ -86,7 +86,7 @@ public class ShipChoiceFormController implements Initializable {
 
 
     //helper method to validate form before populating a PlayerShipInput object
-    public boolean validateForm() {
+    public boolean validateForm(PlayerShipInput input) {
         Boolean result = true;
 
 

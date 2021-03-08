@@ -4,18 +4,15 @@ import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.Render;
-import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
+import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class PlayerControllerTest {
+public class ShipFormControllerTest {
 
     static int tileSize = 40;
     static int rows = 10;
@@ -42,6 +39,9 @@ public class PlayerControllerTest {
     Ship player2Minesweeper;
     Ship player2Destroyer;
     Ship player2Battleship;
+
+    PlayerShipInput input;
+    PlayerShipInput badInput;
 
     @BeforeEach
     void setUp() {
@@ -89,11 +89,15 @@ public class PlayerControllerTest {
         origin = new Point2D(5,5);
 
         player2.placeShip(player2gpane, direction, origin, player2Battleship);
+
+        input = new PlayerShipInput("Down","Destroyer","B", "3");
+        badInput = new PlayerShipInput("", "Destroyer", "Applesauce", "032485*");
     }
 
     @Test
     void testValidateForm(){
-
+        ShipChoiceFormController controller = new ShipChoiceFormController();
+        Boolean result = controller.validateForm(input);
     }
 
 
