@@ -19,6 +19,7 @@ class PlaceShipsTest {
     static int columns = 10;
     Render renderer;
     GridPane gpane;
+    ShipYard shipyard;
 
     @BeforeEach
     void setUp() {
@@ -28,9 +29,11 @@ class PlaceShipsTest {
         testBoard = new Board(columns, rows, renderer);
         testBoard.initializeBoard(gpane);
 
-        testShip = new Destroyer();
-        testShip2 = new Minesweeper();
-        testShip3 = new Battleship();
+        shipyard = new DefaultShipYard();
+
+        testShip = shipyard.createShip("Destroyer");
+        testShip2 = shipyard.createShip("Minesweeper");
+        testShip3 = shipyard.createShip("Battleship");
     }
 
     @Test
