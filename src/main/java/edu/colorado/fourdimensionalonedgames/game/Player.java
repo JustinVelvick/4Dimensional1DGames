@@ -9,6 +9,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
@@ -35,9 +36,11 @@ public class Player {
     }
 
     private void generateShips(){
-        shipsToPlace.add(new Minesweeper());
-        shipsToPlace.add(new Destroyer());
-        shipsToPlace.add(new Battleship());
+        ShipYard shipYard = new DefaultShipYard();
+
+        shipsToPlace.add(shipYard.createShip("Minesweeper"));
+        shipsToPlace.add(shipYard.createShip("Destroyer"));
+        shipsToPlace.add(shipYard.createShip("Battleship"));
     }
 
     private void generateWeapons(){
@@ -75,17 +78,103 @@ public class Player {
         return weapon;
     }
 
-
+    //DELETE ME EVENTUALLY AND KEEP METHODS BELOW IT
     public Boolean placeShip(GridPane gpane, Orientation direction, Point2D origin, Ship shipToPlace){
 
         //if ship placement on board didn't succeed, return false
         if(!getBoard().placeShip(gpane, direction, origin, shipToPlace)){
             return false;
         }
-
-
         //Remove shipToPlace from player list of shipsToPlace since placement succeeded
         removeShipToPlace(shipToPlace);
+        return true;
+    }
+
+    public Boolean placeShipNew(GridPane gpane, PlayerShipInput input){
+        Orientation direction = Orientation.down;
+        double x =  input.getxCord();
+        double y =  input.getyCord();
+        Point2D origin = new Point2D(x, y);
+
+        Ship newShip = new Destroyer();
+
+        String shipChoice = input.getShipChoice();
+        String orientationChoice = input.getDirection();
+
+        for(Ship ship : this.getShipsToPlace()){
+            if(shipChoice.equals(ship.getType())){
+                newShip = ship;
+            }
+        }
+        switch (orientationChoice) {
+            case "Up":
+                direction = Orientation.up;
+                break;
+
+            case "Down":
+                direction = Orientation.down;
+                break;
+
+            case "Left":
+                direction = Orientation.left;
+                break;
+
+            case "Right":
+                direction = Orientation.right;
+                break;
+        }
+
+        if(getBoard().placeShip(gpane, direction, origin, newShip)){
+            //Remove shipToPlace from player list of shipsToPlace since placement succeeded
+            removeShipToPlace(newShip);
+        }
+        else{
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean placeEnemyShip(GridPane gpane, PlayerShipInput input){
+        Orientation direction = Orientation.down;
+        double x =  input.getxCord();
+        double y =  input.getyCord();
+        Point2D origin = new Point2D(x, y);
+
+        Ship newShip = new Destroyer();
+
+        String shipChoice = input.getShipChoice();
+        String orientationChoice = input.getDirection();
+
+
+        for(Ship ship : this.getShipsToPlace()){
+            if(shipChoice.equals(ship.getType())){
+                newShip = ship;
+            }
+        }
+
+
+        switch (orientationChoice) {
+            case "Up":
+                direction = Orientation.up;
+                break;
+
+            case "Down":
+                direction = Orientation.down;
+                break;
+
+            case "Left":
+                direction = Orientation.left;
+                break;
+
+            case "Right":
+                direction = Orientation.right;
+                break;
+        }
+
+        if(!getEnemyBoard().placeShip(gpane, direction, origin, newShip)){
+            return false;
+        }
+
         return true;
     }
 
