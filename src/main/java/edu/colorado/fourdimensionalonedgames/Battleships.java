@@ -1,21 +1,14 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Battleships extends Application {
     // fields
-    static int speed = 5;
+    static int speed = 10;
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;

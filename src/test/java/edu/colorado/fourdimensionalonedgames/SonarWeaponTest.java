@@ -28,6 +28,7 @@ public class SonarWeaponTest {
     GridPane testgpane;
     AttackResult simpleMiss;
     String sonar;
+    ShipYard shipyard;
 
     @BeforeEach
     void setUp() {
@@ -40,11 +41,12 @@ public class SonarWeaponTest {
         testPlayerBoard.initializeBoard(testgpane);
         testPlayer = new Player(testPlayerBoard, testBoard);
 
-        simpleMiss = new AttackResult(AttackResultType.MISS, null);
 
-        testDestroyer = new Destroyer();
-        testMinesweeper = new Minesweeper();
-        testBattleship = new Battleship();
+        shipyard = new DefaultShipYard();
+
+        testDestroyer = shipyard.createShip("Destroyer");
+        testMinesweeper = shipyard.createShip("Minesweeper");
+        testBattleship = shipyard.createShip("Battleship");
 
         Orientation direction = Orientation.down;
         Point2D origin = new Point2D(2,2);

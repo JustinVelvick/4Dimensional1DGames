@@ -59,8 +59,6 @@ public class ShipChoiceFormController implements Initializable {
         }
     }
 
-
-
     public void populateShipForm(List<Ship> ships){
 
         //Delete existing to create a fresh set of choices
