@@ -1,8 +1,5 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.ship.Battleship;
-import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
-import edu.colorado.fourdimensionalonedgames.game.ship.Minesweeper;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.event.ActionEvent;

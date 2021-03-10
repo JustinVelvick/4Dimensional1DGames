@@ -51,7 +51,6 @@ public class Board {
             gpane.add(tile, i, 0);
         }
 
-
         for (int i = 1; i <= columns; i++) {
             for (int j = 1; j <= rows; j++) {
                 tile = new SeaTile(i, j);
