@@ -92,8 +92,8 @@ public class Player {
 
     public Boolean placeShipNew(GridPane gpane, PlayerShipInput input){
         Orientation direction = Orientation.down;
-        double x =  input.getxCord();
-        double y =  input.getyCord();
+        double x =  Double.parseDouble(input.getxCord());
+        double y =  Double.parseDouble(input.getyCord());
         Point2D origin = new Point2D(x, y);
 
         Ship newShip = new Destroyer();
@@ -136,8 +136,8 @@ public class Player {
 
     public Boolean placeEnemyShip(GridPane gpane, PlayerShipInput input){
         Orientation direction = Orientation.down;
-        double x =  input.getxCord();
-        double y =  input.getyCord();
+        double x =  Double.parseDouble(input.getxCord());
+        double y =  Double.parseDouble(input.getyCord());
         Point2D origin = new Point2D(x, y);
 
         Ship newShip = new Destroyer();

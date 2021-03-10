@@ -51,8 +51,8 @@ public class ShipChoiceFormController implements Initializable {
         if(this.validateForm(this.input)){
             this.input.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
             this.input.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
-            this.input.setxCord(Double.parseDouble(xCord.getText()));
-            this.input.setyCord(Double.parseDouble(yCord.getText()));
+            this.input.setxCord(xCord.getText());
+            this.input.setyCord(xCord.getText());
 
             Stage currentStage = (Stage) confirmButton.getScene().getWindow();
             currentStage.close();
@@ -87,10 +87,27 @@ public class ShipChoiceFormController implements Initializable {
 
     //helper method to validate form before populating a PlayerShipInput object
     public boolean validateForm(PlayerShipInput input) {
-        Boolean result = true;
 
+        //check len
+        if((input.getxCord()).length() != 1) {
+            return false;
+        }
 
+        Boolean xValid = false;
+        if((input.getxCord()).charAt(0) > 64 && (input.getxCord()).charAt(0) < 75){
+            xValid=true;
+        }
+        else if((input.getxCord()).charAt(0) > 96 && (input.getxCord()).charAt(0) < 107){
+            xValid=true;
+        }
 
+        Boolean yValid = true;
+        if((int) (input.getyCord()).charAt(0) <= 10 || (int) (input.getyCord()).charAt(0) > 0){
+            yValid = false;
+        }
+
+        boolean result = true;
+        result = xValid&&yValid;
         return result;
     }
 

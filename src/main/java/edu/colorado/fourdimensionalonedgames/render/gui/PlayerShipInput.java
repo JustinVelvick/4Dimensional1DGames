@@ -3,15 +3,15 @@ package edu.colorado.fourdimensionalonedgames.render.gui;
 public class PlayerShipInput {
     private String direction;
     private String shipChoice;
-    private double xCord;
-    private double yCord;
+    private String xCord;
+    private String yCord;
 
 
     public PlayerShipInput(String dir, String shipC, String x, String y) {
         this.direction = dir;
         this.shipChoice = shipC;
-        this.xCord = Double.parseDouble(x);
-        this.yCord = Double.parseDouble(y);
+        this.xCord = x;
+        this.yCord = y;
     }
 
     public String getDirection() {
@@ -22,11 +22,11 @@ public class PlayerShipInput {
         return shipChoice;
     }
 
-    public double getxCord() {
+    public String getxCord() {
         return xCord;
     }
 
-    public double getyCord() {
+    public String getyCord() {
         return yCord;
     }
 
@@ -38,11 +38,11 @@ public class PlayerShipInput {
         this.shipChoice = shipChoice;
     }
 
-    public void setxCord(double xCord) {
+    public void setxCord(String xCord) {
         this.xCord = xCord;
     }
 
-    public void setyCord(double yCord) {
+    public void setyCord(String yCord) {
         this.yCord = yCord;
     }
 }
