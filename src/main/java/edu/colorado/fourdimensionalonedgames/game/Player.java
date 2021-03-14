@@ -1,18 +1,18 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
-import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PenetratingAttack;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
+import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
-import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
-import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,61 +36,81 @@ public class Player {
     }
 
     private void generateShips(){
-        ShipYard shipYard = new DefaultShipYard();
+        ShipYard defaultShipYard = new DefaultShipYard();
+        ShipYard submergableShipYard = new SubmergableShipYard();
 
-        shipsToPlace.add(shipYard.createShip("Minesweeper"));
-        shipsToPlace.add(shipYard.createShip("Destroyer"));
-        shipsToPlace.add(shipYard.createShip("Battleship"));
+        shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
+        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+        shipsToPlace.add(submergableShipYard.createShip("Submarine"));
     }
 
     private void generateWeapons(){
         weapons.add(new SmallWeapon(new Attack(), "Single Shot"));
-        weapons.add(new LargeWeapon(new Reveal(), "Sonar"));
+        weapons.add(new LargeWeapon(new Reveal(), "Sonar Pulse"));
+        weapons.add(new SmallWeapon(new PenetratingAttack(), "Space Laser"));
     }
 
+    public void updateVisuals(){
 
+    }
 
     /**
-     * Mount an attack on the given enemy tile
-     *
+     * Mount an attack on the given enemy board at attackCoords with weaponChoice
+     *NOTE: PLAYER INPUT SHOULD BE VALIDATED AND FILTERED BY THIS POINT
      *
      * @return   returns AttackResult object in the form of {AttackResultType enum, Ship(if applicable)}
      */
-    public List<AttackResult> attack(Board opponent, Point2D attackCoords, String weaponChoice) {
-        Weapon weapon = stringToWeapon(weaponChoice);
+    public List<AttackResult> attack(Board opponentBoard, PlayerFireInput input) {
 
-        return weapon.useAt(opponent, attackCoords);
+        Weapon weapon = stringToWeapon(input.getWeaponChoice());
+        double x = Double.parseDouble(input.getxCord());
+        double y = Double.parseDouble(input.getyCord());
+
+        Point2D attackCoords = new Point2D(x, y);
+        List<AttackResult> results = new ArrayList<>();
+        try {
+            //your enemy's real board and your own view of their board
+            results = weapon.useAt(opponentBoard, attackCoords);
+
+            //Inform player of result of attacking each enemy tile (could be 1 tile or many)
+            for(AttackResult attackResult : results){
+                Ship attackedShip = attackResult.ship;
+
+                if (attackedShip == null) {
+                    AlertBox.display("Miss", "Shot missed");
+                }
+                else{
+
+                    if (attackedShip.destroyed()) {
+                        AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
+                    }
+                    else {
+                        AlertBox.display("Ship Hit", "Ship has been hit");
+                    }
+                }
+            }
+        }
+        catch (InvalidAttackException e) {
+            AlertBox.display("Invalid Coordinates", e.getErrorMsg());
+        }
+        return results;
     }
 
+    //matches weapon that user picked in GUI with those stored in player's list of weapons avaliable
     private Weapon stringToWeapon(String weaponChoice){
-        Weapon weapon = new SmallWeapon(new Attack(), "error");
-        switch (weaponChoice){
-            case "Single Shot":
-                weapon = new SmallWeapon(new Attack(), weaponChoice);
-                break;
-            case "Sonar Pulse":
-                weapon = new LargeWeapon(new Reveal(), weaponChoice);
-                break;
-            default:
-                break;
+        Weapon returnWeapon = null;
+
+        for( Weapon weapon : weapons){
+            if(weapon.getType().equals(weaponChoice)){
+                returnWeapon = weapon;
+            }
         }
 
-        return weapon;
+        return returnWeapon;
     }
 
-    //DELETE ME EVENTUALLY AND KEEP METHODS BELOW IT
-    public Boolean placeShip(GridPane gpane, Orientation direction, Point2D origin, Ship shipToPlace){
-
-        //if ship placement on board didn't succeed, return false
-        if(!getBoard().placeShip(gpane, direction, origin, shipToPlace)){
-            return false;
-        }
-        //Remove shipToPlace from player list of shipsToPlace since placement succeeded
-        removeShipToPlace(shipToPlace);
-        return true;
-    }
-
-    public Boolean placeShipNew(GridPane gpane, PlayerShipInput input){
+    public Boolean placeShip(PlayerShipInput input){
         Orientation direction = Orientation.down;
         double x =  Double.parseDouble(input.getxCord());
         double y =  Double.parseDouble(input.getyCord());
@@ -124,7 +144,7 @@ public class Player {
                 break;
         }
 
-        if(getBoard().placeShip(gpane, direction, origin, newShip)){
+        if(getBoard().placeShip(direction, origin, newShip)){
             //Remove shipToPlace from player list of shipsToPlace since placement succeeded
             removeShipToPlace(newShip);
         }
@@ -134,7 +154,8 @@ public class Player {
         return true;
     }
 
-    public Boolean placeEnemyShip(GridPane gpane, PlayerShipInput input){
+/*
+    public Boolean placeEnemyShip(PlayerShipInput input){
         Orientation direction = Orientation.down;
         double x =  Double.parseDouble(input.getxCord());
         double y =  Double.parseDouble(input.getyCord());
@@ -171,12 +192,13 @@ public class Player {
                 break;
         }
 
-        if(!getEnemyBoard().placeShip(gpane, direction, origin, newShip)){
+        if(!getEnemyBoard().placeShip(direction, origin, newShip)){
             return false;
         }
 
         return true;
     }
+*/
 
 
     public Board getBoard() {

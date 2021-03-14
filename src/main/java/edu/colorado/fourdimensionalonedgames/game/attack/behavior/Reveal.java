@@ -22,7 +22,7 @@ public class Reveal implements IAttackBehavior {
         if (!board.isWithinBounds(origin))
             throw new InvalidAttackException("reveal coordinates off of board");
 
-        Tile originTile = board.tiles[x][y];
+        Tile originTile = board.tiles[x][y][0];
         // if already attacked, throw exception
         if (originTile.revealed) throw new InvalidAttackException("tile has already been revealed");
 
@@ -33,7 +33,7 @@ public class Reveal implements IAttackBehavior {
             int y2 = (int) position.getY();
 
             // get tile to be attacked
-            Tile attackedTile = board.tiles[x2][y2];
+            Tile attackedTile = board.tiles[x2][y2][0];
 
             // otherwise set shot flag and return ship that contains tile
             attackedTile.revealed = true;

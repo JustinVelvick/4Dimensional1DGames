@@ -17,18 +17,20 @@ public class Board {
 
     private final int rows;
     private final int columns;
+    private final int depth;
 
-    public Tile[][] tiles;
+    public Tile[][][] tiles;
     public Render renderer;
     private Fleet fleet;
 
-    public Board(int columns, int rows, Render renderer) {
+    public Board(int columns, int rows, int depth, Render renderer) {
 
         this.rows = rows;
         this.columns = columns;
+        this.depth = depth;
         this.renderer = renderer;
         this.fleet = new Fleet();
-        tiles = new Tile[columns + 1][rows + 1];
+        tiles = new Tile[columns + 1][rows + 1][depth];
     }
 
     //Only called once upon game creation to make a sea of blank tile objects
@@ -39,7 +41,7 @@ public class Board {
         for (int j = 0; j <= columns; j++) {
             tile = new LetterTile(0, j, String.valueOf(j));
             this.renderer.register(tile);
-            this.tiles[0][j] = tile;
+            this.tiles[0][j][0] = tile;
             gpane.add(tile, 0, j);
         }
 
@@ -47,7 +49,7 @@ public class Board {
         for (int i = 1; i <= rows; i++) {
             tile = new LetterTile(i, 0, Character.toString((char) i + 64));
             this.renderer.register(tile);
-            this.tiles[i][0] = tile;
+            this.tiles[i][0][0] = tile;
             gpane.add(tile, i, 0);
         }
 
@@ -55,9 +57,36 @@ public class Board {
             for (int j = 1; j <= rows; j++) {
                 tile = new SeaTile(i, j);
                 this.renderer.register(tile);
-                this.tiles[i][j] = tile;
-                this.tiles[i][j].shot = false;
+                this.tiles[i][j][0] = tile;
+                this.tiles[i][j][0].shot = false;
                 gpane.add(tile, i, j);
+            }
+        }
+    }
+
+    //Overloaded method for tests (This method does not care about grid panes, but still generates tiles)
+    public void initializeBoard(){
+        Tile tile;
+
+        for (int j = 0; j <= columns; j++) {
+            tile = new LetterTile(0, j, String.valueOf(j));
+            this.renderer.register(tile);
+            this.tiles[0][j][0] = tile;
+        }
+
+
+        for (int i = 1; i <= rows; i++) {
+            tile = new LetterTile(i, 0, Character.toString((char) i + 64));
+            this.renderer.register(tile);
+            this.tiles[i][0][0] = tile;
+        }
+
+        for (int i = 1; i <= columns; i++) {
+            for (int j = 1; j <= rows; j++) {
+                tile = new SeaTile(i, j);
+                this.renderer.register(tile);
+                this.tiles[i][j][0] = tile;
+                this.tiles[i][j][0].shot = false;
             }
         }
     }
@@ -66,13 +95,12 @@ public class Board {
     /**
      * Place a new ship on the board given a placement orientation
      *
-     * @param currentBoard  JavaFX Gpane object to place tile canvases onto
      * @param direction     direction the ship points in from the origin
      * @param origin        the origin of the placement
      * @param newShip       the ship to be placed
      * @return              boolean indicating ship placement success
      */
-    public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip) {
+    public boolean placeShip(Orientation direction, Point2D origin, Ship newShip) {
 
         // placeable returns a list of coordinates when placement is valid, null when not valid
         List<Point2D> generatedCoordinates = placeable(origin, direction, newShip.size);
@@ -91,15 +119,12 @@ public class Board {
                 tilesToAdd.get(i).setRow(y);
 
                 //get the old tile object from the board tile array
-                oldTile = tiles[x][y];
-                tiles[x][y] = currentTile;
+                oldTile = tiles[x][y][0];
+                tiles[x][y][0] = currentTile;
 
                 //re-register that spot with the renderer
                 renderer.unregister(oldTile);
                 renderer.register(currentTile);
-
-                currentBoard.getChildren().remove(oldTile);
-                currentBoard.add(currentTile, x, y);
             }
             //add this completed, built ship to the fleet
             fleet.addShip(newShip);
@@ -111,6 +136,7 @@ public class Board {
     }
 
     //given a ship length, origin, and direction, placeable returns true if valid placement
+    //FOR SURFACE PLACEMENT ONLY
     private List<Point2D> placeable(Point2D origin, Orientation direction, int shipSize) {
         double xCoordinate = origin.getX();
         double yCoordinate = origin.getY();
@@ -149,75 +175,27 @@ public class Board {
             if (coordinate.getY() < 1) return null;
             if (coordinate.getY() > rows) return null;
 
-            Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()];
+            Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()][0];
             if (oldTile instanceof ShipTile) return null;
         }
         return newCoordinates;
     }
 
-    /**
-     * Mount an attack on the given coordinates
-     *
-     * @param
-     * @return              returns the ship that was hit, null if the attack misses
-     */
-/*    public Ship attack(Point2D attackCoords) {
-        int x = (int) attackCoords.getX();
-        int y = (int) attackCoords.getY();
-
-        // check that provided coords are on board, throw exception if not
-        if (x < 1 || x > columns || y < 1 || y > rows)
-            throw new InvalidAttackException("Attack coordinates off of board");
-
-        // get tile to be attacked
-        Tile attackedTile = tiles[x][y];
-        // if already attacked, throw exception
-        if (attackedTile.shot && !(attackedTile instanceof ShipTile)) throw new InvalidAttackException("Tile has already been attacked");
-
-        //if we hit a captains quarters, we must subtract hp first, then see if CC was destroyed,
-            //if yes, destroy entire ship
-            //if no, miss and create a miss tile
-        if(attackedTile instanceof CaptainsQuartersTile){
-
-            ((CaptainsQuartersTile) attackedTile).damage(); //subtracts 1 from captain's quarter's hp
-
-            if(((CaptainsQuartersTile) attackedTile).getHp() == 0){
-                attackedTile.shot = true;
-                attackedTile.revealed = true;
-                attackedTile.getShip().destroy();
-            }
-            else{
-                //we return null in case of a miss, and we treat armored captains quarters hits as a miss
-                //additionally, we do not set the .shot flag for this "miss"
-                return null;
-            }
-        }
-
-        // otherwise set shot flag and return ship that contains tile
-        attackedTile.shot = true;
-        attackedTile.revealed = true;
-
-        return attackedTile.getShip();
-    }*/
-
     //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
-    private void swapTile(Tile newTile, GridPane gpane){
+    private void swapTile(Tile newTile){
         Tile oldTile;
 
         int x = newTile.getColumn();
         int y = newTile.getRow();
 
         //get the old tile object from the board tile array
-        oldTile = tiles[x][y];
+        oldTile = tiles[x][y][0];
 
         //re-register that spot with the renderer
         renderer.unregister(oldTile);
         renderer.register(newTile);
 
-        gpane.getChildren().remove(oldTile);
-        gpane.add(newTile, x, y);
-
-        tiles[x][y] = newTile;
+        tiles[x][y][0] = newTile;
     }
 
     /**
@@ -227,7 +205,7 @@ public class Board {
      */
     public boolean gameOver() {
         for (Ship ship : fleet.getShips()) {
-            if (ship.destroyed() == false) return false;
+            if (!ship.destroyed()) return false;
         }
         return true;
     }
@@ -238,5 +216,9 @@ public class Board {
 
         // check that provided coords are on board, throw exception if not
         return !(x < 1 || x > columns || y < 1 || y > rows);
+    }
+
+    public int getDepth() {
+        return depth;
     }
 }

@@ -1,6 +1,7 @@
 package edu.colorado.fourdimensionalonedgames;
 
 import edu.colorado.fourdimensionalonedgames.game.Board;
+import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
@@ -8,6 +9,9 @@ import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
+import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
+import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
+import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
@@ -23,12 +27,8 @@ class ShipTest {
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
+    static int depth = 2;
     static int numberOfPlayers = 2;
-
-    Board player1Board;
-    Board player1EnemyBoard;
-    Board player2Board;
-    Board player2EnemyBoard;
 
     GridPane player1gpane;
     GridPane player1enemygpane;
@@ -37,103 +37,170 @@ class ShipTest {
 
     Render renderer;
 
+    Game game;
+
     Player player1;
     Player player2;
+
+    PlayerShipInput testInput1;
+    PlayerShipInput testInput2;
+    PlayerShipInput testInput3;
+
+    PlayerFireInput fireInput1;
+    PlayerFireInput fireInput2;
+    PlayerFireInput fireInput3;
 
     String singleShot;
     AttackResult simpleMiss;
     Ship player2Minesweeper;
     Ship player2Destroyer;
     Ship player2Battleship;
+    Ship player2Submarine;
+
 
     @BeforeEach
     void setUp() {
         renderer = new Render();
-
-        player1Board = new Board(columns, rows, renderer);
-        player1EnemyBoard = new Board(columns, rows, renderer);
-        player2Board = new Board(columns, rows, renderer);
-        player2EnemyBoard = new Board(columns, rows, renderer);
+        game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
+        player1 = game.getPlayers().get(0);
+        player2 = game.getPlayers().get(1);
 
         player1gpane = new GridPane();
         player1enemygpane = new GridPane();
         player2gpane = new GridPane();
         player2enemygpane = new GridPane();
 
-        player1Board.initializeBoard(player1gpane);
-        player1EnemyBoard.initializeBoard(player1enemygpane);
-        player2Board.initializeBoard(player2gpane);
-        player2EnemyBoard.initializeBoard(player2enemygpane);
-
-        player1 = new Player(player1Board, player1EnemyBoard);
-        player2 = new Player(player2Board, player2EnemyBoard);
-
         player2Minesweeper = player2.getShipsToPlace().get(0);
         player2Destroyer = player2.getShipsToPlace().get(1);
         player2Battleship = player2.getShipsToPlace().get(2);
+        player2Submarine = player2.getShipsToPlace().get(3);
 
         singleShot = "Single Shot";
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
 
-        //player 2 placing a minesweeper down
-        Orientation direction = Orientation.down;
-        Point2D origin = new Point2D(1,1);
+        //placing a minsweeper at 1,1 down
+        testInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
+        player2.placeShip(testInput1);
 
-        player2.placeShip(player2gpane, direction, origin, player2Minesweeper);
 
-        //player 2 placing a destroyer down
-        direction = Orientation.down;
-        origin = new Point2D(4,4);
+        //placing a destroyer at 4,4 down
+        testInput2 = new PlayerShipInput("Down", "Destroyer", "4", "4");
+        player2.placeShip(testInput2);
 
-        player2.placeShip(player2gpane, direction, origin, player2Destroyer);
 
-        //player 2 placing a battleship down
-        direction = Orientation.down;
-        origin = new Point2D(5,5);
+        //placing a battleship at 5,5 down
+        testInput3 = new PlayerShipInput("Down", "Battleship", "5", "5");
+        player2.placeShip(testInput3);
 
-        player2.placeShip(player2gpane, direction, origin, player2Battleship);
+        //placing a submarine at 2,2 down
+        testInput1 = new PlayerShipInput("Down", "Submarine", "2", "2");
+        player2.placeShip(testInput1);
     }
 
-//    @Test
-//    void testDamageShip() {
-//        assertEquals(0, testShip.damage());
-//        tile1.shot = true;
-//        assertEquals(1, testShip.damage());
-//        tile2.shot = true;
-//        tile3.shot = true;
-//        assertEquals(3, testShip.damage());
-//    }
-//
-//    @Test
-//    void testShipDeath() {
-//        // test undamaged, partially damaged, and destroyed ship
-//        assertFalse(testShip.destroyed());
-//        tile1.shot = true;
-//        assertFalse(testShip.destroyed());
-//        tile2.shot = true;
-//        tile3.shot = true;
-//        assertTrue(testShip.destroyed());
-//    }
+    @Test
+    void shipCreation(){
+
+        //Minesweeper
+        List<ShipTile> tiles = player2Minesweeper.getShipTiles();
+
+        for(ShipTile tile : tiles){
+            assertFalse(tile.shot);
+            assertFalse(tile.revealed);
+        }
+        assertEquals(0, player2Minesweeper.damage());
+        assertFalse(player2Minesweeper.destroyed());
+
+        //Destroyer
+        tiles = player2Destroyer.getShipTiles();
+
+        for(ShipTile tile : tiles){
+            assertFalse(tile.shot);
+            assertFalse(tile.revealed);
+        }
+        assertEquals(0, player2Destroyer.damage());
+        assertFalse(player2Destroyer.destroyed());
+
+
+        //Battleship
+        tiles = player2Battleship.getShipTiles();
+
+        for(ShipTile tile : tiles){
+            assertFalse(tile.shot);
+            assertFalse(tile.revealed);
+        }
+        assertEquals(0, player2Battleship.damage());
+        assertFalse(player2Battleship.destroyed());
+    }
+
+    @Test
+    void submergableShipCreation(){
+
+        //Submarine
+        List<ShipTile> tiles = player2Submarine.getShipTiles();
+
+        for(ShipTile tile : tiles){
+            assertFalse(tile.shot);
+            assertFalse(tile.revealed);
+        }
+        assertEquals(0, player2Submarine.damage());
+        assertFalse(player2Submarine.destroyed());
+    }
+
+    @Test
+    void testDamageShip() {
+
+
+    }
+
+    @Test
+    void testShipDeath() {
+
+    }
 
     @Test
     void testCaptainQuarters(){
-        Point2D point = new Point2D(1,1);
-        List<AttackResult> results = player1.attack(player2.getBoard(), point, "Single Shot");
+        //damage Minesweeper's CQ (one shots it)
+        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
+        List<AttackResult> results = player1.attack(player2.getBoard(), fireInput1);
         AttackResult result = results.get(0);
         assertTrue(result.ship.destroyed());
+        CaptainsQuartersTile captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(1);
+        assertEquals(captainsQ.getHp(), 0);
+        assertSame(result.type, AttackResultType.SUNK);
 
-        point = new Point2D(4,5);
-        player1.attack(player2.getBoard(), point, "Single Shot");
-        results = player1.attack(player2.getBoard(), point, "Single Shot");
+
+        //damage Destroyer's CQ
+        fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
+        results = player1.attack(player2.getBoard(), fireInput1);
+        result = results.get(0);
+        assertFalse(result.ship.destroyed());
+        captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(1);
+        assertEquals(captainsQ.getHp(), 1);
+        assertSame(result.type, AttackResultType.HIT);
+
+        //destroy entire Destroyer after hitting CQ one more time
+        results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
         assertTrue(result.ship.destroyed());
+        assertEquals(captainsQ.getHp(), 0);
+        assertSame(result.type, AttackResultType.SUNK);
 
 
-        point = new Point2D(5,7);
-        player1.attack(player2.getBoard(), point, "Single Shot");
-        results = player1.attack(player2.getBoard(), point, "Single Shot");
+        //damage Battleship's CQ
+        fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
+        results = player1.attack(player2.getBoard(), fireInput1);
+        result = results.get(0);
+        captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(2);
+        assertEquals(captainsQ.getHp(), 1);
+        assertFalse(result.ship.destroyed());
+        assertSame(result.type, AttackResultType.HIT);
+
+        //destroy entire Battleship after hitting CQ one more time
+        results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
         assertTrue(result.ship.destroyed());
+        assertEquals(captainsQ.getHp(), 0);
+        assertSame(result.type, AttackResultType.SUNK);
     }
 
 }

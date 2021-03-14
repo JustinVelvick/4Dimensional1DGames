@@ -14,6 +14,12 @@ public class CaptainsQuartersTile extends ShipTile{
         this.startingHP = hp;
     }
 
+    public CaptainsQuartersTile(Ship parentShip, int column, int row, int depth, int hp) {
+        super(parentShip, column, row, depth);
+        this.hp = hp;
+        this.startingHP = hp;
+    }
+
     @Override
     public void render() {
         GraphicsContext gc = this.getGraphicsContext2D();

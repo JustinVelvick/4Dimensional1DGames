@@ -63,16 +63,16 @@ public class PlayerController implements Initializable {
 
     @FXML
     public void handleFireWeaponButton(ActionEvent event) throws IOException {
-        //not sure if this line of code is correct, or if there's an existing controller object to grab
+        //open a new fireForm and get results from the form stored as a PlayerFireInput object
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fireForm.fxml"));
         Pane root = loader.load();
 
         FireFormController formController = loader.getController();
-        formController.initialize(this.game);
-
         //populate weapons list
+        formController.initialize(this.game);
         formController.populateFireForm(this.player.getWeapons());
-        //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
+
+        //object that will store the user's input
         PlayerFireInput userInput = formController.userInput();
 
 
@@ -83,48 +83,8 @@ public class PlayerController implements Initializable {
 
         stage.showAndWait();
 
-        //fire weapon at enemy's actual board, but also "attack" your own enemy board to mirror
-        fireWeapon(userInput);
-    }
-
-    public void fireWeapon(PlayerFireInput input) {
-        //convert input coordinate strings into a single Point2D, then turn that singular coordinate into a list of size 1
-        Point2D coordinate = new Point2D(input.getxCord(), input.getyCord());
-        List<Point2D> listofCoordinates = new ArrayList<>();
-        listofCoordinates.add(coordinate);
-
-        int x = (int) input.getyCord();
-        int y = (int) input.getyCord();
-
-        try {
-            //your enemy's real board and your own view of their board
-            AttackResult result = player.attack(enemyPlayer.getBoard(), coordinate, input.getWeaponChoice()).get(0);
-            //just need to attack enemy board, we don't care or use the returned AttackResult
-            AttackResult uselessResult = player.attack(player.getEnemyBoard(), coordinate, input.getWeaponChoice()).get(0);
-
-            Ship attackedShip = result.ship;
-
-            this.game.updateEnemyGpane(player.getEnemyBoard(), getEnemygpane());
-            if (attackedShip == null) {
-                AlertBox.display("Miss", "Shot missed");
-            }
-            else{
-
-                if (attackedShip.destroyed()) {
-                    AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
-                }
-                else {
-                    AlertBox.display("Ship Hit", "Ship has been hit");
-                }
-
-                if(enemyPlayer.getBoard().gameOver()) {
-                    AlertBox.display("Enemy Surrender!", "Congratulations, you sunk all of your enemies ships!");
-                }
-            }
-        }
-        catch (InvalidAttackException e) {
-            AlertBox.display("Invalid Coordinates", e.getErrorMsg());
-        }
+        //fire weapon at enemy's actual board
+        player.attack(enemyPlayer.getBoard(), userInput);
     }
 
     //spawn a ShipChoiceForm, populate it's fields, and retrieve user input from ShipChoiceForm when it closes
@@ -155,13 +115,12 @@ public class PlayerController implements Initializable {
     public void placeShip(PlayerShipInput input) {
 
         //place a ship down on player1's actual board
-        if(!this.player.placeShipNew(this.getPlayergpane(), input)){
+        if(!this.player.placeShip(input)){
             //ship placement did not succeed
         }
 
         else{
-            //place the same ship down on player2's enemy board if placement succeeded
-            enemyPlayer.placeEnemyShip(this.getPlayergpane(), input);
+            player.updateVisuals();
         }
     }
 

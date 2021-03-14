@@ -8,10 +8,9 @@ import javafx.scene.shape.Rectangle;
 
 public class SeaTile extends Tile implements IRenderable {
 
-
+    //sea tiles should never need a depth constructor (should always be on the surface)
     public SeaTile(int column, int row) {
         super(column, row);
-
     }
 
 

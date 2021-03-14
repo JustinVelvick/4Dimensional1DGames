@@ -2,14 +2,14 @@ package edu.colorado.fourdimensionalonedgames.render.gui;
 
 public class PlayerFireInput {
     private String weaponChoice;
-    private double xCord;
-    private double yCord;
+    private String xCord;
+    private String yCord;
 
 
     public PlayerFireInput(String weaponChoice, String x, String y) {
         this.weaponChoice = weaponChoice;
-        this.xCord = Double.parseDouble(x);
-        this.yCord = Double.parseDouble(y);
+        this.xCord = x;
+        this.yCord = y;
 
     }
     //get
@@ -17,11 +17,11 @@ public class PlayerFireInput {
         return weaponChoice;
     }
 
-    public double getxCord() {
+    public String getxCord() {
         return xCord;
     }
 
-    public double getyCord() {
+    public String getyCord() {
         return yCord;
     }
 
@@ -29,11 +29,11 @@ public class PlayerFireInput {
         this.weaponChoice = weaponChoice;
     }
 
-    public void setxCord(double xCord) {
+    public void setxCord(String xCord) {
         this.xCord = xCord;
     }
 
-    public void setyCord(double yCord) {
+    public void setyCord(String yCord) {
         this.yCord = yCord;
     }
 }

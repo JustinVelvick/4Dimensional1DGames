@@ -30,4 +30,14 @@ public class Fleet {
         }
         return true;
     }
+
+    public List<Ship> sunkShips(){
+        List<Ship> listofSunkShips = new ArrayList<>();
+        for (Ship ship : fleet){
+            if(ship.destroyed()){
+                listofSunkShips.add(ship);
+            }
+        }
+        return listofSunkShips;
+    }
 }
