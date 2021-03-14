@@ -20,6 +20,7 @@ public class ColorTest {
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
+    static int depth = 2;
     static int numberOfPlayers = 2;
 
     Board player1Board;
@@ -47,10 +48,10 @@ public class ColorTest {
     void setUp() {
         renderer = new Render();
 
-        player1Board = new Board(columns, rows, renderer);
-        player1EnemyBoard = new Board(columns, rows, renderer);
-        player2Board = new Board(columns, rows, renderer);
-        player2EnemyBoard = new Board(columns, rows, renderer);
+        player1Board = new Board(columns, rows, depth, renderer);
+        player1EnemyBoard = new Board(columns, rows, depth, renderer);
+        player2Board = new Board(columns, rows, depth, renderer);
+        player2EnemyBoard = new Board(columns, rows, depth, renderer);
 
         player1gpane = new GridPane();
         player1enemygpane = new GridPane();
@@ -143,17 +144,17 @@ public class ColorTest {
         player1.attack(player2.getBoard(), coord, singleShot);
 
 
-        assertEquals(Color.HOTPINK, player2.getBoard().tiles[1][2].getColor());
-        assertEquals(Color.HOTPINK, player2.getBoard().tiles[4][4].getColor());
-        assertEquals(Color.HOTPINK, player2.getBoard().tiles[5][5].getColor());
-        assertEquals(Color.GREEN, player2.getBoard().tiles[1][1].getColor());
-        assertEquals(Color.BLUE, player2.getBoard().tiles[4][6].getColor());
-        assertEquals(Color.INDIGO, player2.getBoard().tiles[5][6].getColor());
+        assertEquals(Color.HOTPINK, player2.getBoard().tiles[1][2][0].getColor());
+        assertEquals(Color.HOTPINK, player2.getBoard().tiles[4][4][0].getColor());
+        assertEquals(Color.HOTPINK, player2.getBoard().tiles[5][5][0].getColor());
+        assertEquals(Color.GREEN, player2.getBoard().tiles[1][1][0].getColor());
+        assertEquals(Color.BLUE, player2.getBoard().tiles[4][6][0].getColor());
+        assertEquals(Color.INDIGO, player2.getBoard().tiles[5][6][0].getColor());
     }
 
     @Test
     void testNonShipTileColors() {
-        assertEquals(Color.CORNFLOWERBLUE, player2.getBoard().tiles[1][3].getColor());
-        assertEquals(Color.TRANSPARENT, player2.getBoard().tiles[0][0].getColor());
+        assertEquals(Color.CORNFLOWERBLUE, player2.getBoard().tiles[1][3][0].getColor());
+        assertEquals(Color.TRANSPARENT, player2.getBoard().tiles[0][0][0].getColor());
     }
 }

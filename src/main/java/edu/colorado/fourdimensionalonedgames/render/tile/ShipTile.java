@@ -15,6 +15,12 @@ public class ShipTile extends Tile {
         this.parentShip = parentShip;
     }
 
+    //overloaded tile constructor for depth
+    public ShipTile(Ship parentShip, int column, int row, int depth) {
+        super(column, row, depth);
+        this.parentShip = parentShip;
+    }
+
     @Override
     public Ship getShip() {
         return parentShip;

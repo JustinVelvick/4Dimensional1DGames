@@ -30,6 +30,7 @@ public class SingleShotWeaponTest {
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
+    static int depth = 2;
     static int numberOfPlayers = 2;
 
     Board player1Board;
@@ -58,10 +59,10 @@ public class SingleShotWeaponTest {
     void setUp(){
         renderer = new Render();
 
-        player1Board = new Board(columns, rows, renderer);
-        player1EnemyBoard = new Board(columns, rows, renderer);
-        player2Board = new Board(columns, rows, renderer);
-        player2EnemyBoard = new Board(columns, rows, renderer);
+        player1Board = new Board(columns, rows, depth, renderer);
+        player1EnemyBoard = new Board(columns, rows, depth, renderer);
+        player2Board = new Board(columns, rows, depth, renderer);
+        player2EnemyBoard = new Board(columns, rows, depth, renderer);
 
         player1gpane = new GridPane();
         player1enemygpane = new GridPane();

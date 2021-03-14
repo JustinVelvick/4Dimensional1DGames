@@ -32,9 +32,10 @@ public class Game {
     private int columns;
     private int rows;
 
-    //width and height of each player's board/grid
-    private int width;
-    private int height;
+    //width, height, and depth of each player's board/grid
+    private int width; //x
+    private int height; //y
+    private int depth; //z
 
     private boolean player1Turn;
 
@@ -50,13 +51,14 @@ public class Game {
      * @param columns (number of columns on a single battleships board)
      * @param rows (number of rows on a single battleships board)
      */
-    public Game(Stage primaryStage, Render renderer, int numberofPlayers, int tileSize, int columns, int rows) throws IOException {
+    public Game(Stage primaryStage, Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth) throws IOException {
 
         //set all of our private game attributes
         this.renderer = renderer;
         this.tileSize = tileSize;
         this.columns = columns;
         this.rows = rows;
+        this.depth = depth;
         this.width = columns*tileSize;
         this.height = columns*tileSize;
         this.numberofPlayers = numberofPlayers;
@@ -64,7 +66,7 @@ public class Game {
 
         //create the players for this game (and their boards in the process)
         for(int i = 0; i < this.numberofPlayers; i++){
-            Player newPlayer = new Player(new Board(columns, rows, this.renderer), new Board(columns, rows, this.renderer));
+            Player newPlayer = new Player(new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
 
@@ -154,16 +156,19 @@ public class Game {
 
     }
 
+    //logic for deciding what tiles to render
+    //place ifs and switches for revealed, shot, depth (z) position, if ship is above my z, etc
+    //TODO - Implement GridPane updating based on flags and z position
     public void updateEnemyGpane(Board board, GridPane gpane){
         Tile newtile;
         Tile oldTile;
         for (int i = 1; i <= columns; i++) {
             for (int j = 1; j <= rows; j++) {
 
-                oldTile = board.tiles[i][j];
+                oldTile = board.tiles[i][j][0];
                 //tile we will be adding to enemy gpane is actual tile on the enemy's board if its been shot
                 if(oldTile.revealed){
-                    newtile = board.tiles[i][j];
+                    newtile = board.tiles[i][j][0];
                     gpane.getChildren().remove(oldTile);
                     gpane.add(newtile, i, j);
                     this.renderer.unregister(oldTile);

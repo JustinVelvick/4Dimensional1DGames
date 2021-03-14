@@ -28,7 +28,7 @@ public class Attack implements IAttackBehavior {
             int y2 = (int) position.getY();
 
             // get tile to be attacked
-            Tile attackedTile = board.tiles[x2][y2];
+            Tile attackedTile = board.tiles[x2][y2][0];
 
             //if we hit a captains quarters, we must subtract hp first, then see if CC was destroyed,
             //if yes, destroy entire ship

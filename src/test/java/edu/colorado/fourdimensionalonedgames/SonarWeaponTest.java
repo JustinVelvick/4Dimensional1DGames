@@ -24,6 +24,7 @@ public class SonarWeaponTest {
     Ship testDestroyer, testMinesweeper, testBattleship;
     static int rows = 10;
     static int columns = 10;
+    static int depth = 2;
     Render renderer;
     GridPane testgpane;
     AttackResult simpleMiss;
@@ -35,9 +36,9 @@ public class SonarWeaponTest {
 
         testgpane = new GridPane();
         renderer = new Render();
-        testBoard = new Board(columns, rows, renderer);
+        testBoard = new Board(columns, rows, depth, renderer);
         testBoard.initializeBoard(testgpane);
-        testPlayerBoard = new Board(columns, rows, renderer);
+        testPlayerBoard = new Board(columns, rows, depth, renderer);
         testPlayerBoard.initializeBoard(testgpane);
         testPlayer = new Player(testPlayerBoard, testBoard);
 
@@ -69,9 +70,9 @@ public class SonarWeaponTest {
                 // math to check if it's in the diamond
                 System.out.println();
                 if (!((Math.abs(x) == 1 && Math.abs(y) == 2) || (Math.abs(x) == 2 && Math.abs(y) == 1)) && (Math.abs(x) != 2 || Math.abs(y) != 2)) {
-                    assertTrue(testBoard.tiles[5+x][5+y].revealed);
+                    assertTrue(testBoard.tiles[5+x][5+y][0].revealed);
                 } else {
-                    assertFalse(testBoard.tiles[5+x][5+y].revealed);
+                    assertFalse(testBoard.tiles[5+x][5+y][0].revealed);
                 }
             }
         }

@@ -19,6 +19,7 @@ public class Battleships extends Application {
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
+    static int depth = 2; //surface and 1 tile below surface
     static int numberOfPlayers = 2;
 
 
@@ -29,7 +30,7 @@ public class Battleships extends Application {
             Render renderer = new Render();
 
             //Create the game object
-            Game newGame = new Game(primaryStage, renderer, numberOfPlayers, tileSize, columns, rows);
+            Game newGame = new Game(primaryStage, renderer, numberOfPlayers, tileSize, columns, rows, depth);
 
             //To give a refresh rate to our display
             new AnimationTimer() {

@@ -17,6 +17,7 @@ class PlaceShipsTest {
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
+    static int depth = 2;
     Render renderer;
     GridPane gpane;
     ShipYard shipyard;
@@ -26,7 +27,7 @@ class PlaceShipsTest {
         gpane = new GridPane();
         renderer = new Render();
 
-        testBoard = new Board(columns, rows, renderer);
+        testBoard = new Board(columns, rows, depth, renderer);
         testBoard.initializeBoard(gpane);
 
         shipyard = new DefaultShipYard();
