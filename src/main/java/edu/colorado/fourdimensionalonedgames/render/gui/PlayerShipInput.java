@@ -3,6 +3,7 @@ package edu.colorado.fourdimensionalonedgames.render.gui;
 public class PlayerShipInput {
     private String direction;
     private String shipChoice;
+    private String submergeChoice;
     private String xCord;
     private String yCord;
 
@@ -12,6 +13,10 @@ public class PlayerShipInput {
         this.shipChoice = shipC;
         this.xCord = x;
         this.yCord = y;
+
+        if(!shipC.equals("Submarine")){
+            submergeChoice = null;
+        }
     }
 
     public String getDirection() {
@@ -30,6 +35,10 @@ public class PlayerShipInput {
         return yCord;
     }
 
+    public String getSubmergeChoice() {
+        return submergeChoice;
+    }
+
     public void setDirection(String direction) {
         this.direction = direction;
     }
@@ -44,5 +53,9 @@ public class PlayerShipInput {
 
     public void setyCord(String yCord) {
         this.yCord = yCord;
+    }
+
+    public void setSubmergeChoice(String submergeChoice) {
+        this.submergeChoice = submergeChoice;
     }
 }

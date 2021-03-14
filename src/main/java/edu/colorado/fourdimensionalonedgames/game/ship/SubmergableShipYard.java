@@ -1,13 +1,12 @@
 package edu.colorado.fourdimensionalonedgames.game.ship;
 
-import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 
 import java.util.List;
 
-public class DefaultShipYard extends ShipYard{
+public class SubmergableShipYard extends ShipYard{
 
     @Override
     public Ship createShip(String choice){
@@ -23,12 +22,6 @@ public class DefaultShipYard extends ShipYard{
 
     protected Ship buildShip(String choice) {
         switch (choice){
-            case "Minesweeper":
-                return new Minesweeper();
-            case "Destroyer":
-                return new Destroyer();
-            case "Battleship":
-                return new Battleship();
             case "Submarine":
                 return new Submarine();
             default:
@@ -39,7 +32,7 @@ public class DefaultShipYard extends ShipYard{
     //generates default tiles to be overridden later (these are all at col 0, row 0)
     private void generateShipTiles(Ship newShip){
         for(int i = 0; i < newShip.size; i++){
-            newShip.addTile(new ShipTile(newShip,0,0));
+            newShip.addTile(new ShipTile(newShip,0,0, 0));
         }
     }
 
@@ -49,24 +42,9 @@ public class DefaultShipYard extends ShipYard{
         List<ShipTile> tiles = newShip.getShipTiles();
         Tile tileToReplace;
         switch (newShip.getType()) {
-            case "Minesweeper":
-                tileToReplace = tiles.get(0);
-                newTile = new CaptainsQuartersTile(newShip, tileToReplace.getColumn(), tileToReplace.getRow(), 1);
-                tiles.set(0, newTile);
-                break;
-            case "Destroyer":
-                tileToReplace = tiles.get(1);
-                newTile = new CaptainsQuartersTile(newShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
-                tiles.set(1, newTile);
-                break;
-            case "Battleship":
-                tileToReplace = tiles.get(2);
-                newTile = new CaptainsQuartersTile(newShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
-                tiles.set(2, newTile);
-                break;
             case "Submarine":
                 tileToReplace = tiles.get(3);
-                newTile = new CaptainsQuartersTile(newShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
+                newTile = new CaptainsQuartersTile(newShip, tileToReplace.getColumn(), tileToReplace.getRow(), tileToReplace.getDepth(), 2);
                 tiles.set(3, newTile);
                 break;
             default:

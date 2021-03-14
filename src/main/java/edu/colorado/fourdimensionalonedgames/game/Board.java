@@ -17,6 +17,7 @@ public class Board {
 
     private final int rows;
     private final int columns;
+    private final int depth;
 
     public Tile[][][] tiles;
     public Render renderer;
@@ -26,6 +27,7 @@ public class Board {
 
         this.rows = rows;
         this.columns = columns;
+        this.depth = depth;
         this.renderer = renderer;
         this.fleet = new Fleet();
         tiles = new Tile[columns + 1][rows + 1][depth];
@@ -62,17 +64,43 @@ public class Board {
         }
     }
 
+    //Overloaded method for tests (This method does not care about grid panes, but still generates tiles)
+    public void initializeBoard(){
+        Tile tile;
+
+        for (int j = 0; j <= columns; j++) {
+            tile = new LetterTile(0, j, String.valueOf(j));
+            this.renderer.register(tile);
+            this.tiles[0][j][0] = tile;
+        }
+
+
+        for (int i = 1; i <= rows; i++) {
+            tile = new LetterTile(i, 0, Character.toString((char) i + 64));
+            this.renderer.register(tile);
+            this.tiles[i][0][0] = tile;
+        }
+
+        for (int i = 1; i <= columns; i++) {
+            for (int j = 1; j <= rows; j++) {
+                tile = new SeaTile(i, j);
+                this.renderer.register(tile);
+                this.tiles[i][j][0] = tile;
+                this.tiles[i][j][0].shot = false;
+            }
+        }
+    }
+
 
     /**
      * Place a new ship on the board given a placement orientation
      *
-     * @param currentBoard  JavaFX Gpane object to place tile canvases onto
      * @param direction     direction the ship points in from the origin
      * @param origin        the origin of the placement
      * @param newShip       the ship to be placed
      * @return              boolean indicating ship placement success
      */
-    public boolean placeShip(GridPane currentBoard, Orientation direction, Point2D origin, Ship newShip) {
+    public boolean placeShip(Orientation direction, Point2D origin, Ship newShip) {
 
         // placeable returns a list of coordinates when placement is valid, null when not valid
         List<Point2D> generatedCoordinates = placeable(origin, direction, newShip.size);
@@ -97,9 +125,6 @@ public class Board {
                 //re-register that spot with the renderer
                 renderer.unregister(oldTile);
                 renderer.register(currentTile);
-
-                currentBoard.getChildren().remove(oldTile);
-                currentBoard.add(currentTile, x, y);
             }
             //add this completed, built ship to the fleet
             fleet.addShip(newShip);
@@ -157,7 +182,7 @@ public class Board {
     }
 
     //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
-    private void swapTile(Tile newTile, GridPane gpane){
+    private void swapTile(Tile newTile){
         Tile oldTile;
 
         int x = newTile.getColumn();
@@ -170,9 +195,6 @@ public class Board {
         renderer.unregister(oldTile);
         renderer.register(newTile);
 
-        gpane.getChildren().remove(oldTile);
-        gpane.add(newTile, x, y);
-
         tiles[x][y][0] = newTile;
     }
 
@@ -183,7 +205,7 @@ public class Board {
      */
     public boolean gameOver() {
         for (Ship ship : fleet.getShips()) {
-            if (ship.destroyed() == false) return false;
+            if (!ship.destroyed()) return false;
         }
         return true;
     }
@@ -194,5 +216,9 @@ public class Board {
 
         // check that provided coords are on board, throw exception if not
         return !(x < 1 || x > columns || y < 1 || y > rows);
+    }
+
+    public int getDepth() {
+        return depth;
     }
 }

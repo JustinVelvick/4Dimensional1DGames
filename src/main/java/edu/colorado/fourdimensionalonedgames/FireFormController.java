@@ -1,6 +1,7 @@
 package edu.colorado.fourdimensionalonedgames;
 
 import edu.colorado.fourdimensionalonedgames.game.Game;
+import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
@@ -73,16 +74,18 @@ public class FireFormController implements Initializable {
 
     @FXML
     public void handleConfirmButton(ActionEvent event){
-        if(this.validateForm()){
 
-            //store form data into the PlayerInput object
-            this.input.setWeaponChoice(weaponChoiceBox.getSelectionModel().getSelectedItem());
-            this.input.setxCord(Double.parseDouble(xCord.getText()));
-            this.input.setyCord(Double.parseDouble(yCord.getText()));
-
+        PlayerFireInput tentativeInput = new PlayerFireInput(weaponChoiceBox.getSelectionModel().getSelectedItem(),
+                                                                xCord.getText(),
+                                                                    yCord.getText());
+        if(validateForm(tentativeInput)){
             //Close this window (Stage)
+            input = tentativeInput;
             Stage currentStage = (Stage) confirmButton.getScene().getWindow();
             currentStage.close();
+        }
+        else{
+            //TODO - Have a box pop up asking for valid input
         }
     }
 
@@ -92,9 +95,9 @@ public class FireFormController implements Initializable {
     }
 
 
-    //helper method to validate form before populating a PlayerShipInput object
-    public boolean validateForm() {
-        Boolean result = true;
+    //helper method to validate form before sending a PlayerShipInput object
+    public boolean validateForm(PlayerFireInput input) {
+        boolean result = false;
 
 
 

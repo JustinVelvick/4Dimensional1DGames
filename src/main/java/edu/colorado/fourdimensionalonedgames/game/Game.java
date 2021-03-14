@@ -73,7 +73,30 @@ public class Game {
         startGame(primaryStage);
     }
 
+    ////////////////TESTING GAME CONSTRUCTOR///////////////////////
 
+    //Overloaded constructor for testing, the only difference is that this method does not call startGame (loads GUI)
+    //This constructor does NOT take a stage as it's just for non visual, logic testing
+    public Game(Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth){
+        //set all of our private game attributes
+        this.renderer = renderer;
+        this.tileSize = tileSize;
+        this.columns = columns;
+        this.rows = rows;
+        this.depth = depth;
+        this.width = columns*tileSize;
+        this.height = columns*tileSize;
+        this.numberofPlayers = numberofPlayers;
+        this.player1Turn = false;
+
+        //create the players for this game (and their boards in the process)
+        for(int i = 0; i < this.numberofPlayers; i++){
+            Player newPlayer = new Player(new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
+            this.players.add(newPlayer);
+        }
+
+        initializeBoards();
+    }
     //called ONCE on game start
     private void startGame(Stage primaryStage) throws IOException {
         //Store our application's parent stage (the stage we set all our scenes to upon turn switch)
@@ -132,6 +155,20 @@ public class Game {
         players.get(1).getEnemyBoard().initializeBoard(player2Controller.getEnemygpane());
     }
 
+    //Method for testing, does same thing as initializeBoardVisuals, but does not initialize gridpanes
+    //This method only gets called from game constructor that is for Testing purposes
+    private void initializeBoards(){
+        //Player 1's own board
+        players.get(0).getBoard().initializeBoard();
+        //Player 1's enemy board
+        players.get(0).getEnemyBoard().initializeBoard();
+        //Player 2's own board
+        players.get(1).getBoard().initializeBoard();
+        //Player 2's enemy board
+        players.get(1).getEnemyBoard().initializeBoard();
+    }
+
+
 
     //called when a player's turn is over
     public void passTurn(){
@@ -180,7 +217,7 @@ public class Game {
 
     //checks if someone has won the game
     public boolean gameOver(){
-        return false;
+        return true;
     }
 
     public List<Player> getPlayers() {

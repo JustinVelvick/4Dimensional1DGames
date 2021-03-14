@@ -1,26 +1,23 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
-import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
-import javafx.geometry.Point2D;
+import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class SonarWeaponTest {
+public class GameLogicTest {
+
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
@@ -53,9 +50,9 @@ public class SonarWeaponTest {
     Ship player2Destroyer;
     Ship player2Battleship;
 
-    @BeforeEach
-    void setUp() {
 
+    @BeforeEach
+    void setUp(){
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
         player1 = game.getPlayers().get(0);
@@ -72,35 +69,42 @@ public class SonarWeaponTest {
 
         singleShot = "Single Shot";
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
-
-        //placing a minsweeper at 1,1 down
+        /////////////////////////////////////////////////////////////////////////////////////
+        //Player 2 placing a minesweeper at 1,1 down
         testInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
         player2.placeShip(testInput1);
 
 
-        //placing a destroyer at 4,4 down
+        //Player 2 placing a destroyer at 4,4 down
         testInput2 = new PlayerShipInput("Down", "Destroyer", "4", "4");
         player2.placeShip(testInput2);
 
 
-        //placing a battleship at 5,5 down
+        //Player 2 placing a battleship at 5,5 down
         testInput3 = new PlayerShipInput("Down", "Battleship", "5", "5");
         player2.placeShip(testInput3);
     }
 
     @Test
-    void testSonar() {
-        fireInput1 = new PlayerFireInput("Sonar Pulse", "5", "5");
+    void gameOver() {
+        assertFalse(game.gameOver());
+
+        // sink all ships on board
+        //1 shot minesweeper by hitting 1,1 CQ
+        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
         player1.attack(player2.getBoard(), fireInput1);
-        for (int x = -2; x <= 2; x++) {
-            for (int y = -2; y <= 2; y++) {
-                // math to check if tiles in the diamond are revealed
-                if (!((Math.abs(x) == 1 && Math.abs(y) == 2) || (Math.abs(x) == 2 && Math.abs(y) == 1)) && (Math.abs(x) != 2 || Math.abs(y) != 2)) {
-                    assertTrue(player2.getBoard().tiles[5+x][5+y][0].revealed);
-                } else {
-                    assertFalse(player2.getBoard().tiles[5+x][5+y][0].revealed);
-                }
-            }
-        }
+
+        //Destroyer at 4,4 down (CQ at 4,5)
+        fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
+
+        player1.attack(player2.getBoard(), fireInput1);
+        player1.attack(player2.getBoard(), fireInput1);
+
+        //Battleship at 5,5 down (CQ at 5,7)
+        fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
+        fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
+
+        assertTrue(game.gameOver());
     }
+
 }

@@ -1,5 +1,6 @@
 package edu.colorado.fourdimensionalonedgames;
 
+import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.event.ActionEvent;
@@ -33,24 +34,42 @@ public class ShipChoiceFormController implements Initializable {
     private ChoiceBox<String> shipChoiceBox;
 
     @FXML
+    private ChoiceBox<String> submergeChoiceBox;
+
+    @FXML
     private Button confirmButton;
 
     private PlayerShipInput input;
 
 
 
-    public PlayerShipInput display() throws IOException {
+    public PlayerShipInput display(){
         return this.input;
     }
 
     @FXML
-    public void handleConfirmButton(ActionEvent event) throws IOException {
-        if(this.validateForm(this.input)){
-            this.input.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
-            this.input.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
-            this.input.setxCord(xCord.getText());
-            this.input.setyCord(xCord.getText());
+    public void handleConfirmButton(ActionEvent event){
 
+        PlayerShipInput tentativeInput = new PlayerShipInput("Down", "Error", "1", "1");
+
+        if(shipChoiceBox.getSelectionModel().getSelectedItem().equals("Submarine")){
+            tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
+            tentativeInput.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
+            tentativeInput.setxCord(xCord.getText());
+            tentativeInput.setyCord(xCord.getText());
+            tentativeInput.setSubmergeChoice(submergeChoiceBox.getSelectionModel().getSelectedItem());
+        }
+        else{
+            tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
+            tentativeInput.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
+            tentativeInput.setxCord(xCord.getText());
+            tentativeInput.setyCord(xCord.getText());
+        }
+
+        if(this.validateForm(tentativeInput)){
+            this.input = tentativeInput;
+
+            //close this window (Stage)
             Stage currentStage = (Stage) confirmButton.getScene().getWindow();
             currentStage.close();
         }
@@ -82,7 +101,7 @@ public class ShipChoiceFormController implements Initializable {
 
 
 
-    //helper method to validate form before populating a PlayerShipInput object
+    //helper method to validate form before sending PlayerShipInput object
     public boolean validateForm(PlayerShipInput input) {
 
         //check len
@@ -90,7 +109,7 @@ public class ShipChoiceFormController implements Initializable {
             return false;
         }
 
-        Boolean xValid = false;
+        boolean xValid = false;
         if((input.getxCord()).charAt(0) > 64 && (input.getxCord()).charAt(0) < 75){
             xValid=true;
         }
@@ -98,13 +117,12 @@ public class ShipChoiceFormController implements Initializable {
             xValid=true;
         }
 
-        Boolean yValid = true;
+        boolean yValid = true;
         if((int) (input.getyCord()).charAt(0) <= 10 || (int) (input.getyCord()).charAt(0) > 0){
             yValid = false;
         }
 
-        boolean result = true;
-        result = xValid&&yValid;
+        boolean result = xValid&&yValid;
         return result;
     }
 
