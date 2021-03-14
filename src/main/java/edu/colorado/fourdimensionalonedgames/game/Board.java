@@ -21,7 +21,6 @@ public class Board {
 
     public Tile[][][] tiles;
     public Render renderer;
-    private Fleet fleet;
 
     public Board(int columns, int rows, int depth, Render renderer) {
 
@@ -29,7 +28,6 @@ public class Board {
         this.columns = columns;
         this.depth = depth;
         this.renderer = renderer;
-        this.fleet = new Fleet();
         tiles = new Tile[columns + 1][rows + 1][depth];
     }
 
@@ -126,8 +124,6 @@ public class Board {
                 renderer.unregister(oldTile);
                 renderer.register(currentTile);
             }
-            //add this completed, built ship to the fleet
-            fleet.addShip(newShip);
             return true;
         }
         else{
@@ -198,18 +194,6 @@ public class Board {
         tiles[x][y][0] = newTile;
     }
 
-    /**
-     * Determines if the game is over based on the board state
-     *
-     * @return  boolean indicating if game is over
-     */
-    public boolean gameOver() {
-        for (Ship ship : fleet.getShips()) {
-            if (!ship.destroyed()) return false;
-        }
-        return true;
-    }
-
     public boolean isWithinBounds(Point2D coords) {
         int x = (int) coords.getX();
         int y = (int) coords.getY();
@@ -221,4 +205,5 @@ public class Board {
     public int getDepth() {
         return depth;
     }
+
 }

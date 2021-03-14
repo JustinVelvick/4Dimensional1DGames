@@ -57,8 +57,6 @@ public class PenetratingAttack implements IAttackBehavior {
                 Ship ship = attackedTile.getShip();
                 if (ship == null) {
                     ret.add(new AttackResult(AttackResultType.MISS, null));
-                } else if (board.gameOver()) {
-                    ret.add(new AttackResult(AttackResultType.SURRENDER, ship));
                 } else if (ship.destroyed()) {
                     ret.add(new AttackResult(AttackResultType.SUNK, ship));
                 } else {

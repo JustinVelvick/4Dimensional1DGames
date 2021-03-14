@@ -6,12 +6,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
 //TODO - Create this popup box in scene builder and then FXML load it here
 public class AlertBox {
     public static void display(String title, String message) {
+        if(Screen.getPrimary() == null){
+            return;
+        }
         Stage popUp = new Stage();
         //Block events to other stages/windows
         popUp.initModality(Modality.APPLICATION_MODAL);
@@ -34,6 +38,5 @@ public class AlertBox {
         Scene scene = new Scene(layout);
         popUp.setScene(scene);
         popUp.showAndWait();
-
     }
 }

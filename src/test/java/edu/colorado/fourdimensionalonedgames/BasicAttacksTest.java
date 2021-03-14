@@ -192,12 +192,12 @@ public class BasicAttacksTest {
         //CaptainsQuarters should on the origin for minesweepers, so (4,4)
 
         //kills entire minesweeper in one shot (hitting captains quarters)
-        fireInput1 = new PlayerFireInput("Single Shot", "4", "4");
+        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
         player1.attack(player2.getBoard(), fireInput1);
 
 
         CaptainsQuartersTile tile = (CaptainsQuartersTile)player2Minesweeper.getShipTiles().get(0);
-        assertEquals(tile.getHp(), 0);
+        assertEquals(0, tile.getHp());
         assertTrue(player2Minesweeper.destroyed());
     }
 
@@ -210,27 +210,4 @@ public class BasicAttacksTest {
         //repeat attack on same tile and throw error
         assertThrows(InvalidAttackException.class, () -> player1.attack(player2.getBoard(), fireInput1));
     }
-
-    @Test
-    void gameOver() {
-        assertFalse(game.gameOver());
-
-        // sink all ships on board
-        //1 shot minesweeper by hitting 1,1 CQ
-        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
-        player1.attack(player2.getBoard(), fireInput1);
-
-        //Destroyer at 4,4 down (CQ at 4,5)
-        fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
-
-        player1.attack(player2.getBoard(), fireInput1);
-        player1.attack(player2.getBoard(), fireInput1);
-
-        //Battleship at 5,5 down (CQ at 5,7)
-        fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
-        fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
-
-        assertTrue(game.gameOver());
-    }
-
 }

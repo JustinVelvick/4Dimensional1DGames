@@ -26,11 +26,13 @@ public class Player {
     private Board enemyBoard;
     private List<Weapon> weapons = new ArrayList<>();
     private List<Ship> shipsToPlace = new ArrayList<>();
+    private Fleet fleet;
 
     //constructor
     public Player (Board board, Board enemyBoard) {
         this.board = board;
         this.enemyBoard = enemyBoard;
+        this.fleet = new Fleet();
         generateShips();
         generateWeapons();
     }
@@ -68,32 +70,8 @@ public class Player {
         double y = Double.parseDouble(input.getyCord());
 
         Point2D attackCoords = new Point2D(x, y);
-        List<AttackResult> results = new ArrayList<>();
-        try {
-            //your enemy's real board and your own view of their board
-            results = weapon.useAt(opponentBoard, attackCoords);
+        List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
 
-            //Inform player of result of attacking each enemy tile (could be 1 tile or many)
-            for(AttackResult attackResult : results){
-                Ship attackedShip = attackResult.ship;
-
-                if (attackedShip == null) {
-                    AlertBox.display("Miss", "Shot missed");
-                }
-                else{
-
-                    if (attackedShip.destroyed()) {
-                        AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
-                    }
-                    else {
-                        AlertBox.display("Ship Hit", "Ship has been hit");
-                    }
-                }
-            }
-        }
-        catch (InvalidAttackException e) {
-            AlertBox.display("Invalid Coordinates", e.getErrorMsg());
-        }
         return results;
     }
 
@@ -145,6 +123,8 @@ public class Player {
         }
 
         if(getBoard().placeShip(direction, origin, newShip)){
+            //add this completed, built ship to the fleet
+            fleet.addShip(newShip);
             //Remove shipToPlace from player list of shipsToPlace since placement succeeded
             removeShipToPlace(newShip);
         }
@@ -153,53 +133,6 @@ public class Player {
         }
         return true;
     }
-
-/*
-    public Boolean placeEnemyShip(PlayerShipInput input){
-        Orientation direction = Orientation.down;
-        double x =  Double.parseDouble(input.getxCord());
-        double y =  Double.parseDouble(input.getyCord());
-        Point2D origin = new Point2D(x, y);
-
-        Ship newShip = new Destroyer();
-
-        String shipChoice = input.getShipChoice();
-        String orientationChoice = input.getDirection();
-
-
-        for(Ship ship : this.getShipsToPlace()){
-            if(shipChoice.equals(ship.getType())){
-                newShip = ship;
-            }
-        }
-
-
-        switch (orientationChoice) {
-            case "Up":
-                direction = Orientation.up;
-                break;
-
-            case "Down":
-                direction = Orientation.down;
-                break;
-
-            case "Left":
-                direction = Orientation.left;
-                break;
-
-            case "Right":
-                direction = Orientation.right;
-                break;
-        }
-
-        if(!getEnemyBoard().placeShip(direction, origin, newShip)){
-            return false;
-        }
-
-        return true;
-    }
-*/
-
 
     public Board getBoard() {
         return board;
@@ -218,4 +151,8 @@ public class Player {
     }
 
     public List<Weapon> getWeapons(){return weapons;}
+
+    public Fleet getFleet(){
+        return fleet;
+    }
 }

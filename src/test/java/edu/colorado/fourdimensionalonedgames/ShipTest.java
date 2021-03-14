@@ -164,7 +164,7 @@ class ShipTest {
         List<AttackResult> results = player1.attack(player2.getBoard(), fireInput1);
         AttackResult result = results.get(0);
         assertTrue(result.ship.destroyed());
-        CaptainsQuartersTile captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(1);
+        CaptainsQuartersTile captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(0);
         assertEquals(captainsQ.getHp(), 0);
         assertSame(result.type, AttackResultType.SUNK);
 
@@ -176,7 +176,7 @@ class ShipTest {
         assertFalse(result.ship.destroyed());
         captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(1);
         assertEquals(captainsQ.getHp(), 1);
-        assertSame(result.type, AttackResultType.HIT);
+        assertSame(result.type, AttackResultType.MISS);
 
         //destroy entire Destroyer after hitting CQ one more time
         results = player1.attack(player2.getBoard(), fireInput1);
@@ -193,7 +193,7 @@ class ShipTest {
         captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(2);
         assertEquals(captainsQ.getHp(), 1);
         assertFalse(result.ship.destroyed());
-        assertSame(result.type, AttackResultType.HIT);
+        assertSame(result.type, AttackResultType.MISS);
 
         //destroy entire Battleship after hitting CQ one more time
         results = player1.attack(player2.getBoard(), fireInput1);

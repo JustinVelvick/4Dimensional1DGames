@@ -84,6 +84,10 @@ public class ColorTest {
         //placing a battleship at 5,5 down
         testInput3 = new PlayerShipInput("Down", "Battleship", "5", "5");
         player2.placeShip(testInput3);
+
+        //placing a submarine at 2,2 down
+        testInput1 = new PlayerShipInput("Down", "Submarine", "2", "2");
+        player2.placeShip(testInput1);
     }
 
     @Test

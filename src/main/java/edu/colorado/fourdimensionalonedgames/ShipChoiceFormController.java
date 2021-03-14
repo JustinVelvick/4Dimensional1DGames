@@ -96,7 +96,6 @@ public class ShipChoiceFormController implements Initializable {
             //Display the first choice as dropdown default
             shipChoiceBox.getSelectionModel().select(choices.get(0));
         }
-
     }
 
 
@@ -105,20 +104,26 @@ public class ShipChoiceFormController implements Initializable {
     public boolean validateForm(PlayerShipInput input) {
 
         //check len
-        if((input.getxCord()).length() != 1) {
+        if((input.getxCord().length() != 1) || (input.getyCord().length() > 2) || (input.getyCord().length() < 1)) {
             return false;
         }
 
+
+        //for x, values entered are either a-j or A-J, use ascii table values to check
         boolean xValid = false;
-        if((input.getxCord()).charAt(0) > 64 && (input.getxCord()).charAt(0) < 75){
+        int xAscii = input.getxCord().charAt(0);
+
+        if(xAscii > 64 && xAscii < 75){
             xValid=true;
         }
-        else if((input.getxCord()).charAt(0) > 96 && (input.getxCord()).charAt(0) < 107){
+        else if(xAscii > 96 && xAscii < 107){
             xValid=true;
         }
 
+        //y values can be integers [1,10]
         boolean yValid = true;
-        if((int) (input.getyCord()).charAt(0) <= 10 || (int) (input.getyCord()).charAt(0) > 0){
+        int y = Integer.parseInt(input.getyCord());
+        if(y > 10 || y < 1){
             yValid = false;
         }
 

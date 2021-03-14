@@ -5,6 +5,7 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
@@ -87,6 +88,38 @@ public class PlayerController implements Initializable {
         player.attack(enemyPlayer.getBoard(), userInput);
     }
 
+    //generates appropriate alertbox to user from what resulted in attack
+    public void fireWeapon(Board opponentBoard, PlayerFireInput userInput){
+
+        List<AttackResult> results;
+
+        try {
+            //your enemy's real board and your own view of their board
+            results = player.attack(opponentBoard, userInput);
+
+            //Inform player of result of attacking each enemy tile (could be 1 tile or many)
+            for(AttackResult attackResult : results){
+                Ship attackedShip = attackResult.ship;
+
+                if (attackedShip == null) {
+                    AlertBox.display("Miss", "Shot missed");
+                }
+                else{
+
+                    if (attackedShip.destroyed()) {
+                        AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
+                    }
+                    else {
+                        AlertBox.display("Ship Hit", "Ship has been hit");
+                    }
+                }
+            }
+        }
+        catch (InvalidAttackException e) {
+            AlertBox.display("Invalid Coordinates", e.getErrorMsg());
+        }
+    }
+
     //spawn a ShipChoiceForm, populate it's fields, and retrieve user input from ShipChoiceForm when it closes
     public void handlePlaceShipButton(ActionEvent event) throws IOException{
 
@@ -122,6 +155,10 @@ public class PlayerController implements Initializable {
         else{
             player.updateVisuals();
         }
+    }
+
+    public void handleUndoButton(ActionEvent e){
+
     }
 
     public void handlePassTurnButton(ActionEvent e){

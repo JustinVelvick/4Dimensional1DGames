@@ -44,7 +44,8 @@ public class Attack implements IAttackBehavior {
                 else{
                     //we return null in case of a miss, and we treat armored captains quarters hits as a miss
                     //additionally, we do not set the .shot flag for this "miss"
-                    return null;
+                    ret.add(new AttackResult(AttackResultType.MISS, attackedTile.getShip()));
+                    continue;
                 }
             }
 
@@ -54,9 +55,6 @@ public class Attack implements IAttackBehavior {
             Ship ship = attackedTile.getShip();
             if (ship == null) {
                 ret.add(new AttackResult(AttackResultType.MISS, null));
-            }
-            else if (board.gameOver()){
-                ret.add(new AttackResult(AttackResultType.SURRENDER, ship));
             }
             else if (ship.destroyed()){
                 ret.add(new AttackResult(AttackResultType.SUNK, ship));

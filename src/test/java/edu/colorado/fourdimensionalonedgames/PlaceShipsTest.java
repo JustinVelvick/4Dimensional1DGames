@@ -79,7 +79,7 @@ class PlaceShipsTest {
         //placing a destroyer at 4,4 right
         testInput2 = new PlayerShipInput("Right", "Destroyer", "4", "4");
         assertTrue(player2.placeShip(testInput2));
-        assertTrue(player2.getBoard().tiles[4][5][0] instanceof CaptainsQuartersTile);
+        assertTrue(player2.getBoard().tiles[5][4][0] instanceof CaptainsQuartersTile);
         assertTrue(player2.getBoard().tiles[4][4][0] instanceof ShipTile);
 
         //placing a battleship at 2,8 up
