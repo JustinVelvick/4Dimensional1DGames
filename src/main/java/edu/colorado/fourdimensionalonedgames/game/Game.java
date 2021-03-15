@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.MenuSceneController;
 import edu.colorado.fourdimensionalonedgames.PlayerController;
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.*;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.fxml.FXMLLoader;
@@ -217,7 +218,12 @@ public class Game {
 
     //checks if someone has won the game
     public boolean gameOver(){
-        return true;
+        boolean over = true;
+
+        if (getPlayers().get(0).getFleet().hasShip() && getPlayers().get(1).getFleet().hasShip()){
+            over = false;
+        }
+        return over;
     }
 
     public List<Player> getPlayers() {

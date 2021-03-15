@@ -4,19 +4,18 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
-import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GameLogicTest {
+public class FleetTest {
 
     static int tileSize = 40;
     static int rows = 10;
@@ -52,7 +51,7 @@ public class GameLogicTest {
 
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
         player1 = game.getPlayers().get(0);
@@ -72,42 +71,43 @@ public class GameLogicTest {
         /////////////////////////////////////////////////////////////////////////////////////
         //Player 2 placing a minesweeper at 1,1 down
         testInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
-        player2.placeShip(testInput1);
+        //player2.placeShip(testInput1);
 
 
         //Player 2 placing a destroyer at 4,4 down
         testInput2 = new PlayerShipInput("Down", "Destroyer", "4", "4");
-        player2.placeShip(testInput2);
+        //player2.placeShip(testInput2);
 
 
         //Player 2 placing a battleship at 5,5 down
         testInput3 = new PlayerShipInput("Down", "Battleship", "5", "5");
-        player2.placeShip(testInput3);
+        //player2.placeShip(testInput3);
     }
 
     @Test
-    void gameOver() {
-        player1.placeShip(testInput1);
-        assertFalse(game.gameOver());
-
-        // sink all ships on board
-        //1 shot minesweeper by hitting 1,1 CQ
-        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
-        player1.attack(player2.getBoard(), fireInput1);
-
-        //Destroyer at 4,4 down (CQ at 4,5)
-        fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
-
-        player1.attack(player2.getBoard(), fireInput1);
-        player1.attack(player2.getBoard(), fireInput1);
-
-        //Battleship at 5,5 down (CQ at 5,7)
-        fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
-
-        player1.attack(player2.getBoard(), fireInput1);
-        player1.attack(player2.getBoard(), fireInput1);
-
-        assertTrue(game.gameOver());
+    void testFleetAdd() {
+        assertFalse(player2.getFleet().hasShip());
+        player2.placeShip(testInput1);
+        assertTrue(player2.getFleet().hasShip());
     }
 
+
+    @Test
+    void testFleetRemove() {
+        player2.placeShip(testInput2);
+        assertTrue(player2.getFleet().hasShip());
+        fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
+        player1.attack(player2.getBoard(), fireInput1);
+        player1.attack(player2.getBoard(), fireInput1);
+        assertFalse(player2.getFleet().hasShip());
+    }
+
+
+//    @Test
+//    void testFleetDestroy() {
+//        player2.placeShip(testInput3);
+//        player2.getFleet().removeShip();
+//        assertTrue(game.gameOver());
+//
+//    }
 }

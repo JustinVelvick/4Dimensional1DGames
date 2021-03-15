@@ -1,6 +1,7 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
+import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PenetratingAttack;

@@ -24,11 +24,13 @@ public class Fleet {
         return this.fleet;
     }
     //check if any ships exist
-    public boolean hasShip(){
-        if(fleet.isEmpty()){
-            return false;
+    public boolean hasShip() {
+        for (Ship ship : fleet) {
+            if (!ship.destroyed()) {
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 
     public List<Ship> sunkShips(){

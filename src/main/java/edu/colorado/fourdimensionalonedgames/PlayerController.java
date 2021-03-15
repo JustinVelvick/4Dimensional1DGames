@@ -85,7 +85,7 @@ public class PlayerController implements Initializable {
         stage.showAndWait();
 
         //fire weapon at enemy's actual board
-        player.attack(enemyPlayer.getBoard(), userInput);
+        fireWeapon(enemyPlayer.getBoard(), userInput);
     }
 
     //generates appropriate alertbox to user from what resulted in attack
