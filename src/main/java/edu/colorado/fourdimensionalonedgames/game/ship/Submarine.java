@@ -9,9 +9,12 @@ import java.util.List;
 
 public class Submarine extends Ship {
 
+    private int depth;
+
 
     public Submarine() {
         this.size = 5;
+        this.depth = 0;
     }
 
     @Override
@@ -69,6 +72,14 @@ public class Submarine extends Ship {
     @Override
     public Color getBaseColor() {
         return Color.YELLOW;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 
     @Override

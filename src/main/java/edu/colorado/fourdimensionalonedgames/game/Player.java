@@ -13,6 +13,7 @@ import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+import javafx.scene.effect.Light;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,13 @@ public class Player {
                 newShip = ship;
             }
         }
+
+        //Set z axis
+        if(input.getSubmergeChoice().equals("Yes")){
+            newShip.setShipTileDepth(1);
+            origin = new Point3D(origin.getX(), origin.getY(), 1);
+        }
+
         switch (orientationChoice) {
             case "Up":
                 direction = Orientation.up;

@@ -29,7 +29,7 @@ public class SubmergableShipYard extends ShipYard{
         }
     }
 
-    //generates default tiles to be overridden later (these are all at col 0, row 0)
+    //generates default tiles whose coordinates will be updated later (these are all at col 0, row 0)
     private void generateShipTiles(Ship newShip){
         for(int i = 0; i < newShip.size; i++){
             newShip.addTile(new ShipTile(newShip,0,0, 0));

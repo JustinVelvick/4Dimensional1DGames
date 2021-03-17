@@ -50,7 +50,7 @@ public class ShipChoiceFormController implements Initializable {
     @FXML
     public void handleConfirmButton(ActionEvent event){
 
-        PlayerShipInput tentativeInput = new PlayerShipInput("Down", "Error", "1", "1");
+        PlayerShipInput tentativeInput = new PlayerShipInput();
 
         if(shipChoiceBox.getSelectionModel().getSelectedItem().equals("Submarine")){
             tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
@@ -134,7 +134,7 @@ public class ShipChoiceFormController implements Initializable {
     //JavaFX calls this at the creation of any new form
     public void initialize(URL location, ResourceBundle resources) {
         //field initialization on form creation
-        this.input = new PlayerShipInput("","","0","0");
+        this.input = new PlayerShipInput();
 
         directionChoiceBox.getItems().removeAll(directionChoiceBox.getItems());
         directionChoiceBox.getItems().addAll("Up", "Down", "Left", "Right");

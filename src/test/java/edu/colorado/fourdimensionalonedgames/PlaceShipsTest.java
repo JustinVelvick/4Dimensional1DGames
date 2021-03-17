@@ -87,6 +87,24 @@ class PlaceShipsTest {
         assertTrue(player2.placeShip(testInput3));
         assertTrue(player2.getBoard().tiles[2][6][0] instanceof CaptainsQuartersTile);
         assertTrue(player2.getBoard().tiles[2][8][0] instanceof ShipTile);
+
+        //placing a submarine at 8,2,0 down
+        testInput3 = new PlayerShipInput("Down", "Submarine", "No", "8", "2");
+        assertTrue(player2.placeShip(testInput3));
+        assertTrue(player2.getBoard().tiles[8][5][0] instanceof CaptainsQuartersTile);
+        assertTrue(player2.getBoard().tiles[8][2][0] instanceof ShipTile);
+        //weird protruding sub tile
+        assertTrue(player2.getBoard().tiles[9][4][0] instanceof ShipTile);
+    }
+
+    @Test
+    void submergedPlaceShipTest(){
+        //placing a submarine at 8,2,1 down
+        testInput3 = new PlayerShipInput("Down", "Submarine","Yes", "8", "2");
+        assertTrue(player2.placeShip(testInput3));
+        assertTrue(player2.getBoard().tiles[8][5][1] instanceof CaptainsQuartersTile);
+        assertTrue(player2.getBoard().tiles[8][2][1] instanceof ShipTile);
+        assertTrue(player2.getBoard().tiles[9][4][1] instanceof ShipTile);
     }
 
     @Test

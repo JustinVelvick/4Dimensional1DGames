@@ -8,15 +8,31 @@ public class PlayerShipInput {
     private String yCord;
 
 
+    //default constructor
+    public PlayerShipInput(){
+        this.direction = "Default";
+        this.submergeChoice = "N/A";
+        this.shipChoice = "Default";
+        this.xCord = "Default";
+        this.yCord = "Default";
+    }
+
+    //constructor for surface ships (no submerge choice)
     public PlayerShipInput(String dir, String shipC, String x, String y) {
         this.direction = dir;
         this.shipChoice = shipC;
+        this.submergeChoice = "N/A";
         this.xCord = x;
         this.yCord = y;
+    }
 
-        if(!shipC.equals("Submarine")){
-            submergeChoice = null;
-        }
+    //constructor specifying submerge choice (for submersible ships)
+    public PlayerShipInput(String dir, String shipC, String submergeChoice, String x, String y) {
+        this.direction = dir;
+        this.shipChoice = shipC;
+        this.submergeChoice = submergeChoice;
+        this.xCord = x;
+        this.yCord = y;
     }
 
     public String getDirection() {

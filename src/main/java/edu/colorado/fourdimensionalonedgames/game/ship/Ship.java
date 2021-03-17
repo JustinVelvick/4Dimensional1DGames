@@ -98,6 +98,13 @@ public abstract class Ship implements IRenderable {
         }
     }
 
+    public void setShipTileDepth(int newDepth){
+        List<ShipTile> tilesToUpdate = this.getShipTiles();
+        for(ShipTile tile : tilesToUpdate){
+            tile.setDepth(newDepth);
+        }
+    }
+
     protected abstract Color getBaseColor();
 
     public Color getColor() {
