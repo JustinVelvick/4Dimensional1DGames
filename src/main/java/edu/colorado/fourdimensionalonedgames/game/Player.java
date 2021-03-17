@@ -12,6 +12,7 @@ import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class Player {
         Orientation direction = Orientation.down;
         double x =  Double.parseDouble(input.getxCord());
         double y =  Double.parseDouble(input.getyCord());
-        Point2D origin = new Point2D(x, y);
+        Point3D origin = new Point3D(x, y, 0);
 
         Ship newShip = new Destroyer();
 

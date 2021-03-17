@@ -2,7 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game.ship;
 
 import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
-import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 
@@ -30,8 +30,39 @@ public abstract class Ship implements IRenderable {
      * @return the number of damaged ship tiles in the ship
      */
     //generating "what-if we placed this ship here" coordinates
-    public List<Point3D> generateCoordinates(Point2D origin, Orientation direction){
+    public List<Point3D> generateCoordinates(Point3D origin, Orientation direction){
+        double xCoordinate = origin.getX();
+        double yCoordinate = origin.getY();
+        double zCoordinate = origin.getZ();
 
+        List<Point3D> newCoordinates = new ArrayList<>();
+        // get coordinate set of tiles ship would occupy if placed in given orientation
+        switch (direction) {
+            case up:
+                for(double y = yCoordinate; y > (yCoordinate - size); y--) {
+                    newCoordinates.add(new Point3D(xCoordinate, y, zCoordinate));
+                }
+                break;
+
+            case down:
+                for(double y = yCoordinate; y < (yCoordinate + size); y++){
+                    newCoordinates.add(new Point3D(xCoordinate, y, zCoordinate));
+                }
+                break;
+
+            case left:
+                for(double x = xCoordinate; x > (xCoordinate - size); x--){
+                    newCoordinates.add(new Point3D(x, yCoordinate, zCoordinate));
+                }
+                break;
+            case right:
+                for(double x = xCoordinate; x < (xCoordinate + size); x++){
+                    newCoordinates.add(new Point3D(x, yCoordinate, zCoordinate));
+                }
+                break;
+        }
+
+        return newCoordinates;
     }
 
 

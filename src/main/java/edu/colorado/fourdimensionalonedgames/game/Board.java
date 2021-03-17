@@ -101,12 +101,13 @@ public class Board {
      * @param newShip       the ship to be placed
      * @return              boolean indicating ship placement success
      */
-    public boolean placeShip(Orientation direction, Point2D origin, Ship newShip) {
+    public boolean placeShip(Orientation direction, Point3D origin, Ship newShip) {
 
         // placeable returns a list of coordinates when placement is valid, null when not valid
-        List<Point2D> generatedCoordinates = placeable(origin, direction, newShip.size);
+        //List<Point2D> generatedCoordinates = placeable(origin, direction, newShip.size);
+        List<Point3D> generatedCoordinates = newShip.generateCoordinates(origin, direction);
 
-        if(generatedCoordinates != null){
+        if(placeable(generatedCoordinates)){
 
             Tile oldTile;
             ShipTile currentTile;
@@ -115,13 +116,15 @@ public class Board {
             for(int i = 0; i < newShip.size; i++){
                 int x = (int) generatedCoordinates.get(i).getX();
                 int y = (int) generatedCoordinates.get(i).getY();
+                int z = (int) generatedCoordinates.get(i).getZ();
                 currentTile = tilesToAdd.get(i);
                 tilesToAdd.get(i).setColumn(x);
                 tilesToAdd.get(i).setRow(y);
+                tilesToAdd.get(i).setDepth(z);
 
                 //get the old tile object from the board tile array
-                oldTile = tiles[x][y][0];
-                tiles[x][y][0] = currentTile;
+                oldTile = tiles[x][y][z];
+                tiles[x][y][z] = currentTile;
 
                 //re-register that spot with the renderer
                 renderer.unregister(oldTile);
@@ -140,32 +143,12 @@ public class Board {
 
         // check each coordinate to make sure not off board or occupied by other ship
         for (Point3D coordinate : newCoordinates) {
-            if (coordinate.getX() < 1) return false;
-            if (coordinate.getX() > columns) return false;
-            if (coordinate.getY() < 1) return false;
-            if (coordinate.getY() > rows) return false;
+            if (!isWithinBounds(coordinate)) return false;
 
-            Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()][0];
+            Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()][(int) coordinate.getZ()];
             if (oldTile instanceof ShipTile) return false;
         }
         return true;
-    }
-
-    //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
-    private void swapTile(Tile newTile){
-        Tile oldTile;
-
-        int x = newTile.getColumn();
-        int y = newTile.getRow();
-
-        //get the old tile object from the board tile array
-        oldTile = tiles[x][y][0];
-
-        //re-register that spot with the renderer
-        renderer.unregister(oldTile);
-        renderer.register(newTile);
-
-        tiles[x][y][0] = newTile;
     }
 
     public boolean isWithinBounds(Point3D coords) {
