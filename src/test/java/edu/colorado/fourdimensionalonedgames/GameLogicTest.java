@@ -5,6 +5,7 @@ import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
@@ -110,4 +111,73 @@ public class GameLogicTest {
         assertTrue(game.gameOver());
     }
 
+    @Test
+    //make sure that sonar pulse is only available AFTER successfully sinking the first enemy ship.
+    //only 2 get added to their player object
+    void sonarAvaliableTest(){
+
+        //start of the game, do nothing, player should not have Sonar Pulse
+        boolean hasSonar = false;
+        for(Weapon weapon : player1.getWeapons()){
+            if(weapon.getType().equals("Sonar Pulse")){
+                hasSonar = true;
+            }
+        }
+
+        assertFalse(hasSonar);
+
+        //player1 sinking player2's minesweeper
+        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
+        player1.attack(player2.getBoard(), fireInput1);
+
+        //now player1 should have access to 2 sonar pulse weapon objects
+        int sonarPulseCount = 0;
+        for(Weapon weapon : player1.getWeapons()){
+            if(weapon.getType().equals("Sonar Pulse")){
+                sonarPulseCount++;
+            }
+        }
+
+        assertEquals(2, sonarPulseCount);
+    }
+
+    @Test
+        //FROM THE REQUIREMENTS OF SPACE LASER:
+            //The player receives the activation codes for the space laser only after sinking the first
+            //enemy ship (i.e. this weapon is an upgrade, and replaces the conventional bomb in the
+            //player’s arsenal).
+    void spaceLaserAvaliableTest(){
+        //start of the game, do nothing, player should not have Sonar Pulse
+        boolean hasSingleShot = false;
+        boolean hasSpaceLaser = false;
+        for(Weapon weapon : player1.getWeapons()){
+            if(weapon.getType().equals("Single Shot")){
+                hasSingleShot = true;
+            }
+            if(weapon.getType().equals("Space Laser")){
+                hasSpaceLaser = true;
+            }
+        }
+
+        assertTrue(hasSingleShot);
+        assertFalse(hasSpaceLaser);
+
+        //now player1 will sink player2's minesweeper and should have single shot replaced with space laser
+        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
+        player1.attack(player2.getBoard(), fireInput1);
+
+        hasSingleShot = false;
+        hasSpaceLaser = false;
+        for(Weapon weapon : player1.getWeapons()){
+            if(weapon.getType().equals("Single Shot")){
+                hasSingleShot = true;
+            }
+            if(weapon.getType().equals("Space Laser")){
+                hasSpaceLaser = true;
+            }
+        }
+
+        assertTrue(hasSpaceLaser);
+        assertFalse(hasSingleShot);
+    }
 }

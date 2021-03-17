@@ -200,14 +200,4 @@ public class BasicAttacksTest {
         assertEquals(0, tile.getHp());
         assertTrue(player2Minesweeper.destroyed());
     }
-
-    @Test
-    void duplicateAttack() {
-        // attack a tile that has already been attacked (Battleship at 5,5 down)
-        fireInput1 = new PlayerFireInput("Single Shot", "5", "5");
-        player1.attack(player2.getBoard(), fireInput1);
-
-        //repeat attack on same tile and throw error
-        assertThrows(InvalidAttackException.class, () -> player1.attack(player2.getBoard(), fireInput1));
-    }
 }
