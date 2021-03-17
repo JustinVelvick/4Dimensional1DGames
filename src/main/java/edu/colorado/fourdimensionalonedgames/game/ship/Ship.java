@@ -29,7 +29,7 @@ public abstract class Ship implements IRenderable {
      *
      * @return the number of damaged ship tiles in the ship
      */
-    //generating "what-if we placed this ship here" coordinates
+    //generating "what-if we placed this ship here" coordinates FOR LINEAR SHIPS ONLY, OTHER SHAPES NEED TO OVERRIDE
     public List<Point3D> generateCoordinates(Point3D origin, Orientation direction){
         double xCoordinate = origin.getX();
         double yCoordinate = origin.getY();
@@ -80,7 +80,7 @@ public abstract class Ship implements IRenderable {
      * @return boolean indicating if ship is destroyed
      */
     public boolean destroyed() {
-        Boolean allTilesShot = true;
+        boolean allTilesShot = true;
         for (ShipTile tile : shipTiles){
             if (!tile.shot){
                 allTilesShot = false;

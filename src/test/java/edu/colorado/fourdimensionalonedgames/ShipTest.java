@@ -14,10 +14,12 @@ import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -146,6 +148,91 @@ class ShipTest {
         assertFalse(player2Submarine.destroyed());
     }
 
+    //sub specific shape only
+    @Test
+    void testSubmarineGenerateCoordinates(){
+
+        //////////////See if sub generates correct coordinates for itself on SURFACE (9,9 up)///////////////
+        Point3D origin = new Point3D(9,9,0);
+        List<Point3D> results = player2Submarine.generateCoordinates(origin, Orientation.up);
+        List<Point3D> expected = new ArrayList<>();
+        //for the 4 submarine tiles lined up in a row
+        for(int y = 9; y > 5; y--){
+            expected.add(new Point3D(9,y,0));
+        }
+        //for the weird submarine protrusion tile
+        expected.add(new Point3D(8,7,0));
+
+        for(int i = 0; i < player2Submarine.size; i++){
+            assertEquals(expected.get(i), results.get(i));
+        }
+
+        /////////See if sub generates correct coordinates for itself below sea level (z=1)////////////////
+        origin = new Point3D(9,9,1);
+        results = player2Submarine.generateCoordinates(origin, Orientation.up);
+        expected = new ArrayList<>();
+        //for the 4 submarine tiles lined up in a row
+        for(int y = 9; y > 5; y--){
+            expected.add(new Point3D(9,y,1));
+        }
+        //for the weird submarine protrusion tile
+        expected.add(new Point3D(8,7,1));
+
+        for(int i = 0; i < player2Submarine.size; i++){
+            assertEquals(expected.get(i), results.get(i));
+        }
+
+        /////////Since sub protrustion tile is wacky, test again but with down and left to be sure///////////////
+        //NOTE: 10 will be the y of the protruding tile, which is a good edge case to test anyways (still on board)
+        origin = new Point3D(9,9,0);
+        results = player2Submarine.generateCoordinates(origin, Orientation.left);
+        expected = new ArrayList<>();
+        //for the 4 submarine tiles lined up in a row
+        for(int x = 9; x > 5; x--){
+            expected.add(new Point3D(x,9,0));
+        }
+        //for the weird submarine protrusion tile
+        expected.add(new Point3D(7,10,0));
+
+        for(int i = 0; i < player2Submarine.size; i++){
+            assertEquals(expected.get(i), results.get(i));
+        }
+
+        ////////Sub placement down//////////////////////////////////////////////////////////////////////////////////
+        origin = new Point3D(8,1,0);
+        results = player2Submarine.generateCoordinates(origin, Orientation.down);
+        expected = new ArrayList<>();
+        //for the 4 submarine tiles lined up in a row
+        for(int y = 1; y < 5; y++){
+            expected.add(new Point3D(8,y,0));
+        }
+        //for the weird submarine protrusion tile
+        expected.add(new Point3D(9,3,0));
+
+        for(int i = 0; i < player2Submarine.size; i++){
+            assertEquals(expected.get(i), results.get(i));
+        }
+
+    }
+
+    //ships with simple line shapes
+    @Test
+    void testLinearShipsGenerateCoordinates() {
+
+        //////////////See if battleship generates correct coordinates for itself (9,1 down)///////////////
+        Point3D origin = new Point3D(9, 1, 0);
+        List<Point3D> results = player2Battleship.generateCoordinates(origin, Orientation.down);
+        List<Point3D> expected = new ArrayList<>();
+        //for the 4 battleship tiles lined up in a row
+        for(int y = 1; y < 5; y++) {
+            expected.add(new Point3D(9, y, 0));
+        }
+
+        for (int i = 0; i < player2Battleship.size; i++) {
+            assertEquals(expected.get(i), results.get(i));
+        }
+    }
+
     @Test
     void testDamageShip() {
 
@@ -196,6 +283,22 @@ class ShipTest {
         assertSame(result.type, AttackResultType.MISS);
 
         //destroy entire Battleship after hitting CQ one more time
+        results = player1.attack(player2.getBoard(), fireInput1);
+        result = results.get(0);
+        assertTrue(result.ship.destroyed());
+        assertEquals(captainsQ.getHp(), 0);
+        assertSame(result.type, AttackResultType.SUNK);
+
+        //damage Submarine's CQ (sub at 2,2 down) (CQ at 2,5)
+        fireInput1 = new PlayerFireInput("Space Laser", "2", "5");
+        results = player1.attack(player2.getBoard(), fireInput1);
+        result = results.get(0);
+        captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(3);
+        assertEquals(captainsQ.getHp(), 1);
+        assertFalse(result.ship.destroyed());
+        assertSame(result.type, AttackResultType.MISS);
+
+        //destroy entire Submarine after hitting CQ one more time
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
         assertTrue(result.ship.destroyed());
