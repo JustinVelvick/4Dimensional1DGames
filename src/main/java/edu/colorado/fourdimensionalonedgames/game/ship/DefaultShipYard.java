@@ -64,11 +64,6 @@ public class DefaultShipYard extends ShipYard{
                 newTile = new CaptainsQuartersTile(newShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
                 tiles.set(2, newTile);
                 break;
-            case "Submarine":
-                tileToReplace = tiles.get(3);
-                newTile = new CaptainsQuartersTile(newShip, tileToReplace.getColumn(), tileToReplace.getRow(), 2);
-                tiles.set(3, newTile);
-                break;
             default:
                 break;
         }

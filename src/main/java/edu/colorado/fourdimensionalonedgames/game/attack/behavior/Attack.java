@@ -8,13 +8,14 @@ import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Attack implements IAttackBehavior {
     @Override
-    public List<AttackResult> attackAt(Board board, List<Point2D> positions, Point2D origin) {
+    public List<AttackResult> attackAt(Board board, List<Point3D> positions, Point3D origin) {
 
         // check that provided coords are on board, throw exception if not
         if (!board.isWithinBounds(origin))
@@ -23,12 +24,13 @@ public class Attack implements IAttackBehavior {
 
         List<AttackResult> ret = new ArrayList<>();
 
-        for (Point2D position : positions) {
+        for (Point3D position : positions) {
             int x2 = (int) position.getX();
             int y2 = (int) position.getY();
+            int depth = (int) position.getZ();
 
             // get tile to be attacked
-            Tile attackedTile = board.tiles[x2][y2][0];
+            Tile attackedTile = board.tiles[x2][y2][depth];
 
             //if we hit a captains quarters, we must subtract hp first, then see if CC was destroyed,
             //if yes, destroy entire ship

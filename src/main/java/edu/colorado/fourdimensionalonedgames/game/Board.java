@@ -8,6 +8,7 @@ import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -79,12 +80,14 @@ public class Board {
             this.tiles[i][0][0] = tile;
         }
 
-        for (int i = 1; i <= columns; i++) {
-            for (int j = 1; j <= rows; j++) {
-                tile = new SeaTile(i, j);
-                this.renderer.register(tile);
-                this.tiles[i][j][0] = tile;
-                this.tiles[i][j][0].shot = false;
+        for (int z = 0; z < this.depth; z++) {
+            for (int i = 1; i <= columns; i++) {
+                for (int j = 1; j <= rows; j++) {
+                    tile = new SeaTile(i, j, z);
+                    this.renderer.register(tile);
+                    this.tiles[i][j][z] = tile;
+                    this.tiles[i][j][z].shot = false;
+                }
             }
         }
     }
@@ -194,12 +197,13 @@ public class Board {
         tiles[x][y][0] = newTile;
     }
 
-    public boolean isWithinBounds(Point2D coords) {
+    public boolean isWithinBounds(Point3D coords) {
         int x = (int) coords.getX();
         int y = (int) coords.getY();
+        int z = (int) coords.getZ();
 
         // check that provided coords are on board, throw exception if not
-        return !(x < 1 || x > columns || y < 1 || y > rows);
+        return !(x < 1 || x > columns || y < 1 || y > rows || z < 0 || z >= this.getDepth());
     }
 
     public int getDepth() {

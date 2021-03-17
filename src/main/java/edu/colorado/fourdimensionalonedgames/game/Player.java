@@ -1,16 +1,13 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
-import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
-import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PenetratingAttack;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
-import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.geometry.Point2D;
@@ -51,7 +48,7 @@ public class Player {
     private void generateWeapons(){
         weapons.add(new SmallWeapon(new Attack(), "Single Shot"));
         weapons.add(new LargeWeapon(new Reveal(), "Sonar Pulse"));
-        weapons.add(new SmallWeapon(new PenetratingAttack(), "Space Laser"));
+        weapons.add(new PenetratingSmallWeapon(new Attack(), "Space Laser"));
     }
 
     public void updateVisuals(){

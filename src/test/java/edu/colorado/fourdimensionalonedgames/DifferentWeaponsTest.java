@@ -4,8 +4,8 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
-import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PenetratingAttack;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
@@ -67,7 +67,7 @@ public class DifferentWeaponsTest {
 
         singleShot = new SmallWeapon(new Attack(), "Single Shot");
         sonar = new LargeWeapon(new Reveal(), "Sonar");
-        spaceLaser = new SmallWeapon(new PenetratingAttack(), "Space Laser");
+        spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
     }
 
     @Test
