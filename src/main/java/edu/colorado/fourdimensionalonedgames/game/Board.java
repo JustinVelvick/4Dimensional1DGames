@@ -136,48 +136,19 @@ public class Board {
 
     //given a ship length, origin, and direction, placeable returns true if valid placement
     //FOR SURFACE PLACEMENT ONLY
-    private List<Point2D> placeable(Point2D origin, Orientation direction, int shipSize) {
-        double xCoordinate = origin.getX();
-        double yCoordinate = origin.getY();
-
-        List<Point2D> newCoordinates = new ArrayList<>();
-        // get coordinate set of tiles ship would occupy if placed in given orientation
-        switch (direction) {
-            case up:
-                for(double y = yCoordinate; y > (yCoordinate - shipSize); y--) {
-                    newCoordinates.add(new Point2D(xCoordinate, y));
-                }
-                break;
-
-            case down:
-                for(double y = yCoordinate; y < (yCoordinate + shipSize); y++){
-                    newCoordinates.add(new Point2D(xCoordinate, y));
-                }
-                break;
-
-            case left:
-                for(double x = xCoordinate; x > (xCoordinate - shipSize); x--){
-                    newCoordinates.add(new Point2D(x, yCoordinate));
-                }
-                break;
-            case right:
-                for(double x = xCoordinate; x < (xCoordinate + shipSize); x++){
-                    newCoordinates.add(new Point2D(x, yCoordinate));
-                }
-                break;
-        }
+    private boolean placeable(List<Point3D> newCoordinates) {
 
         // check each coordinate to make sure not off board or occupied by other ship
-        for (Point2D coordinate : newCoordinates) {
-            if (coordinate.getX() < 1) return null;
-            if (coordinate.getX() > columns) return null;
-            if (coordinate.getY() < 1) return null;
-            if (coordinate.getY() > rows) return null;
+        for (Point3D coordinate : newCoordinates) {
+            if (coordinate.getX() < 1) return false;
+            if (coordinate.getX() > columns) return false;
+            if (coordinate.getY() < 1) return false;
+            if (coordinate.getY() > rows) return false;
 
             Tile oldTile = tiles[(int) coordinate.getX()][(int) coordinate.getY()][0];
-            if (oldTile instanceof ShipTile) return null;
+            if (oldTile instanceof ShipTile) return false;
         }
-        return newCoordinates;
+        return true;
     }
 
     //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating

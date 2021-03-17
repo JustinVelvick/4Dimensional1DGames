@@ -4,17 +4,14 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.behavior.FleetControl;
-import edu.colorado.fourdimensionalonedgames.game.ship.Fleet;
+import edu.colorado.fourdimensionalonedgames.game.ship.FleetControl;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
-import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -103,7 +100,7 @@ public class FleetMovementTest {
             originalTiles.addAll(ship.getShipTiles());
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet());
+        FleetControl controller = new FleetControl(player2.getFleet(), player2);
         controller.moveFleet(Orientation.down);
 
         List<ShipTile> movedTiles = new ArrayList<>();
@@ -128,7 +125,7 @@ public class FleetMovementTest {
             }
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet());
+        FleetControl controller = new FleetControl(player2.getFleet(), player2);
         controller.moveFleet(Orientation.up);
 
         List<ShipTile> movedTiles = new ArrayList<>();
@@ -161,7 +158,7 @@ public class FleetMovementTest {
             }
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet());
+        FleetControl controller = new FleetControl(player2.getFleet(), player2);
         controller.moveFleet(Orientation.down);
         controller.undoMoveFleet();
 

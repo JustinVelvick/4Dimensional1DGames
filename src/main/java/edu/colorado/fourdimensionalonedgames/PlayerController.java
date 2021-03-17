@@ -108,6 +108,7 @@ public class PlayerController implements Initializable {
 
                     if (attackedShip.destroyed()) {
                         AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
+                        player.getFleet().removeShip(attackedShip);
                     }
                     else {
                         AlertBox.display("Ship Hit", "Ship has been hit");

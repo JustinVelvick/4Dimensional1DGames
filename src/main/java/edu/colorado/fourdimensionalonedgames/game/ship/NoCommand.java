@@ -1,4 +1,4 @@
-package edu.colorado.fourdimensionalonedgames.game.attack.behavior;
+package edu.colorado.fourdimensionalonedgames.game.ship;
 
 public class NoCommand implements Command {
     @Override

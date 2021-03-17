@@ -10,6 +10,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
+import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
@@ -130,6 +131,14 @@ public class Player {
             return false;
         }
         return true;
+    }
+
+    public void moveFleet(Orientation direction, Fleet newFleet){
+        for(Ship ship : fleet.getShips()){
+            for(ShipTile tile : ship.getShipTiles()){
+
+            }
+        }
     }
 
     public Board getBoard() {

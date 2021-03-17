@@ -2,6 +2,8 @@ package edu.colorado.fourdimensionalonedgames.game.ship;
 
 import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
+import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -27,6 +29,12 @@ public abstract class Ship implements IRenderable {
      *
      * @return the number of damaged ship tiles in the ship
      */
+    //generating "what-if we placed this ship here" coordinates
+    public List<Point3D> generateCoordinates(Point2D origin, Orientation direction){
+
+    }
+
+
     public int damage() {
         int damage = 0;
         for (ShipTile tile : shipTiles){
