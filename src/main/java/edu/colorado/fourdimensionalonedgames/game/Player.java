@@ -2,9 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
-import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
@@ -13,7 +11,6 @@ import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-import javafx.scene.effect.Light;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +25,14 @@ public class Player {
     private List<Weapon> weapons = new ArrayList<>();
     private List<Ship> shipsToPlace = new ArrayList<>();
     private Fleet fleet;
+    private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
 
     //constructor
     public Player (Board board, Board enemyBoard) {
         this.board = board;
         this.enemyBoard = enemyBoard;
         this.fleet = new Fleet();
+        this.upgradeStatus = TierOneUpgrade.LOCKED;
         generateShips();
         generateWeapons();
     }
@@ -49,9 +48,7 @@ public class Player {
     }
 
     private void generateWeapons(){
-        weapons.add(new SmallWeapon(new Attack(), "Single Shot"));
-        weapons.add(new LargeWeapon(new Reveal(), "Sonar Pulse"));
-        weapons.add(new PenetratingSmallWeapon(new Attack(), "Space Laser"));
+        weapons.add(new SmallWeapon(new Attack(), Game.SINGLE_SHOT));
     }
 
     public void updateVisuals(){
@@ -73,6 +70,23 @@ public class Player {
         Point2D attackCoords = new Point2D(x, y);
         List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
 
+        for(AttackResult attackResult : results){
+            Ship attackedShip = attackResult.ship;
+
+            if (attackedShip == null) {
+                //when missed shot
+            }
+            else if (attackedShip.destroyed()) {
+                //when ship has been destroyed
+                fleet.destroyShip(attackedShip);
+                if(this.upgradeStatus == TierOneUpgrade.LOCKED){
+                    this.upgradeStatus = TierOneUpgrade.UNLOCKED;
+                }
+
+            } else {
+                //when ship has been hit
+            }
+        }
         return results;
     }
 
@@ -167,6 +181,29 @@ public class Player {
     }
 
     public List<Weapon> getWeapons(){return weapons;}
+
+    public TierOneUpgrade getUpgradeStatus() {
+        return upgradeStatus;
+    }
+
+    public void setUpgradeStatus(TierOneUpgrade upgradeStatus) {
+        this.upgradeStatus = upgradeStatus;
+    }
+
+    public void addWeapon(Weapon weapon) {
+        this.weapons.add(weapon);
+    }
+
+    public void removeWeapon(String weaponToRemove){
+        Weapon weaponToDelete = new SmallWeapon(new Attack(),Game.SINGLE_SHOT);
+        for(Weapon weapon : this.weapons){
+            if(weapon.getType().equals(weaponToRemove)){
+                weaponToDelete = weapon;
+            }
+        }
+        this.getWeapons().remove(weaponToDelete);
+    }
+
 
     public Fleet getFleet(){
         return fleet;

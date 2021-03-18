@@ -2,6 +2,11 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.MenuSceneController;
 import edu.colorado.fourdimensionalonedgames.PlayerController;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
+import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.*;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
@@ -42,6 +47,9 @@ public class Game {
 
     private List<Player> players = new ArrayList<>();
 
+    public final static String SINGLE_SHOT = "Single Shot";
+    public final static String SONAR_PULSE = "Sonar Pulse";
+    public final static String SPACE_LASER = "Space Laser";
 
 
     //Game constructor which creates the Player objects
@@ -177,7 +185,6 @@ public class Game {
 
         //have JavaFX open up our player1Scene.fxml
         if(this.player1Turn){
-
             updateEnemyGpane(getPlayers().get(0).getEnemyBoard(), player1Controller.getEnemygpane());
             this.primaryStage.setTitle("Player 1's Turn");
             this.primaryStage.setScene(this.player1Scene);
@@ -212,6 +219,21 @@ public class Game {
                     this.renderer.unregister(oldTile);
                     this.renderer.register(newtile);
                 }
+            }
+        }
+    }
+
+    public void checkUpgrades() {
+        //CHECKING FOR UPGRADE UNLOCKS
+        for(Player player : players){
+            if(player.getUpgradeStatus() == TierOneUpgrade.UNLOCKED){
+                player.setUpgradeStatus(TierOneUpgrade.USED);
+                //player gets 2 sonar pulses for the rest of the game to use
+                player.addWeapon(new LargeWeapon(new Reveal(), Game.SONAR_PULSE));
+                player.addWeapon(new LargeWeapon(new Reveal(), Game.SONAR_PULSE));
+                //player replaces Single Shot weapon with Space Laser weapon
+                player.removeWeapon(Game.SINGLE_SHOT);
+                player.addWeapon(new PenetratingSmallWeapon(new Attack(), Game.SPACE_LASER));
             }
         }
     }

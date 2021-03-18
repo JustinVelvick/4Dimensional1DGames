@@ -85,6 +85,7 @@ public class DifferentWeaponsTest {
 
 
         fireInput1 = new PlayerFireInput("Space Laser", "1", "1");
+        player1.addWeapon(spaceLaser);
         player1.attack(player2.getBoard(), fireInput1);
     }
 
@@ -102,6 +103,7 @@ public class DifferentWeaponsTest {
 
         //Player 1 fires a space laser at 3,3
         fireInput1 = new PlayerFireInput("Space Laser", "3", "3");
+        player1.addWeapon(spaceLaser);
         player1.attack(player2.getBoard(), fireInput1);
         for(int z = 0; z < depth; z++){
             assertTrue(player2.getBoard().tiles[3][3][z].shot);

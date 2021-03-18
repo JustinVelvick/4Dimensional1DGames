@@ -86,6 +86,8 @@ public class PlayerController implements Initializable {
 
         //fire weapon at enemy's actual board
         fireWeapon(enemyPlayer.getBoard(), userInput);
+        //checks for conditional items (such as gaining sonar pulse after sinking first ship of the game)
+        game.checkUpgrades();
     }
 
     //generates appropriate alertbox to user from what resulted in attack
@@ -93,6 +95,7 @@ public class PlayerController implements Initializable {
 
         List<AttackResult> results;
 
+        //a bunch of checks to display appropriate message boxes for each attack result
         try {
             //your enemy's real board and your own view of their board
             results = player.attack(opponentBoard, userInput);
@@ -108,7 +111,6 @@ public class PlayerController implements Initializable {
 
                     if (attackedShip.destroyed()) {
                         AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
-                        player.getFleet().removeShip(attackedShip);
                     }
                     else {
                         AlertBox.display("Ship Hit", "Ship has been hit");

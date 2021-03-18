@@ -131,6 +131,8 @@ public class GameLogicTest {
         player1.attack(player2.getBoard(), fireInput1);
 
         //now player1 should have access to 2 sonar pulse weapon objects
+        //update game to see that player1 has now unlocked Sonar Pulse
+        game.checkUpgrades();
         int sonarPulseCount = 0;
         for(Weapon weapon : player1.getWeapons()){
             if(weapon.getType().equals("Sonar Pulse")){
@@ -165,6 +167,11 @@ public class GameLogicTest {
         //now player1 will sink player2's minesweeper and should have single shot replaced with space laser
         fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
         player1.attack(player2.getBoard(), fireInput1);
+
+
+        //now player1 should have access to 2 sonar pulse weapon objects
+        //update game to see that player1 has now unlocked space laser
+        game.checkUpgrades();
 
         hasSingleShot = false;
         hasSpaceLaser = false;

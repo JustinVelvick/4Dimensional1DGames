@@ -5,6 +5,12 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
@@ -52,13 +58,16 @@ class ShipTest {
     PlayerFireInput fireInput2;
     PlayerFireInput fireInput3;
 
-    String singleShot;
+    String singleShotString;
     AttackResult simpleMiss;
     Ship player2Minesweeper;
     Ship player2Destroyer;
     Ship player2Battleship;
     Ship player2Submarine;
 
+    Weapon spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
+    Weapon sonarPulse = new LargeWeapon(new Reveal(), "Sonar Pulse");
+    Weapon singleShot = new SmallWeapon(new Attack(), "Single Shot");
 
     @BeforeEach
     void setUp() {
@@ -77,7 +86,7 @@ class ShipTest {
         player2Battleship = player2.getShipsToPlace().get(2);
         player2Submarine = player2.getShipsToPlace().get(3);
 
-        singleShot = "Single Shot";
+        singleShotString = "Single Shot";
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
 
         //placing a minsweeper at 1,1 down
@@ -290,6 +299,7 @@ class ShipTest {
         assertSame(result.type, AttackResultType.SUNK);
 
         //damage Submarine's CQ (sub at 2,2 down) (CQ at 2,5)
+        player1.addWeapon(spaceLaser);
         fireInput1 = new PlayerFireInput("Space Laser", "2", "5");
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);

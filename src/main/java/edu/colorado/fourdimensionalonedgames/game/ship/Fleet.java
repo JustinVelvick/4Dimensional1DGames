@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Fleet {
     private List<Ship> fleet = new ArrayList<>();
+    private List<Ship> destroyedShips = new ArrayList<>();
 
     //empty constructor
     public Fleet(){
@@ -16,8 +17,9 @@ public class Fleet {
         this.fleet.add(newShip);
     }
 
-    public void removeShip(Ship ship){
+    public void destroyShip(Ship ship){
         fleet.remove(ship);
+        destroyedShips.add(ship);
     }
 
     public List<Ship> getShips(){
@@ -33,13 +35,7 @@ public class Fleet {
         return false;
     }
 
-    public List<Ship> sunkShips(){
-        List<Ship> listofSunkShips = new ArrayList<>();
-        for (Ship ship : fleet){
-            if(ship.destroyed()){
-                listofSunkShips.add(ship);
-            }
-        }
-        return listofSunkShips;
+    public List<Ship> getDestroyedShips(){
+        return destroyedShips;
     }
 }

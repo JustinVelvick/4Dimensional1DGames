@@ -5,8 +5,11 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.Render;
@@ -47,11 +50,15 @@ public class SonarWeaponTest {
     PlayerFireInput fireInput2;
     PlayerFireInput fireInput3;
 
-    String singleShot;
+    String singleShotString;
     AttackResult simpleMiss;
     Ship player2Minesweeper;
     Ship player2Destroyer;
     Ship player2Battleship;
+
+    Weapon spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
+    Weapon sonarPulse = new LargeWeapon(new Reveal(), "Sonar Pulse");
+    Weapon singleShot = new SmallWeapon(new Attack(), "Single Shot");
 
     @BeforeEach
     void setUp() {
@@ -70,7 +77,7 @@ public class SonarWeaponTest {
         player2Destroyer = player2.getShipsToPlace().get(1);
         player2Battleship = player2.getShipsToPlace().get(2);
 
-        singleShot = "Single Shot";
+        singleShotString = "Single Shot";
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
 
         //placing a minsweeper at 1,1 down
@@ -91,6 +98,7 @@ public class SonarWeaponTest {
     @Test
     void testSonar() {
         fireInput1 = new PlayerFireInput("Sonar Pulse", "5", "5");
+        player1.addWeapon(sonarPulse);
         player1.attack(player2.getBoard(), fireInput1);
         for (int x = -2; x <= 2; x++) {
             for (int y = -2; y <= 2; y++) {
