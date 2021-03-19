@@ -51,7 +51,6 @@ public class Game {
     public final static String SONAR_PULSE = "Sonar Pulse";
     public final static String SPACE_LASER = "Space Laser";
 
-
     //Game constructor which creates the Player objects
     /**
      * @param renderer (One renderer to contain all IRenderable objects)
@@ -176,8 +175,6 @@ public class Game {
         //Player 2's enemy board
         players.get(1).getEnemyBoard().initializeBoard();
     }
-
-
 
     //called when a player's turn is over
     public void passTurn(){

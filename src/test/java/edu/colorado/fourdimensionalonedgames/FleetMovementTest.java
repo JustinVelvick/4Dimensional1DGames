@@ -177,4 +177,82 @@ public class FleetMovementTest {
             assertEquals(originalTileColumns.get(i), movedTiles.get(i).getColumn());
         }
     }
+
+    @Test
+    //down, right, undo, down, right, left, left
+    void complexFleetMovement(){
+        List<Integer> originalTileRows = new ArrayList<>();
+        List<Integer> originalTileColumns = new ArrayList<>();
+        for (Ship ship : player2.getFleet().getShips()) {
+            for (ShipTile tile : ship.getShipTiles()){
+                originalTileRows.add(tile.getRow());
+                originalTileColumns.add(tile.getColumn());
+            }
+        }
+
+        FleetControl controller = new FleetControl(player2.getFleet(), player2);
+
+        controller.moveFleet(Orientation.down);
+        controller.moveFleet(Orientation.right);
+        controller.undoMoveFleet();
+        controller.moveFleet(Orientation.up);
+        controller.moveFleet(Orientation.right);
+        controller.moveFleet(Orientation.left);
+        controller.moveFleet(Orientation.down);
+        controller.moveFleet(Orientation.down);
+        controller.moveFleet(Orientation.up);
+        controller.moveFleet(Orientation.right);
+
+
+        List<ShipTile> movedTiles = new ArrayList<>();
+        for (Ship ship : player2.getFleet().getShips()) {
+            movedTiles.addAll(ship.getShipTiles());
+        }
+
+        //assert that each tile is at the same position after moving and then undoing once
+        for (int i = 0; i < originalTileRows.size(); i++) {
+            assertEquals(originalTileRows.get(i)+1, movedTiles.get(i).getRow());
+            assertEquals(originalTileColumns.get(i)+1, movedTiles.get(i).getColumn());
+        }
+    }
+
+    @Test
+        //down, right, undo, down, right, left, left
+    void complexUndoFleetMovement(){
+        List<Integer> originalTileRows = new ArrayList<>();
+        List<Integer> originalTileColumns = new ArrayList<>();
+        for (Ship ship : player2.getFleet().getShips()) {
+            for (ShipTile tile : ship.getShipTiles()){
+                originalTileRows.add(tile.getRow());
+                originalTileColumns.add(tile.getColumn());
+            }
+        }
+
+        FleetControl controller = new FleetControl(player2.getFleet(), player2);
+
+        controller.moveFleet(Orientation.down);
+        controller.moveFleet(Orientation.down);
+        controller.undoMoveFleet();
+        controller.moveFleet(Orientation.right);
+        controller.moveFleet(Orientation.right);
+        controller.moveFleet(Orientation.down);
+        controller.moveFleet(Orientation.left);
+        controller.undoMoveFleet();
+        controller.undoMoveFleet();
+        controller.undoMoveFleet();
+        controller.undoMoveFleet();
+        controller.undoMoveFleet();
+
+
+        List<ShipTile> movedTiles = new ArrayList<>();
+        for (Ship ship : player2.getFleet().getShips()) {
+            movedTiles.addAll(ship.getShipTiles());
+        }
+
+        //assert that each tile is at the same position after since we called undo the same # of times as moving
+        for (int i = 0; i < originalTileRows.size(); i++) {
+            assertEquals(originalTileRows.get(i), movedTiles.get(i).getRow());
+            assertEquals(originalTileColumns.get(i), movedTiles.get(i).getColumn());
+        }
+    }
 }
