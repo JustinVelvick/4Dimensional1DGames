@@ -13,13 +13,13 @@ public class FleetControl {
     public FleetControl(Fleet fleet, Player player){
         this.currentFleet = fleet;
         this.player = player;
+        this.fleetCommandStack = new Stack<>();
     }
 
     public void moveFleet(Orientation direction){
         MoveFleetCommand moveCommand = new MoveFleetCommand(player, currentFleet, direction);
-        fleetCommandStack.push(moveCommand);
-
-        moveCommand.execute();
+        if (moveCommand.execute())
+            fleetCommandStack.push(moveCommand);
     }
 
     public void undoMoveFleet(){

@@ -156,12 +156,52 @@ public class Player {
         return true;
     }
 
-    public void moveFleet(Orientation direction, Fleet newFleet){
-        for(Ship ship : fleet.getShips()){
-            for(ShipTile tile : ship.getShipTiles()){
-
-            }
+    public boolean moveFleet(Orientation direction){
+        // check for border collision
+        switch (direction){
+            case up:
+                for (Ship ship : fleet.getShips()){
+                    for (ShipTile tile : ship.getShipTiles()){
+                        if (tile.getRow() - 1 < 1){
+                            return false;
+                        }
+                    }
+                }
+                break;
+            case down:
+                for (Ship ship : fleet.getShips()){
+                    for (ShipTile tile : ship.getShipTiles()){
+                        if (tile.getRow() + 1 > 10){
+                            return false;
+                        }
+                    }
+                }
+                break;
+            case right:
+                for (Ship ship : fleet.getShips()){
+                    for (ShipTile tile : ship.getShipTiles()){
+                        if (tile.getColumn() + 1 > 10){
+                            return false;
+                        }
+                    }
+                }
+                break;
+            case left:
+                for (Ship ship : fleet.getShips()){
+                    for (ShipTile tile : ship.getShipTiles()){
+                        if (tile.getColumn() - 1 < 1){
+                            return false;
+                        }
+                    }
+                }
+                break;
         }
+
+        // actually move the fleet
+        for (Ship ship : fleet.getShips()){
+            board.moveShip(ship, direction);
+        }
+        return true;
     }
 
     public Board getBoard() {

@@ -95,9 +95,11 @@ public class FleetMovementTest {
     @Test
     void testSingleMove() {
 
-        List<ShipTile> originalTiles = new ArrayList<>();
+        List<Integer> originalTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            originalTiles.addAll(ship.getShipTiles());
+            for (ShipTile tile : ship.getShipTiles()){
+                originalTiles.add(tile.getRow());
+            }
         }
 
         FleetControl controller = new FleetControl(player2.getFleet(), player2);
@@ -109,7 +111,7 @@ public class FleetMovementTest {
         }
 
         for (int i = 0; i < originalTiles.size(); i++) {
-            assertEquals(originalTiles.get(i).getRow(), movedTiles.get(i).getRow() - 1);
+            assertEquals(originalTiles.get(i) + 1, movedTiles.get(i).getRow());
         }
     }
 

@@ -164,4 +164,57 @@ public class Board {
         return depth;
     }
 
+    public void moveShip(Ship ship, Orientation direction){
+        switch (direction){
+            case up:
+                for (ShipTile tile : ship.getShipTiles()){
+                    int x = tile.getColumn();
+                    int old_y = tile.getRow();
+                    int y = old_y-1;
+                    tile.setRow(y);
+                    int z = tile.getDepth();
+
+                    tiles[x][y][z] = tile;
+                    tiles[x][old_y][z] = new SeaTile(x, old_y, z);
+                }
+                break;
+            case down:
+                for (ShipTile tile : ship.getShipTiles()){
+                    int x = tile.getColumn();
+                    int old_y = tile.getRow();
+                    int y = old_y+1;
+                    tile.setRow(y);
+                    int z = tile.getDepth();
+
+                    tiles[x][y][z] = tile;
+                    tiles[x][old_y][z] = new SeaTile(x, old_y, z);
+                }
+                break;
+            case left:
+                for (ShipTile tile : ship.getShipTiles()){
+                    int old_x = tile.getColumn();
+                    int x = old_x - 1;
+                    tile.setColumn(x);
+                    int y = tile.getRow();
+                    int z = tile.getDepth();
+
+                    tiles[x][y][z] = tile;
+                    tiles[old_x][y][z] = new SeaTile(old_x, y, z);
+                }
+                break;
+            case right:
+                for (ShipTile tile : ship.getShipTiles()){
+                    int old_x = tile.getColumn();
+                    int x = old_x + 1;
+                    tile.setColumn(x);
+                    int y = tile.getRow();
+                    int z = tile.getDepth();
+
+                    tiles[x][y][z] = tile;
+                    tiles[old_x][y][z] = new SeaTile(old_x, y, z);
+                }
+                break;
+        }
+    }
+
 }

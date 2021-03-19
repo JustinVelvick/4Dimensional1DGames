@@ -9,13 +9,14 @@ public class MoveFleetCommand implements Command{
     Player player;
 
     public MoveFleetCommand(Player player, Fleet currentFleet, Orientation direction){
+        this.player = player;
         this.moveDirection = direction;
         this.currentFleet = currentFleet;
     }
     @Override
-    public void execute() {
+    public boolean execute() {
         //Call code that actually moves the fleet
-        player.moveFleet(moveDirection, currentFleet);
+        return player.moveFleet(moveDirection);
     }
 
     @Override
@@ -23,16 +24,16 @@ public class MoveFleetCommand implements Command{
         //Call code that actually moves the fleet, but using the ships and tile positions in restoredState
         switch (moveDirection){
             case up:
-                player.moveFleet(Orientation.down, currentFleet);
+                player.moveFleet(Orientation.down);
                 break;
             case down:
-                player.moveFleet(Orientation.up, currentFleet);
+                player.moveFleet(Orientation.up);
                 break;
             case right:
-                player.moveFleet(Orientation.left, currentFleet);
+                player.moveFleet(Orientation.left);
                 break;
             case left:
-                player.moveFleet(Orientation.right, currentFleet);
+                player.moveFleet(Orientation.right);
         }
     }
 }
