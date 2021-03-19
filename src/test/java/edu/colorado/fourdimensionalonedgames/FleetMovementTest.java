@@ -118,12 +118,10 @@ public class FleetMovementTest {
     @Test
     void testBoundaryNoMove() {
 
-        //up should result in minesweeper staying at 1,1
-        List<ShipTile> originalTiles = new ArrayList<>();
-        //add all non minesweeper tiles to separate group to make sure they all move as expected still
+        List<Integer> originalTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            if (!ship.getType().equals("Minesweeper")) {
-                originalTiles.addAll(ship.getShipTiles());
+            for (ShipTile tile : ship.getShipTiles()){
+                originalTiles.add(tile.getRow());
             }
         }
 
@@ -132,49 +130,51 @@ public class FleetMovementTest {
 
         List<ShipTile> movedTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            if (!ship.getType().equals("Minesweeper")) {
-                movedTiles.addAll(ship.getShipTiles());
-            }
+            movedTiles.addAll(ship.getShipTiles());
         }
 
         //for non minesweeper ships
         for (int i = 0; i < originalTiles.size(); i++) {
-            assertEquals(originalTiles.get(i).getRow(), movedTiles.get(i).getRow() - 1);
+            assertEquals(originalTiles.get(i), movedTiles.get(i).getRow());
         }
-
-        //for the minesweeper, make sure it did not move
-        assertEquals(player2Minesweeper.getShipTiles().get(0).getRow(), 1);
-        assertEquals(player2Minesweeper.getShipTiles().get(0).getColumn(), 1);
-        assertEquals(player2Minesweeper.getShipTiles().get(1).getColumn(), 1);
-        assertEquals(player2Minesweeper.getShipTiles().get(1).getRow(), 2);
     }
 
     @Test
     void testFleetMovementUndo() {
-        //up should result in minesweeper staying at 1,1
-        List<ShipTile> originalTiles = new ArrayList<>();
-        //add all non minesweeper tiles to separate group to make sure they all move as expected still
+        List<Integer> originalTileRows = new ArrayList<>();
+        List<Integer> originalTileColumns = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            if (!ship.getType().equals("Minesweeper")) {
-                originalTiles.addAll(ship.getShipTiles());
+            for (ShipTile tile : ship.getShipTiles()){
+                originalTileRows.add(tile.getRow());
+                originalTileColumns.add(tile.getColumn());
             }
         }
 
         FleetControl controller = new FleetControl(player2.getFleet(), player2);
         controller.moveFleet(Orientation.down);
-        controller.undoMoveFleet();
 
         List<ShipTile> movedTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            if (!ship.getType().equals("Minesweeper")) {
-                movedTiles.addAll(ship.getShipTiles());
-            }
+            movedTiles.addAll(ship.getShipTiles());
         }
 
         //assert that each tile is at the same position after moving and then undoing once
-        for (int i = 0; i < originalTiles.size(); i++) {
-            assertEquals(originalTiles.get(i).getRow(), movedTiles.get(i).getRow());
-            assertEquals(originalTiles.get(i).getColumn(), movedTiles.get(i).getColumn());
+        for (int i = 0; i < originalTileRows.size(); i++) {
+            assertEquals(originalTileRows.get(i)+1, movedTiles.get(i).getRow());
+            assertEquals(originalTileColumns.get(i), movedTiles.get(i).getColumn());
+        }
+
+        controller.undoMoveFleet();
+
+        movedTiles.clear();
+        for (Ship ship : player2.getFleet().getShips()) {
+            movedTiles.addAll(ship.getShipTiles());
+        }
+
+        //assert that each tile is at the same position after moving and then undoing once
+        for (int i = 0; i < originalTileRows.size(); i++) {
+            assertEquals(originalTileRows.get(i), movedTiles.get(i).getRow());
+            assertEquals(originalTileColumns.get(i), movedTiles.get(i).getColumn());
         }
     }
 }
