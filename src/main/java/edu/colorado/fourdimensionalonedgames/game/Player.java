@@ -19,20 +19,28 @@ public class Player {
     //account specific info
     private String ign;
     private int victories;
+    private int score;
+    private int missedShots;
+    private int totalShots;
 
-    private Board board;
-    private Board enemyBoard;
-    private List<Weapon> weapons = new ArrayList<>();
-    private List<Ship> shipsToPlace = new ArrayList<>();
-    private Fleet fleet;
+    private final Game game;
+    private final Board board;
+    private final Board enemyBoardGui;
+    private final List<Weapon> weapons = new ArrayList<>();
+    private final List<Ship> shipsToPlace = new ArrayList<>();
+    private final Fleet fleet;
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
 
     //constructor
-    public Player (Board board, Board enemyBoard) {
+    public Player (Game game, Board board, Board enemyBoardGui) {
+        this.game = game;
         this.board = board;
-        this.enemyBoard = enemyBoard;
+        this.enemyBoardGui = enemyBoardGui;
         this.fleet = new Fleet();
         this.upgradeStatus = TierOneUpgrade.LOCKED;
+        this.score = 0;
+        this.missedShots = 0;
+        this.totalShots = 0;
         generateShips();
         generateWeapons();
     }
@@ -51,15 +59,11 @@ public class Player {
         weapons.add(new SmallWeapon(new Attack(), Game.SINGLE_SHOT));
     }
 
-    public void updateVisuals(){
-
-    }
-
     /**
      * Mount an attack on the given enemy board at attackCoords with weaponChoice
      *NOTE: PLAYER INPUT SHOULD BE VALIDATED AND FILTERED BY THIS POINT
      *
-     * @return   returns AttackResult object in the form of {AttackResultType enum, Ship(if applicable)}
+     * @return   returns list of resulting AttackResult objects in the form of {AttackResultType enum, Ship(if applicable)}
      */
     public List<AttackResult> attack(Board opponentBoard, PlayerFireInput input) {
 
@@ -68,6 +72,12 @@ public class Player {
         double y = Double.parseDouble(input.getyCord());
 
         Point2D attackCoords = new Point2D(x, y);
+
+        //if sonar being used, remove a sonar object from player's list of weapons to decrement uses
+        if(weapon.getType().equals("Sonar Pulse")){
+            removeWeapon("Sonar Pulse");
+        }
+
         List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
 
         for(AttackResult attackResult : results){
@@ -75,16 +85,14 @@ public class Player {
 
             if (attackedShip == null) {
                 //when missed shot
+                missedShots++;
             }
             else if (attackedShip.destroyed()) {
                 //when ship has been destroyed
-                fleet.destroyShip(attackedShip);
+
                 if(this.upgradeStatus == TierOneUpgrade.LOCKED){
                     this.upgradeStatus = TierOneUpgrade.UNLOCKED;
                 }
-
-            } else {
-                //when ship has been hit
             }
         }
         return results;
@@ -108,7 +116,6 @@ public class Player {
         double x =  Double.parseDouble(input.getxCord());
         double y =  Double.parseDouble(input.getyCord());
         Point3D origin = new Point3D(x, y, 0);
-
         Ship newShip = new Destroyer();
 
         String shipChoice = input.getShipChoice();
@@ -156,6 +163,7 @@ public class Player {
         return true;
     }
 
+    //will only move entire fleet if every ship is able to move specified direction
     public boolean moveFleet(Orientation direction){
         // check for border collision
         switch (direction){
@@ -195,9 +203,11 @@ public class Player {
                     }
                 }
                 break;
+            default:
+                break;
         }
 
-        // actually move the fleet
+        // actually move the fleet now that we confirmed it can be moved
         for (Ship ship : fleet.getShips()){
             board.moveShip(ship, direction);
         }
@@ -208,16 +218,12 @@ public class Player {
         return board;
     }
 
-    public Board getEnemyBoard() {
-        return enemyBoard;
+    public Board getEnemyBoardGui() {
+        return enemyBoardGui;
     }
 
     public List<Ship> getShipsToPlace() {
         return shipsToPlace;
-    }
-
-    public void removeShipToPlace(Ship ship){
-        this.shipsToPlace.remove(ship);
     }
 
     public List<Weapon> getWeapons(){return weapons;}
@@ -226,8 +232,28 @@ public class Player {
         return upgradeStatus;
     }
 
+    public Fleet getFleet(){
+        return fleet;
+    }
+
+    public String getIgn() {
+        return ign;
+    }
+
+    public int getVictories() {
+        return victories;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
     public void setUpgradeStatus(TierOneUpgrade upgradeStatus) {
         this.upgradeStatus = upgradeStatus;
+    }
+
+    public void setScore(int newScore){
+        this.score = newScore;
     }
 
     public void addWeapon(Weapon weapon) {
@@ -244,8 +270,9 @@ public class Player {
         this.getWeapons().remove(weaponToDelete);
     }
 
-
-    public Fleet getFleet(){
-        return fleet;
+    public void removeShipToPlace(Ship ship){
+        this.shipsToPlace.remove(ship);
     }
+
+
 }

@@ -7,17 +7,15 @@ import java.util.Stack;
 //every turn, we will spawn a new FleetControl object which will have a "fresh" empty stack
 public class FleetControl {
     Stack<MoveFleetCommand> fleetCommandStack;
-    Fleet currentFleet;
     Player player;
 
-    public FleetControl(Fleet fleet, Player player){
-        this.currentFleet = fleet;
+    public FleetControl(Player player){
         this.player = player;
         this.fleetCommandStack = new Stack<>();
     }
 
     public void moveFleet(Orientation direction){
-        MoveFleetCommand moveCommand = new MoveFleetCommand(player, currentFleet, direction);
+        MoveFleetCommand moveCommand = new MoveFleetCommand(player, direction);
         if (moveCommand.execute())
             fleetCommandStack.push(moveCommand);
     }

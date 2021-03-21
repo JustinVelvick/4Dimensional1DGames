@@ -87,6 +87,7 @@ public class PlayerController implements Initializable {
         //fire weapon at enemy's actual board
         fireWeapon(enemyPlayer.getBoard(), userInput);
         //checks for conditional items (such as gaining sonar pulse after sinking first ship of the game)
+        game.updateScores();
         game.checkUpgrades();
     }
 
@@ -156,7 +157,7 @@ public class PlayerController implements Initializable {
         }
 
         else{
-            player.updateVisuals();
+
         }
     }
 
@@ -167,6 +168,7 @@ public class PlayerController implements Initializable {
     public void handlePassTurnButton(ActionEvent e){
         //Turn is over when button is pressed
         this.game.passTurn();
+        this.game.updateScene();
     }
 
     //JavaFX calls this at the creation of any new form

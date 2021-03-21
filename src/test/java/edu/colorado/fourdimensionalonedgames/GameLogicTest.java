@@ -1,11 +1,15 @@
 package edu.colorado.fourdimensionalonedgames;
 
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_MULTIPLYPeer;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
+import edu.colorado.fourdimensionalonedgames.game.ship.Fleet;
+import edu.colorado.fourdimensionalonedgames.game.ship.FleetControl;
+import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
@@ -71,6 +75,23 @@ public class GameLogicTest {
         singleShot = "Single Shot";
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
         /////////////////////////////////////////////////////////////////////////////////////
+
+        //Player 1 placing a minesweeper at 1,1 down
+        testInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
+        player1.placeShip(testInput1);
+
+
+        //Player 1 placing a destroyer at 4,4 down
+        testInput2 = new PlayerShipInput("Down", "Destroyer", "4", "4");
+        player1.placeShip(testInput2);
+
+
+        //Player 1 placing a battleship at 5,5 down
+        testInput3 = new PlayerShipInput("Down", "Battleship", "5", "5");
+        player1.placeShip(testInput3);
+
+
+
         //Player 2 placing a minesweeper at 1,1 down
         testInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
         player2.placeShip(testInput1);
@@ -92,6 +113,7 @@ public class GameLogicTest {
         assertFalse(game.gameOver());
 
         // sink all ships on board
+        ///////////////////////////////  player1's attacks ///////////////////////////////////////////////
         //1 shot minesweeper by hitting 1,1 CQ
         fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
         player1.attack(player2.getBoard(), fireInput1);
@@ -104,9 +126,28 @@ public class GameLogicTest {
 
         //Battleship at 5,5 down (CQ at 5,7)
         fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
+        player1.attack(player2.getBoard(), fireInput1);
+        player1.attack(player2.getBoard(), fireInput1);
 
-        player1.attack(player2.getBoard(), fireInput1);
-        player1.attack(player2.getBoard(), fireInput1);
+
+        ///////////////////////////////  player2's attacks ///////////////////////////////////////////////
+        //1 shot minesweeper by hitting 1,1 CQ
+        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
+        player2.attack(player1.getBoard(), fireInput1);
+
+        //Destroyer at 4,4 down (CQ at 4,5)
+        fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
+
+        player2.attack(player1.getBoard(), fireInput1);
+        player2.attack(player1.getBoard(), fireInput1);
+
+        //Battleship at 5,5 down (CQ at 5,7)
+        fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
+
+        player2.attack(player1.getBoard(), fireInput1);
+        player2.attack(player1.getBoard(), fireInput1);
+
+
 
         assertTrue(game.gameOver());
     }
@@ -170,7 +211,7 @@ public class GameLogicTest {
 
 
         //now player1 should have access to 2 sonar pulse weapon objects
-        //update game to see that player1 has now unlocked space laser
+        //update game to see that player1 has now unlocked space laser and sonar pulses
         game.checkUpgrades();
 
         hasSingleShot = false;
@@ -186,5 +227,33 @@ public class GameLogicTest {
 
         assertTrue(hasSpaceLaser);
         assertFalse(hasSingleShot);
+    }
+
+    @Test
+    void passTurnSimulationTest(){
+
+        assertTrue(game.isPlayer1Turn());
+        assertEquals(0, player1.getScore());
+        assertEquals(0, player2.getScore());
+
+        //player 1 moving his fleet (should not be able to undo this movement next turn)
+        FleetControl controller = new FleetControl(player1);
+        controller.moveFleet(Orientation.right);
+        controller.moveFleet(Orientation.down);
+
+        //sinking player 2's minesweeper by hitting captains quarters once
+        fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
+        player1.attack(player2.getBoard(),fireInput1);
+
+        //called in Form controller, must call manually here in test since we have no form controllers
+        game.updateScores();
+
+        //change FXML scene and correct score should carry over
+        game.passTurn();
+
+        //sunk minesweeper, so player 1 should have 2 points, one for each minesweeper tile
+        assertEquals(2, player1.getScore());
+        assertEquals(0, player2.getScore());
+        assertFalse(game.isPlayer1Turn());
     }
 }

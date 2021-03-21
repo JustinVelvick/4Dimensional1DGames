@@ -1,17 +1,11 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
-
-import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
-import edu.colorado.fourdimensionalonedgames.game.ship.Fleet;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.GridPane;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
@@ -32,51 +26,44 @@ public class Board {
         tiles = new Tile[columns + 1][rows + 1][depth];
     }
 
-    //Only called once upon game creation to make a sea of blank tile objects
-    public void initializeBoard(GridPane gpane) {
+    //Refreshes a given gpane with all of this board's tile objects (canvas nodes)
+    public void linkBoardVisuals(GridPane gpane) {
 
         Tile tile;
 
         for (int j = 0; j <= columns; j++) {
-            tile = new LetterTile(0, j, String.valueOf(j));
+            tile = this.tiles[0][j][0];
             this.renderer.register(tile);
-            this.tiles[0][j][0] = tile;
             gpane.add(tile, 0, j);
         }
 
 
         for (int i = 1; i <= rows; i++) {
-            tile = new LetterTile(i, 0, Character.toString((char) i + 64));
+            tile = this.tiles[i][0][0];
             this.renderer.register(tile);
-            this.tiles[i][0][0] = tile;
             gpane.add(tile, i, 0);
         }
 
         for (int i = 1; i <= columns; i++) {
             for (int j = 1; j <= rows; j++) {
-                tile = new SeaTile(i, j);
+                tile = this.tiles[i][j][0];
                 this.renderer.register(tile);
-                this.tiles[i][j][0] = tile;
-                this.tiles[i][j][0].shot = false;
                 gpane.add(tile, i, j);
             }
         }
     }
 
-    //Overloaded method for tests (This method does not care about grid panes, but still generates tiles)
+    //Method that only generates a board of sea tiles with accompying letters and numbers in a grid
     public void initializeBoard(){
         Tile tile;
 
         for (int j = 0; j <= columns; j++) {
             tile = new LetterTile(0, j, String.valueOf(j));
-            this.renderer.register(tile);
             this.tiles[0][j][0] = tile;
         }
 
-
         for (int i = 1; i <= rows; i++) {
             tile = new LetterTile(i, 0, Character.toString((char) i + 64));
-            this.renderer.register(tile);
             this.tiles[i][0][0] = tile;
         }
 
@@ -84,7 +71,6 @@ public class Board {
             for (int i = 1; i <= columns; i++) {
                 for (int j = 1; j <= rows; j++) {
                     tile = new SeaTile(i, j, z);
-                    this.renderer.register(tile);
                     this.tiles[i][j][z] = tile;
                     this.tiles[i][j][z].shot = false;
                 }
@@ -103,10 +89,9 @@ public class Board {
      */
     public boolean placeShip(Orientation direction, Point3D origin, Ship newShip) {
 
-        // placeable returns a list of coordinates when placement is valid, null when not valid
-        //List<Point2D> generatedCoordinates = placeable(origin, direction, newShip.size);
         List<Point3D> generatedCoordinates = newShip.generateCoordinates(origin, direction);
 
+        // placeable returns a list of coordinates when placement is valid, null when not valid
         if(placeable(generatedCoordinates)){
 
             Tile oldTile;
@@ -138,7 +123,6 @@ public class Board {
     }
 
     //given a ship length, origin, and direction, placeable returns true if valid placement
-    //FOR SURFACE PLACEMENT ONLY
     private boolean placeable(List<Point3D> newCoordinates) {
 
         // check each coordinate to make sure not off board or occupied by other ship
@@ -158,10 +142,6 @@ public class Board {
 
         // check that provided coords are on board, throw exception if not
         return !(x < 1 || x > columns || y < 1 || y > rows || z < 0 || z >= this.getDepth());
-    }
-
-    public int getDepth() {
-        return depth;
     }
 
     public void moveShip(Ship ship, Orientation direction){
@@ -215,6 +195,10 @@ public class Board {
                 }
                 break;
         }
+    }
+
+    public int getDepth() {
+        return depth;
     }
 
 }

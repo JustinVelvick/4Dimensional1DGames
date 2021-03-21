@@ -4,14 +4,13 @@ import edu.colorado.fourdimensionalonedgames.game.Player;
 
 public class MoveFleetCommand implements Command{
 
-    Fleet currentFleet;
+
     Orientation moveDirection;
     Player player;
 
-    public MoveFleetCommand(Player player, Fleet currentFleet, Orientation direction){
+    public MoveFleetCommand(Player player, Orientation direction){
         this.player = player;
         this.moveDirection = direction;
-        this.currentFleet = currentFleet;
     }
     @Override
     public boolean execute() {

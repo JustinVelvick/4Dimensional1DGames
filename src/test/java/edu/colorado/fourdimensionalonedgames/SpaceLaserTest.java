@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DifferentWeaponsTest {
+public class SpaceLaserTest {
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
@@ -62,35 +62,17 @@ public class DifferentWeaponsTest {
         player1 = game.getPlayers().get(0);
         player2 = game.getPlayers().get(1);
 
+        player2Minesweeper = player2.getShipsToPlace().get(0);
         player2Destroyer = player2.getShipsToPlace().get(1);
         player2Submarine = player2.getShipsToPlace().get(3);
 
         singleShot = new SmallWeapon(new Attack(), "Single Shot");
         sonar = new LargeWeapon(new Reveal(), "Sonar");
         spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
-    }
 
-    @Test
-    void testNames() {
-        assertEquals(singleShot.getType(), "Single Shot");
-        assertEquals(sonar.getType(), "Sonar");
-        assertEquals(spaceLaser.getType(), "Space Laser");
-    }
-
-    @Test
-    void testSurfaceSpaceLaser(){
-        //Player2 places a destroyer down at 3,3
+        //Player2 places a minesweeper right at 1,1
         shipInput1 = new PlayerShipInput("Right", "Minesweeper", "1", "1");
         player2.placeShip(shipInput1);
-
-
-        fireInput1 = new PlayerFireInput("Space Laser", "1", "1");
-        player1.addWeapon(spaceLaser);
-        player1.attack(player2.getBoard(), fireInput1);
-    }
-
-    @Test
-    void testSubmergedSpaceLaser(){
 
         //Player2 places a surface boat at 3,3 right
         shipInput1 = new PlayerShipInput("Right", "Destroyer",  "3", "3");
@@ -100,6 +82,23 @@ public class DifferentWeaponsTest {
         shipInput2 = new PlayerShipInput("Right", "Submarine",  "3", "3");
         shipInput2.setSubmergeChoice("Yes");
         player2.placeShip(shipInput2);
+    }
+
+    @Test
+    void testSurfaceSpaceLaser(){
+
+        fireInput1 = new PlayerFireInput("Space Laser", "2", "1");
+        player1.addWeapon(spaceLaser);
+        player1.attack(player2.getBoard(), fireInput1);
+
+        assertTrue(player2Minesweeper.getShipTiles().get(1).shot);
+        assertTrue(player2.getBoard().tiles[2][1][0].shot);
+    }
+
+    @Test
+    void testSubmergedSpaceLaser(){
+
+
 
         //Player 1 fires a space laser at 3,3
         fireInput1 = new PlayerFireInput("Space Laser", "3", "3");

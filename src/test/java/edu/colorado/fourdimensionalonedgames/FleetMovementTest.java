@@ -102,7 +102,7 @@ public class FleetMovementTest {
             }
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet(), player2);
+        FleetControl controller = new FleetControl(player2);
         controller.moveFleet(Orientation.down);
 
         List<ShipTile> movedTiles = new ArrayList<>();
@@ -125,7 +125,7 @@ public class FleetMovementTest {
             }
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet(), player2);
+        FleetControl controller = new FleetControl(player2);
         controller.moveFleet(Orientation.up);
 
         List<ShipTile> movedTiles = new ArrayList<>();
@@ -150,7 +150,7 @@ public class FleetMovementTest {
             }
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet(), player2);
+        FleetControl controller = new FleetControl(player2);
         controller.moveFleet(Orientation.down);
 
         List<ShipTile> movedTiles = new ArrayList<>();
@@ -190,7 +190,7 @@ public class FleetMovementTest {
             }
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet(), player2);
+        FleetControl controller = new FleetControl(player2);
 
         controller.moveFleet(Orientation.down);
         controller.moveFleet(Orientation.right);
@@ -228,7 +228,7 @@ public class FleetMovementTest {
             }
         }
 
-        FleetControl controller = new FleetControl(player2.getFleet(), player2);
+        FleetControl controller = new FleetControl(player2);
 
         controller.moveFleet(Orientation.down);
         controller.moveFleet(Orientation.down);

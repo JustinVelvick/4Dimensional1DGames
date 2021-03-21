@@ -32,20 +32,20 @@ public class Game {
     private Scene player2Scene;
     private Scene menuScene;
 
-    private Render renderer;
-    private int numberofPlayers;
-    private int tileSize;
-    private int columns;
-    private int rows;
+    private final Render renderer;
+    private final int numberofPlayers;
+    private final int tileSize;
+    private final int columns;
+    private final int rows;
 
     //width, height, and depth of each player's board/grid
-    private int width; //x
-    private int height; //y
-    private int depth; //z
+    private final int width; //x
+    private final int height; //y
+    private final int depth; //z
 
     private boolean player1Turn;
 
-    private List<Player> players = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
 
     public final static String SINGLE_SHOT = "Single Shot";
     public final static String SONAR_PULSE = "Sonar Pulse";
@@ -74,17 +74,17 @@ public class Game {
 
         //create the players for this game (and their boards in the process)
         for(int i = 0; i < this.numberofPlayers; i++){
-            Player newPlayer = new Player(new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
+            Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
 
         startGame(primaryStage);
     }
 
-    ////////////////TESTING GAME CONSTRUCTOR///////////////////////
+    ////////////////GAME CONSTRUCTOR FOR TESTS///////////////////////
 
     //Overloaded constructor for testing, the only difference is that this method does not call startGame (loads GUI)
-    //This constructor does NOT take a stage as it's just for non visual, logic testing
+    //This constructor does NOT take in a stage as it's just for non visual, logic testing
     public Game(Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth){
         //set all of our private game attributes
         this.renderer = renderer;
@@ -95,22 +95,21 @@ public class Game {
         this.width = columns*tileSize;
         this.height = columns*tileSize;
         this.numberofPlayers = numberofPlayers;
-        this.player1Turn = false;
+        this.player1Turn = true;
 
         //create the players for this game (and their boards in the process)
         for(int i = 0; i < this.numberofPlayers; i++){
-            Player newPlayer = new Player(new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
+            Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
 
         initializeBoards();
     }
+
     //called ONCE on game start
     private void startGame(Stage primaryStage) throws IOException {
         //Store our application's parent stage (the stage we set all our scenes to upon turn switch)
         this.primaryStage = primaryStage;
-
-
         //Load our menu scene and accompying controller and store them
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("menuScene.fxml"));
         Pane menuRoot = loader.load();
@@ -138,8 +137,9 @@ public class Game {
         this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
 
 
-        //initialize both player's boards (visually)
-        initializeBoardVisuals();
+        //initialize both player's boards (visually via linking board Tiles with FXML GridPanes)
+        initializeBoards();
+        linkBoardVisuals();
 
 
         //Change taskbar icon in client's OS
@@ -151,52 +151,32 @@ public class Game {
         this.primaryStage.show();
     }
 
-
-    private void initializeBoardVisuals(){
-        //Player 1's own gpane
-        players.get(0).getBoard().initializeBoard(player1Controller.getPlayergpane());
-        //Player 1's enemy gpane
-        players.get(0).getEnemyBoard().initializeBoard(player1Controller.getEnemygpane());
-        //Player 2's own gpane
-        players.get(1).getBoard().initializeBoard(player2Controller.getPlayergpane());
-        //Player 2's enemy gpane
-        players.get(1).getEnemyBoard().initializeBoard(player2Controller.getEnemygpane());
-    }
-
-    //Method for testing, does same thing as initializeBoardVisuals, but does not initialize gridpanes
-    //This method only gets called from game constructor that is for Testing purposes
     private void initializeBoards(){
         //Player 1's own board
         players.get(0).getBoard().initializeBoard();
         //Player 1's enemy board
-        players.get(0).getEnemyBoard().initializeBoard();
+        players.get(0).getEnemyBoardGui().initializeBoard();
         //Player 2's own board
         players.get(1).getBoard().initializeBoard();
         //Player 2's enemy board
-        players.get(1).getEnemyBoard().initializeBoard();
+        players.get(1).getEnemyBoardGui().initializeBoard();
     }
 
-    //called when a player's turn is over
-    public void passTurn(){
-        this.player1Turn = !this.player1Turn;
-
-        //have JavaFX open up our player1Scene.fxml
-        if(this.player1Turn){
-            updateEnemyGpane(getPlayers().get(0).getEnemyBoard(), player1Controller.getEnemygpane());
-            this.primaryStage.setTitle("Player 1's Turn");
-            this.primaryStage.setScene(this.player1Scene);
-            this.primaryStage.show();
-        }
-        //have JavaFX open up our player2Scene.fxml
-        else{
-
-            updateEnemyGpane(getPlayers().get(1).getEnemyBoard(), player2Controller.getEnemygpane());
-            this.primaryStage.setTitle("Player 2's Turn");
-            this.primaryStage.setScene(this.player2Scene);
-            this.primaryStage.show();
-        }
-
+    ////////////////////////////////////  GUI RELATED METHODS //////////////////////////////////////////////
+    private void linkBoardVisuals(){
+        //Player 1's own gpane
+        players.get(0).getBoard().linkBoardVisuals(player1Controller.getPlayergpane());
+        //Player 1's enemy gpane
+        players.get(0).getEnemyBoardGui().linkBoardVisuals(player1Controller.getEnemygpane());
+        //Player 2's own gpane
+        players.get(1).getBoard().linkBoardVisuals(player2Controller.getPlayergpane());
+        //Player 2's enemy gpane
+        players.get(1).getEnemyBoardGui().linkBoardVisuals(player2Controller.getEnemygpane());
     }
+
+    //Method for testing, does same thing as initializeBoardVisuals, but does not initialize gridpanes
+    //This method only gets called from game constructor that is for Testing purposes
+
 
     //logic for deciding what tiles to render
     //place ifs and switches for revealed, shot, depth (z) position, if ship is above my z, etc
@@ -218,6 +198,47 @@ public class Game {
                 }
             }
         }
+    }
+
+    //called when turns are passed back and forth
+    public void updateScene(){
+        //have JavaFX open up our player1Scene.fxml
+        if(this.player1Turn){
+            updateEnemyGpane(getPlayers().get(0).getEnemyBoardGui(), player1Controller.getEnemygpane());
+            this.primaryStage.setTitle("Player 1's Turn");
+            this.primaryStage.setScene(this.player1Scene);
+            this.primaryStage.show();
+        }
+        //have JavaFX open up our player2Scene.fxml
+        else{
+            updateEnemyGpane(getPlayers().get(1).getEnemyBoardGui(), player2Controller.getEnemygpane());
+            this.primaryStage.setTitle("Player 2's Turn");
+            this.primaryStage.setScene(this.player2Scene);
+            this.primaryStage.show();
+        }
+    }
+
+    /////////////////////////////  LOGIC, NON GUI RELATED METHODS /////////////////////////////////////
+    //called when a player's turn is over
+    public void passTurn(){
+        this.player1Turn = !this.player1Turn;
+    }
+
+    public void updateScores(){
+        Player player1 = getPlayers().get(0);
+        Player player2 = getPlayers().get(1);
+        int player1score = player1.getScore();
+        int player2score = player2.getScore();
+
+        for(Ship ship : player1.getFleet().getDestroyedShips()){
+            player2score += ship.size;
+        }
+        for(Ship ship : player2.getFleet().getDestroyedShips()){
+            player1score += ship.size;
+        }
+
+        player1.setScore(player1score);
+        player2.setScore(player2score);
     }
 
     public void checkUpgrades() {
@@ -259,5 +280,9 @@ public class Game {
 
     public PlayerController getPlayer2Controller() {
         return player2Controller;
+    }
+
+    public boolean isPlayer1Turn(){
+        return player1Turn;
     }
 }
