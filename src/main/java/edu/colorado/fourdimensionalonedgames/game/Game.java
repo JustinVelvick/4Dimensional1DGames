@@ -23,6 +23,8 @@ import java.util.List;
 
 public class Game {
 
+    private static Game uniqueInstance;
+
     private Stage primaryStage;
     private MenuSceneController menuSceneController;
     private PlayerController player1Controller;
@@ -51,6 +53,16 @@ public class Game {
     public final static String SONAR_PULSE = "Sonar Pulse";
     public final static String SPACE_LASER = "Space Laser";
 
+
+    //implements Singleton design pattern for Game object (only one is allowed to exist)
+    public static synchronized Game getInstance(Stage primaryStage, Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth) throws IOException {
+        if(uniqueInstance == null){
+            uniqueInstance = new Game(primaryStage, renderer, numberofPlayers, tileSize, columns, rows, depth);
+        }
+        return uniqueInstance;
+    }
+
+
     //Game constructor which creates the Player objects
     /**
      * @param renderer (One renderer to contain all IRenderable objects)
@@ -59,7 +71,7 @@ public class Game {
      * @param columns (number of columns on a single battleships board)
      * @param rows (number of rows on a single battleships board)
      */
-    public Game(Stage primaryStage, Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth) throws IOException {
+    private Game(Stage primaryStage, Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth) throws IOException {
 
         //set all of our private game attributes
         this.renderer = renderer;

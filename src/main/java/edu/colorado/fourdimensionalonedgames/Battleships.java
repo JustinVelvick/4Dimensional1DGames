@@ -30,7 +30,7 @@ public class Battleships extends Application {
             Render renderer = new Render();
 
             //Create the game object
-            Game newGame = new Game(primaryStage, renderer, numberOfPlayers, tileSize, columns, rows, depth);
+            Game newGame = Game.getInstance(primaryStage, renderer, numberOfPlayers, tileSize, columns, rows, depth);
 
             //To give a refresh rate to our display
             new AnimationTimer() {
