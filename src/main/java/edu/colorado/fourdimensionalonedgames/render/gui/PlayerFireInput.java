@@ -12,6 +12,7 @@ public class PlayerFireInput {
         this.yCord = y;
 
     }
+
     //get
     public String getWeaponChoice() {
         return weaponChoice;

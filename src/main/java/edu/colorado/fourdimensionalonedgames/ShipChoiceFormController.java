@@ -113,9 +113,11 @@ public class ShipChoiceFormController implements Initializable {
         boolean xValid = false;
         int xAscii = input.getxCord().charAt(0);
 
+        //upper case A-J check
         if(xAscii > 64 && xAscii < 75){
             xValid=true;
         }
+        //lower case a-j check
         else if(xAscii > 96 && xAscii < 107){
             xValid=true;
         }

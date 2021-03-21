@@ -96,11 +96,35 @@ public class FireFormController implements Initializable {
 
 
     //helper method to validate form before sending a PlayerShipInput object
+    //NOTE: Since weapons are selected from dropdown populated by player object, no need to check for bad weapon input
     public boolean validateForm(PlayerFireInput input) {
-        boolean result = false;
+        //for x, values entered are either a-j or A-J, use ascii table values to check
 
+        // len of x cord input should be 1 (aka a letter between a-j)
+        //len of y cord input should be 1 or 2 (number 1-10 including 1 and 10)
+        if((input.getxCord().length() != 1) || (input.getyCord().length() > 2) || (input.getyCord().length() < 1)) {
+            return false;
+        }
 
+        boolean xValid = false;
+        int xAscii = input.getxCord().charAt(0);
 
-        return result;
+        //upper case A-J check
+        if(xAscii > 64 && xAscii < 75){
+            xValid=true;
+        }
+        //lower case a-j check
+        else if(xAscii > 96 && xAscii < 107){
+            xValid=true;
+        }
+
+        //y values can be integers [1,10]
+        boolean yValid = false;
+        int y = Integer.parseInt(input.getyCord());
+        if(y > 0 && y < 11){
+            yValid = true;
+        }
+
+        return xValid&&yValid;
     }
 }
