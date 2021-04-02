@@ -4,5 +4,5 @@ import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 
 //grid panes
 public interface Observer {
-    void update(Tile[][] tiles);
+    void update(Tile[][][] tiles);
 }

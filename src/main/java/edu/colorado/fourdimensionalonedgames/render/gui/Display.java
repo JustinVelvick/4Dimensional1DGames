@@ -6,35 +6,37 @@ import javafx.scene.layout.GridPane;
 
 public class Display implements Observer{
     private GridPane gpane;
-    private Tile[][] boardState;
+    private Tile[][][] boardState;
     private Render renderer;
 
     //Send initial board to display
-    public Display(GridPane gpane, Tile[][] board, Render renderer){
+    public Display(GridPane gpane, Tile[][][] board, Render renderer){
         this.boardState = board;
         this.renderer = renderer;
         this.gpane = gpane;
     }
 
     @Override
-    public void update(Tile[][] newBoardState) {
+    public void update(Tile[][][] newBoardState) {
         //unregister and reregister tiles to renderer
         //remove and add children to gpane
-        for(Tile[] tileRow : newBoardState){
-            for(Tile newTile : tileRow){
-                swapTile(newTile);
+
+        for(Tile[][] tileColumn : newBoardState){
+            for(Tile[] tileRow : tileColumn){
+                swapTile(tileRow[0]);
             }
         }
     }
 
     //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
-    private void swapTile(Tile newTile){
+    protected void swapTile(Tile newTile){
         Tile oldTile;
 
         int x = newTile.getColumn();
         int y = newTile.getRow();
+        int z = newTile.getDepth();
 
-        oldTile = boardState[x][y];
+        oldTile = boardState[x][y][z];
 
         //re-register that spot with the renderer
         renderer.unregister(oldTile);
@@ -45,7 +47,7 @@ public class Display implements Observer{
         gpane.add(newTile, x, y);
 
         //Update display object with the new board state
-        boardState[x][y] = newTile;
+        boardState[x][y][z] = newTile;
     }
 
 

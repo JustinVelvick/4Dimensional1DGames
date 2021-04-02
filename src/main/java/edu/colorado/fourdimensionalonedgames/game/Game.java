@@ -9,6 +9,8 @@ import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.*;
+import edu.colorado.fourdimensionalonedgames.render.gui.Display;
+import edu.colorado.fourdimensionalonedgames.render.gui.EnemyDisplay;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,6 +28,7 @@ public class Game {
     private static Game uniqueInstance;
 
     private Stage primaryStage;
+    private final Render renderer;
     private MenuSceneController menuSceneController;
     private PlayerController player1Controller;
     private PlayerController player2Controller;
@@ -34,7 +37,12 @@ public class Game {
     private Scene player2Scene;
     private Scene menuScene;
 
-    private final Render renderer;
+    private Display player1Display;
+    private EnemyDisplay player1EnemyDisplay;
+    private Display player2Display;
+    private EnemyDisplay player2EnemyDisplay;
+
+
     private final int numberofPlayers;
     private final int tileSize;
     private final int columns;
@@ -149,10 +157,11 @@ public class Game {
         this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
 
 
+
+        //sets up observer pattern between boards and grid panes
+        linkBoardVisuals(player1Controller.getPlayergpane(), player1Controller.getEnemygpane(), player2Controller.getPlayergpane(), player2Controller.getEnemygpane());
         //initialize both player's boards (visually via linking board Tiles with FXML GridPanes)
         initializeBoards();
-        linkBoardVisuals();
-
 
         //Change taskbar icon in client's OS
         Image icon = new Image("icon.jpg");
@@ -175,19 +184,24 @@ public class Game {
     }
 
     ////////////////////////////////////  GUI RELATED METHODS //////////////////////////////////////////////
-    private void linkBoardVisuals(){
-        //Player 1's own gpane
-        players.get(0).getBoard().linkBoardVisuals(player1Controller.getPlayergpane());
-        //Player 1's enemy gpane
-        players.get(0).getEnemyBoardGui().linkBoardVisuals(player1Controller.getEnemygpane());
-        //Player 2's own gpane
-        players.get(1).getBoard().linkBoardVisuals(player2Controller.getPlayergpane());
-        //Player 2's enemy gpane
-        players.get(1).getEnemyBoardGui().linkBoardVisuals(player2Controller.getEnemygpane());
-    }
+    private void linkBoardVisuals(GridPane p1gpane, GridPane p1Enemygpane, GridPane p2gpane, GridPane p2Enemygpane){
 
-    //Method for testing, does same thing as initializeBoardVisuals, but does not initialize gridpanes
-    //This method only gets called from game constructor that is for Testing purposes
+        Board player1Board = players.get(0).getBoard();
+        Board player1EnemyBoard = players.get(0).getEnemyBoardGui();
+        Board player2Board = players.get(1).getBoard();
+        Board player2EnemyBoard = players.get(1).getEnemyBoardGui();
+
+        player1Display = new Display(p1gpane, player1Board.tiles, renderer);
+        player1EnemyDisplay = new EnemyDisplay(p1Enemygpane, player1EnemyBoard.tiles, renderer);
+        player2Display = new Display(p2gpane, player2Board.tiles, renderer);
+        player2EnemyDisplay = new EnemyDisplay(p2Enemygpane, player2EnemyBoard.tiles, renderer);
+
+        player1Board.registerObserver(player1Display);
+        player2Board.registerObserver(player2Display);
+
+        player1EnemyBoard.registerObserver(player1EnemyDisplay);
+        player2EnemyBoard.registerObserver(player2EnemyDisplay);
+    }
 
 
     //logic for deciding what tiles to render

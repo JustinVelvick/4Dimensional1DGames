@@ -3,12 +3,16 @@ package edu.colorado.fourdimensionalonedgames.game;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.gui.Observer;
+import edu.colorado.fourdimensionalonedgames.render.gui.Subject;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
+public class Board implements Subject {
 
     private final int rows;
     private final int columns;
@@ -17,6 +21,8 @@ public class Board {
     public Tile[][][] tiles;
     public Render renderer;
 
+    private List<Observer> observers;
+
     public Board(int columns, int rows, int depth, Render renderer) {
 
         this.rows = rows;
@@ -24,33 +30,7 @@ public class Board {
         this.depth = depth;
         this.renderer = renderer;
         tiles = new Tile[columns + 1][rows + 1][depth];
-    }
-
-    //Refreshes a given gpane with all of this board's tile objects (canvas nodes)
-    public void linkBoardVisuals(GridPane gpane) {
-
-        Tile tile;
-
-        for (int j = 0; j <= columns; j++) {
-            tile = this.tiles[0][j][0];
-            this.renderer.register(tile);
-            gpane.add(tile, 0, j);
-        }
-
-
-        for (int i = 1; i <= rows; i++) {
-            tile = this.tiles[i][0][0];
-            this.renderer.register(tile);
-            gpane.add(tile, i, 0);
-        }
-
-        for (int i = 1; i <= columns; i++) {
-            for (int j = 1; j <= rows; j++) {
-                tile = this.tiles[i][j][0];
-                this.renderer.register(tile);
-                gpane.add(tile, i, j);
-            }
-        }
+        this.observers = new ArrayList<>();
     }
 
     //Method that only generates a board of sea tiles with accompying letters and numbers in a grid
@@ -76,6 +56,7 @@ public class Board {
                 }
             }
         }
+        updateObservers();
     }
 
 
@@ -115,6 +96,7 @@ public class Board {
                 renderer.unregister(oldTile);
                 renderer.register(currentTile);
             }
+            updateObservers();
             return true;
         }
         else{
@@ -202,5 +184,20 @@ public class Board {
     }
 
 
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
 
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void updateObservers() {
+        for(Observer observer : observers){
+            observer.update(tiles);
+        }
+    }
 }
