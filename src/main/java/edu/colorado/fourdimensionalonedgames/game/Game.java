@@ -98,6 +98,8 @@ public class Game {
             this.players.add(newPlayer);
         }
 
+        //give each player a reference to the enemy
+
         startGame(primaryStage);
     }
 
@@ -204,40 +206,16 @@ public class Game {
     }
 
 
-    //logic for deciding what tiles to render
-    //place ifs and switches for revealed, shot, depth (z) position, if ship is above my z, etc
-    //TODO - Implement GridPane updating based on flags and z position
-    public void updateEnemyGpane(Board board, GridPane gpane){
-        Tile newtile;
-        Tile oldTile;
-        for (int i = 1; i <= columns; i++) {
-            for (int j = 1; j <= rows; j++) {
-
-                oldTile = board.tiles[i][j][0];
-                //tile we will be adding to enemy gpane is actual tile on the enemy's board if its been shot
-                if(oldTile.revealed){
-                    newtile = board.tiles[i][j][0];
-                    gpane.getChildren().remove(oldTile);
-                    gpane.add(newtile, i, j);
-                    this.renderer.unregister(oldTile);
-                    this.renderer.register(newtile);
-                }
-            }
-        }
-    }
-
     //called when turns are passed back and forth
     public void updateScene(){
         //have JavaFX open up our player1Scene.fxml
         if(this.player1Turn){
-            updateEnemyGpane(getPlayers().get(0).getEnemyBoardGui(), player1Controller.getEnemygpane());
             this.primaryStage.setTitle("Player 1's Turn");
             this.primaryStage.setScene(this.player1Scene);
             this.primaryStage.show();
         }
         //have JavaFX open up our player2Scene.fxml
         else{
-            updateEnemyGpane(getPlayers().get(1).getEnemyBoardGui(), player2Controller.getEnemygpane());
             this.primaryStage.setTitle("Player 2's Turn");
             this.primaryStage.setScene(this.player2Scene);
             this.primaryStage.show();

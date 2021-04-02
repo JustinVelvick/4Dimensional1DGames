@@ -73,8 +73,7 @@ public class PlayerController implements Initializable {
         formController.initialize(this.game);
         formController.populateFireForm(this.player.getWeapons());
 
-        //object that will store the user's input
-        PlayerFireInput userInput = formController.userInput();
+
 
 
         Stage stage = new Stage();
@@ -83,6 +82,9 @@ public class PlayerController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.showAndWait();
+
+        //object that will store the user's input
+        PlayerFireInput userInput = formController.userInput();
 
         //fire weapon at enemy's actual board
         fireWeapon(enemyPlayer.getBoard(), userInput);
@@ -154,7 +156,7 @@ public class PlayerController implements Initializable {
         }
 
         else{
-
+            enemyPlayer.placeEnemyShip(input);
         }
     }
 

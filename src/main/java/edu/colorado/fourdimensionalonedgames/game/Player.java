@@ -86,6 +86,7 @@ public class Player {
         }
 
         List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
+        weapon.useAt(enemyBoardGui, attackCoords);
 
         for(AttackResult attackResult : results){
             Ship attackedShip = attackResult.ship;
@@ -164,12 +165,58 @@ public class Player {
             removeShipToPlace(newShip);
             //add mines
             checkMines();
-
         }
         else{
             return false;
         }
         return true;
+    }
+
+    //for opposite player to call after they successfully placed a ship on their own real board (GUI RELATED)
+    public void placeEnemyShip(PlayerShipInput input){
+        Orientation direction = Orientation.down;
+        double x =  Double.parseDouble(input.getxCord());
+        double y =  Double.parseDouble(input.getyCord());
+        Point3D origin = new Point3D(x, y, 0);
+        Ship newShip = new Destroyer();
+
+        String shipChoice = input.getShipChoice();
+        String orientationChoice = input.getDirection();
+
+        for(Ship ship : this.getShipsToPlace()){
+            if(shipChoice.equals(ship.getType())){
+                newShip = ship;
+            }
+        }
+
+        //Set z axis
+        if(input.getSubmergeChoice().equals("Yes")){
+            newShip.setShipTileDepth(1);
+            origin = new Point3D(origin.getX(), origin.getY(), 1);
+        }
+
+        switch (orientationChoice) {
+            case "Up":
+                direction = Orientation.up;
+                break;
+
+            case "Down":
+                direction = Orientation.down;
+                break;
+
+            case "Left":
+                direction = Orientation.left;
+                break;
+
+            case "Right":
+                direction = Orientation.right;
+                break;
+        }
+
+        if(getEnemyBoardGui().placeShip(direction, origin, newShip)){
+            //add mines
+            //checkMines();
+        }
     }
 
     public void checkMines(){
@@ -286,6 +333,10 @@ public class Player {
 
     public int getScore() {
         return score;
+    }
+
+    public Game getGame(){
+        return game;
     }
 
     public void setUpgradeStatus(TierOneUpgrade upgradeStatus) {

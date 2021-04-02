@@ -32,7 +32,6 @@ public class ShipTile extends Tile {
             return Color.HOTPINK;
         } else {
             return parentShip.getColor();
-
         }
     }
 

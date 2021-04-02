@@ -112,10 +112,14 @@ public class FireFormController implements Initializable {
         //upper case A-J check
         if(xAscii > 64 && xAscii < 75){
             xValid=true;
+            xAscii = xAscii - 64;
+            input.setxCord(String.valueOf(xAscii));
         }
         //lower case a-j check
         else if(xAscii > 96 && xAscii < 107){
             xValid=true;
+            xAscii = xAscii - 96;
+            input.setxCord(String.valueOf(xAscii));
         }
 
         //y values can be integers [1,10]
