@@ -22,7 +22,7 @@ public class Reveal implements IAttackBehavior {
 
         // check that provided coords are on board, throw exception if not
         if (!board.isWithinBounds(origin))
-            throw new InvalidAttackException("reveal coordinates off of board");
+            throw new InvalidAttackException("Reveal coordinates off of board");
 
         Tile originTile = board.tiles[x][y][depth];
         // if already attacked, throw exception

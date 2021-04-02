@@ -135,17 +135,14 @@ public class PlayerController implements Initializable {
         //initialize form fields with updated list of ships in player's shipsToPlace
         formController.populateShipForm(this.player.getShipsToPlace());
 
-        //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
-        PlayerShipInput userInput = formController.display();
-
-
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Ship Placement Form");
         stage.initModality(Modality.APPLICATION_MODAL);
 
+        //open a new shipChoiceForm and get results from the form stored as a PlayerShipInput object
         stage.showAndWait();
-
+        PlayerShipInput userInput = formController.display();
         placeShip(userInput);
     }
 

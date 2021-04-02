@@ -43,6 +43,7 @@ public class PlayerShipInput {
         return shipChoice;
     }
 
+    //Converts letter x coordinate into the matching numerical coordinate 1-10, then back into a string to mirror yCord
     public String getxCord() {
         return xCord;
     }

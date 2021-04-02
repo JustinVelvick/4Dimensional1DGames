@@ -96,7 +96,6 @@ public class Player {
             }
             else if (attackedShip.destroyed()) {
                 //when ship has been destroyed
-
                 if(this.upgradeStatus == TierOneUpgrade.LOCKED){
                     this.upgradeStatus = TierOneUpgrade.UNLOCKED;
                 }
@@ -314,6 +313,4 @@ public class Player {
     public void removeShipToPlace(Ship ship){
         this.shipsToPlace.remove(ship);
     }
-
-
 }

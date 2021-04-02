@@ -56,14 +56,14 @@ public class ShipChoiceFormController implements Initializable {
             tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
             tentativeInput.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
             tentativeInput.setxCord(xCord.getText());
-            tentativeInput.setyCord(xCord.getText());
+            tentativeInput.setyCord(yCord.getText());
             tentativeInput.setSubmergeChoice(submergeChoiceBox.getSelectionModel().getSelectedItem());
         }
         else{
             tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
             tentativeInput.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
             tentativeInput.setxCord(xCord.getText());
-            tentativeInput.setyCord(xCord.getText());
+            tentativeInput.setyCord(yCord.getText());
         }
 
         if(this.validateForm(tentativeInput)){
@@ -116,10 +116,14 @@ public class ShipChoiceFormController implements Initializable {
         //upper case A-J check
         if(xAscii > 64 && xAscii < 75){
             xValid=true;
+            xAscii = xAscii - 64;
+            input.setxCord(String.valueOf(xAscii));
         }
         //lower case a-j check
         else if(xAscii > 96 && xAscii < 107){
             xValid=true;
+            xAscii = xAscii - 96;
+            input.setxCord(String.valueOf(xAscii));
         }
 
         //y values can be integers [1,10]

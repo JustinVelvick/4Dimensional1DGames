@@ -234,6 +234,7 @@ public class Game {
     //called when a player's turn is over
     public void passTurn(){
         this.player1Turn = !this.player1Turn;
+        updateScene();
     }
 
     public void updateScores(){

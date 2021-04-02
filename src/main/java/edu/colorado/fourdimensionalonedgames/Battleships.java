@@ -52,9 +52,6 @@ public class Battleships extends Application {
 
             }.start();
 
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +59,6 @@ public class Battleships extends Application {
 
 
     public static void main(String[] args) {
-
         launch(args);
     }
 }
