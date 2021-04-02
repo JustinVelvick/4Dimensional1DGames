@@ -2,18 +2,23 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.MineCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
+import edu.colorado.fourdimensionalonedgames.render.tile.MineTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
     //account specific info
@@ -30,6 +35,7 @@ public class Player {
     private final List<Ship> shipsToPlace = new ArrayList<>();
     private final Fleet fleet;
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
+    private MineCollection mines;
 
     //constructor
     public Player (Game game, Board board, Board enemyBoardGui) {
@@ -38,6 +44,7 @@ public class Player {
         this.enemyBoardGui = enemyBoardGui;
         this.fleet = new Fleet();
         this.upgradeStatus = TierOneUpgrade.LOCKED;
+        this.mines = MineCollection.UNAVAILABLE;
         this.score = 0;
         this.missedShots = 0;
         this.totalShots = 0;
@@ -156,12 +163,46 @@ public class Player {
             fleet.addShip(newShip);
             //Remove shipToPlace from player list of shipsToPlace since placement succeeded
             removeShipToPlace(newShip);
+            //add mines
+            checkMines();
+
         }
         else{
             return false;
         }
         return true;
     }
+
+    public void checkMines(){
+        if(shipsToPlace.isEmpty()){
+            mines = MineCollection.AVAILABLE;
+        }
+        if(mines == MineCollection.AVAILABLE){
+            placeMines();
+        }
+    }
+
+    private void placeMines(){
+        Random random = new Random();
+        for(int x = 0; x < 4; x++) {
+            int i = random.nextInt(9) + 1;
+            int j = random.nextInt(9) + 1;
+            Tile oldTile = board.tiles[i][j][0];
+            if (oldTile instanceof SeaTile){
+                Tile mineTile = new MineTile(i,j,0);//START HERE
+                oldTile = mineTile;
+
+                //re-register that spot with the renderer
+//                renderer.unregister(oldTile);
+//                renderer.register(mineTile);
+            }
+            else{
+                //ship was placed at the spot
+            }
+        }
+    }
+
+
 
     //will only move entire fleet if every ship is able to move specified direction
     public boolean moveFleet(Orientation direction){
