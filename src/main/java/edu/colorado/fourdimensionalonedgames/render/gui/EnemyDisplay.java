@@ -35,5 +35,6 @@ public class EnemyDisplay extends Display implements Observer{
                 }
             }
         }
+        boardState = newBoardState;
     }
 }

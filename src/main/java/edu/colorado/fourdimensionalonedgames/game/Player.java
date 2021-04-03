@@ -33,6 +33,7 @@ public class Player {
     private final Board enemyBoardGui;
     private final List<Weapon> weapons = new ArrayList<>();
     private final List<Ship> shipsToPlace = new ArrayList<>();
+    private final List<Ship> phantomShipsToPlace = new ArrayList<>(); //for enemy boards (GUI RELATED)
     private final Fleet fleet;
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
     private MineCollection mines;
@@ -60,6 +61,11 @@ public class Player {
         shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
         shipsToPlace.add(defaultShipYard.createShip("Battleship"));
         shipsToPlace.add(submergableShipYard.createShip("Submarine"));
+
+        phantomShipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
+        phantomShipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+        phantomShipsToPlace.add(defaultShipYard.createShip("Battleship"));
+        phantomShipsToPlace.add(submergableShipYard.createShip("Submarine"));
     }
 
     private void generateWeapons(){
@@ -87,6 +93,8 @@ public class Player {
 
         List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
         weapon.useAt(enemyBoardGui, attackCoords);
+        opponentBoard.updateObservers();
+        enemyBoardGui.updateObservers();
 
         for(AttackResult attackResult : results){
             Ship attackedShip = attackResult.ship;
@@ -183,7 +191,7 @@ public class Player {
         String shipChoice = input.getShipChoice();
         String orientationChoice = input.getDirection();
 
-        for(Ship ship : this.getShipsToPlace()){
+        for(Ship ship : this.getPhantomShipsToPlace()){
             if(shipChoice.equals(ship.getType())){
                 newShip = ship;
             }
@@ -311,6 +319,10 @@ public class Player {
 
     public List<Ship> getShipsToPlace() {
         return shipsToPlace;
+    }
+
+    public List<Ship> getPhantomShipsToPlace() {
+        return phantomShipsToPlace;
     }
 
     public List<Weapon> getWeapons(){return weapons;}

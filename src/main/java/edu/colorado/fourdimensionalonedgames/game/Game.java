@@ -98,8 +98,6 @@ public class Game {
             this.players.add(newPlayer);
         }
 
-        //give each player a reference to the enemy
-
         startGame(primaryStage);
     }
 
@@ -157,7 +155,6 @@ public class Game {
 
         this.player2Controller= loader.getController();
         this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
-
 
 
         //sets up observer pattern between boards and grid panes

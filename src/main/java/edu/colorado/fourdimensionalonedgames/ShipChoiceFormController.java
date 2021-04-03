@@ -145,5 +145,9 @@ public class ShipChoiceFormController implements Initializable {
         directionChoiceBox.getItems().removeAll(directionChoiceBox.getItems());
         directionChoiceBox.getItems().addAll("Up", "Down", "Left", "Right");
         directionChoiceBox.getSelectionModel().select("Up");
+
+        submergeChoiceBox.getItems().removeAll(submergeChoiceBox.getItems());
+        submergeChoiceBox.getItems().addAll("Yes", "No");
+        submergeChoiceBox.getSelectionModel().select("No");
     }
 }

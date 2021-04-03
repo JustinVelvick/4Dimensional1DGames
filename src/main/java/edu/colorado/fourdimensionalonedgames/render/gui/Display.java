@@ -5,9 +5,9 @@ import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.scene.layout.GridPane;
 
 public class Display implements Observer{
-    private GridPane gpane;
-    private Tile[][][] boardState;
-    private Render renderer;
+    protected GridPane gpane;
+    protected Tile[][][] boardState;
+    protected Render renderer;
 
     //Send initial board to display
     public Display(GridPane gpane, Tile[][][] board, Render renderer){
@@ -26,6 +26,8 @@ public class Display implements Observer{
                 swapTile(tileRow[0]);
             }
         }
+
+        boardState = newBoardState;
     }
 
     //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
@@ -47,7 +49,7 @@ public class Display implements Observer{
         gpane.add(newTile, x, y);
 
         //Update display object with the new board state
-        boardState[x][y][z] = newTile;
+        //boardState[x][y][z] = newTile;
     }
 
 
