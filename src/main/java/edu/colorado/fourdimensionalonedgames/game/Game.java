@@ -133,7 +133,7 @@ public class Game {
         //Load our menu scene and accompying controller and store them
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("menuScene.fxml"));
         Pane menuRoot = loader.load();
-        this.menuScene = new Scene(menuRoot, (width*2.5), (height*1.3));
+        this.menuScene = new Scene(menuRoot, (width*2), (height*1.2));
 
         this.menuSceneController = loader.getController();
         this.menuSceneController.initialize(this);
@@ -142,7 +142,7 @@ public class Game {
         //Load our player1Scene and accompying controller and store them
         loader = new FXMLLoader(getClass().getClassLoader().getResource("player1Scene.fxml"));
         HBox player1Root = loader.load();
-        this.player1Scene = new Scene(player1Root, (width*2.5) , (height*1.3));
+        this.player1Scene = new Scene(player1Root, (width*2.3) , (height*1.3));
 
         this.player1Controller = loader.getController();
         this.player1Controller.initialize(this, getPlayers().get(0), getPlayers().get(1));
@@ -151,7 +151,7 @@ public class Game {
         //Load our player2Scene and accompying controller and store them
         loader = new FXMLLoader(getClass().getClassLoader().getResource("player2Scene.fxml"));
         HBox player2Root = loader.load();
-        this.player2Scene = new Scene(player2Root, (width*2.5) , (height*1.3));
+        this.player2Scene = new Scene(player2Root, (width*2.3) , (height*1.3));
 
         this.player2Controller= loader.getController();
         this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
@@ -202,6 +202,16 @@ public class Game {
         player2EnemyBoard.registerObserver(player2EnemyDisplay);
     }
 
+    /////////////////////////////  LOGIC, NON GUI RELATED METHODS /////////////////////////////////////
+    //called when a player's turn is over
+    public void passTurn(){
+        this.player1Turn = !this.player1Turn;
+        //to give each player a fresh, empty fleet movement stack for the next turn
+        for(Player player : players){
+            player.refreshFleetController();
+        }
+        updateScene();
+    }
 
     //called when turns are passed back and forth
     public void updateScene(){
@@ -217,13 +227,6 @@ public class Game {
             this.primaryStage.setScene(this.player2Scene);
             this.primaryStage.show();
         }
-    }
-
-    /////////////////////////////  LOGIC, NON GUI RELATED METHODS /////////////////////////////////////
-    //called when a player's turn is over
-    public void passTurn(){
-        this.player1Turn = !this.player1Turn;
-        updateScene();
     }
 
     public void updateScores(){

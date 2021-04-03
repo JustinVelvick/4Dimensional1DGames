@@ -7,19 +7,24 @@ import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
+import edu.colorado.fourdimensionalonedgames.game.ship.FleetControl;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,6 +41,11 @@ public class PlayerController implements Initializable {
     private Game game;
     private Player player;
     private Player enemyPlayer;
+    private boolean movingFleet;
+
+
+    @FXML
+    private HBox playerSceneHbox;
 
     @FXML
     private GridPane playergpane;
@@ -44,13 +54,46 @@ public class PlayerController implements Initializable {
     private GridPane enemygpane;
 
     @FXML
+    private Pane moveInstructionsPane;
+
+    @FXML
     private Button placeShipButton;
+
+    @FXML
+    private Button moveFleetButton;
+    @FXML
+    private Button undoMoveFleetButton;
 
     @FXML
     private Button passTurnButton;
 
     @FXML
     private Button fireWeaponButton;
+
+    @FXML
+    private Button doneButton;
+
+    EventHandler<KeyEvent> handler = new EventHandler<>() {
+        @Override
+        public void handle(KeyEvent event) {
+            switch(event.getCode()){
+                case W:
+                    player.getFleetController().moveFleet(Orientation.up);
+                    break;
+                case S:
+                    player.getFleetController().moveFleet(Orientation.down);
+                    break;
+                case A:
+                    player.getFleetController().moveFleet(Orientation.left);
+                    break;
+                case D:
+                    player.getFleetController().moveFleet(Orientation.right);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 
     //We call this at the creation of any new Player1Scene
@@ -60,6 +103,7 @@ public class PlayerController implements Initializable {
         this.game = game;
         this.player = thisPlayer;
         this.enemyPlayer = enemyPlayer;
+        this.movingFleet = false;
     }
 
     @FXML
@@ -160,15 +204,33 @@ public class PlayerController implements Initializable {
         }
     }
 
-    public void handleUndoButton(ActionEvent e){
-
+    public void handleMoveFleetButton(ActionEvent e){
+        moveInstructionsPane.visibleProperty().setValue(true);
+        passTurnButton.visibleProperty().setValue(false);
+        movingFleet = true;
+        playerSceneHbox.getScene().addEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
+
+
+    public void handleDoneButton(ActionEvent e){
+        moveInstructionsPane.visibleProperty().setValue(false);
+        passTurnButton.visibleProperty().setValue(true);
+        playerSceneHbox.getScene().removeEventHandler(KeyEvent.KEY_PRESSED, handler);
+        movingFleet = false;
+    }
+
+    public void handleUndoMoveFleetButton(ActionEvent e){
+        player.getFleetController().undoMoveFleet();
+    }
+
 
     public void handlePassTurnButton(ActionEvent e){
         //Turn is over when button is pressed
         this.game.passTurn();
         this.game.updateScene();
     }
+
+
 
     //JavaFX calls this at the creation of any new form
     public void initialize(URL location, ResourceBundle resources) {

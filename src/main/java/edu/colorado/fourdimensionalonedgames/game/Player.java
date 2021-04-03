@@ -37,6 +37,7 @@ public class Player {
     private final Fleet fleet;
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
     private MineCollection mines;
+    private FleetControl fleetController;
 
     //constructor
     public Player (Game game, Board board, Board enemyBoardGui) {
@@ -49,6 +50,7 @@ public class Player {
         this.score = 0;
         this.missedShots = 0;
         this.totalShots = 0;
+        this.fleetController = new FleetControl(this);
         generateShips();
         generateWeapons();
     }
@@ -62,6 +64,8 @@ public class Player {
         shipsToPlace.add(defaultShipYard.createShip("Battleship"));
         shipsToPlace.add(submergableShipYard.createShip("Submarine"));
 
+        //Ship objects to be placed on enemy boards (GUI RELATED)
+        //Need two separate objects thanks to tiles being individual canvases (GUI RELATED)
         phantomShipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
         phantomShipsToPlace.add(defaultShipYard.createShip("Destroyer"));
         phantomShipsToPlace.add(defaultShipYard.createShip("Battleship"));
@@ -306,6 +310,7 @@ public class Player {
         for (Ship ship : fleet.getShips()){
             board.moveShip(ship, direction);
         }
+        board.updateObservers();
         return true;
     }
 
@@ -349,6 +354,14 @@ public class Player {
 
     public Game getGame(){
         return game;
+    }
+
+    public FleetControl getFleetController(){
+        return fleetController;
+    }
+
+    public void refreshFleetController(){
+        fleetController = new FleetControl(this);
     }
 
     public void setUpgradeStatus(TierOneUpgrade upgradeStatus) {

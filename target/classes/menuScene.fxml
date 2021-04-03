@@ -1,10 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.colorado.fourdimensionalonedgames.MenuSceneController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.colorado.fourdimensionalonedgames.MenuSceneController">
    <children>
-      <Button fx:id="startGameButton" layoutX="38.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleStartGameButton" text="Start New Game" />
+      <Pane prefHeight="131.0" prefWidth="800.0">
+         <children>
+            <Label layoutX="204.0" layoutY="26.0" text="Battleships" textFill="#3067b5">
+               <font>
+                  <Font name="Noto Serif CJK JP Black" size="67.0" />
+               </font>
+            </Label>
+         </children></Pane>
+      <HBox prefHeight="227.0" prefWidth="800.0">
+         <children>
+            <ImageView fitHeight="223.0" fitWidth="391.0" preserveRatio="true">
+               <image>
+                  <Image url="@battleship.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="3.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="182.0" fitWidth="396.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
+               <image>
+                  <Image url="@black_battleship.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="5.0" top="100.0" />
+               </HBox.margin>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox prefHeight="144.0" prefWidth="800.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="300.0" />
+            <Pane prefHeight="136.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="startGameButton" layoutX="37.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleStartGameButton" text="Start New Game" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="300.0" />
+         </children>
+      </HBox>
    </children>
-</Pane>
+</VBox>
