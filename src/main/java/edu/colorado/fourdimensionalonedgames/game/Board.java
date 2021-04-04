@@ -132,9 +132,13 @@ public class Board implements Subject {
                 for (ShipTile tile : ship.getShipTiles()){
                     int x = tile.getColumn();
                     int old_y = tile.getRow();
+
                     int y = old_y-1;
                     tile.setRow(y);
                     int z = tile.getDepth();
+                    if(tiles[x][y][z] instanceof MineTile){
+                        tiles[x][y][z].shot = true;
+                    }
 
                     tiles[x][y][z] = tile;
                     tiles[x][old_y][z] = new SeaTile(x, old_y, z);
@@ -147,6 +151,9 @@ public class Board implements Subject {
                     int y = old_y+1;
                     tile.setRow(y);
                     int z = tile.getDepth();
+                    if(tiles[x][y][z] instanceof MineTile){
+                        tiles[z][y][z].shot = true;
+                    }
 
                     tiles[x][y][z] = tile;
                     tiles[x][old_y][z] = new SeaTile(x, old_y, z);
@@ -159,6 +166,9 @@ public class Board implements Subject {
                     tile.setColumn(x);
                     int y = tile.getRow();
                     int z = tile.getDepth();
+                    if(tiles[x][y][z] instanceof MineTile){
+                        tiles[x][y][z].shot = true;
+                    }
 
                     tiles[x][y][z] = tile;
                     tiles[old_x][y][z] = new SeaTile(old_x, y, z);
@@ -171,6 +181,9 @@ public class Board implements Subject {
                     tile.setColumn(x);
                     int y = tile.getRow();
                     int z = tile.getDepth();
+                    if(tiles[x][y][z] instanceof MineTile){
+                        tiles[x][y][z].shot = true;
+                    }
 
                     tiles[x][y][z] = tile;
                     tiles[old_x][y][z] = new SeaTile(old_x, y, z);

@@ -251,8 +251,8 @@ public class Player {
                 oldTile = mineTile;
 
                 //re-register that spot with the renderer
-//                renderer.unregister(oldTile);
-//                renderer.register(mineTile);
+                //renderer.unregister(oldTile);
+                //renderer.register(mineTile);
             }
             else{
                 //ship was placed at the spot
