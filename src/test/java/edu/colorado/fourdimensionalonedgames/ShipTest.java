@@ -18,7 +18,9 @@ import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.MineTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.GridPane;
@@ -69,6 +71,7 @@ class ShipTest {
     Weapon sonarPulse = new LargeWeapon(new Reveal(), "Sonar Pulse");
     Weapon singleShot = new SmallWeapon(new Attack(), "Single Shot");
 
+
     @BeforeEach
     void setUp() {
         renderer = new Render();
@@ -106,6 +109,10 @@ class ShipTest {
         //placing a submarine at 2,2 down
         testInput1 = new PlayerShipInput("Down", "Submarine", "2", "2");
         player2.placeShip(testInput1);
+
+        //placing a mine at (1,3,0)
+        //mine = new MineTile(1,3,0); //MINETILE
+
     }
 
     @Test

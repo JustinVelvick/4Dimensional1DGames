@@ -4,10 +4,14 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
+import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
+import edu.colorado.fourdimensionalonedgames.render.tile.MineTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +53,8 @@ public class FleetTest {
     Ship player2Destroyer;
     Ship player2Battleship;
 
+    Tile mine;
+
 
     @BeforeEach
     void setUp() {
@@ -66,6 +72,7 @@ public class FleetTest {
         player2Destroyer = player2.getShipsToPlace().get(1);
         player2Battleship = player2.getShipsToPlace().get(2);
 
+
         singleShot = "Single Shot";
         simpleMiss = new AttackResult(AttackResultType.MISS, null);
         /////////////////////////////////////////////////////////////////////////////////////
@@ -82,6 +89,10 @@ public class FleetTest {
         //Player 2 placing a battleship at 5,5 down
         testInput3 = new PlayerShipInput("Down", "Battleship", "5", "5");
         //player2.placeShip(testInput3);
+
+
+        //placing a mine at (1,3,0), directly below the minesweeper
+        mine = new MineTile(1,3,0);
     }
 
     @Test
@@ -100,6 +111,17 @@ public class FleetTest {
         player1.attack(player2.getBoard(), fireInput1);
         player1.attack(player2.getBoard(), fireInput1);
         assertFalse(player2.getFleet().hasShip());
+    }
+
+
+    @Test
+    void testFleetMove() {
+        //need to be able to place mines in specific spots
+        player2.placeShip(testInput1);
+        assertTrue(player2.getFleet().hasShip());
+        player2.moveFleet(Orientation.left); //hits two mines
+        //CHANGE TO ASSERT FALSE
+        assertTrue(player2.getFleet().hasShip());
     }
 
 
