@@ -1,6 +1,6 @@
 # CSCI4448-5448 Milestone1
 Assignment template
-### Minimal Requirments
+### Minimal Requirements
 <ol>
   <li> Names of all team members. No grade if your name is not in the readme</li>
   <li> An appropriate .gitignore</li>
