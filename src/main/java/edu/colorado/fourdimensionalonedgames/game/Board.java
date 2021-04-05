@@ -174,6 +174,7 @@ public class Board implements Subject {
                     tile.setRow(new_y);
                     int z = tile.getDepth();
                     if(tiles[x][new_y][z] instanceof MineTile){
+
                         tiles[z][new_y][z].shot = true;
                     }
 
@@ -189,6 +190,7 @@ public class Board implements Subject {
                         ship.getShipTiles().get(i).setRow((int)coords.get(i).getY());
                         ship.getShipTiles().get(i).setDepth((int)coords.get(i).getZ());
                     }
+
 
                 }
                 break;

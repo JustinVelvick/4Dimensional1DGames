@@ -252,8 +252,6 @@ public class Player {
             if (oldTile instanceof SeaTile){
                 Tile mineTile = new MineTile(i,j,0);//START HERE
                 oldTile = mineTile;
-
-
                 //re-register that spot with the renderer
                 //renderer.unregister(oldTile);
                 //renderer.register(mineTile);
@@ -261,6 +259,15 @@ public class Player {
             else{
                 //ship was placed at the spot
             }
+        }
+    }
+
+
+    public void placeTestMines(int i, int j) {
+        Tile oldTile = board.tiles[i][j][0];
+        if (oldTile instanceof SeaTile) {
+            Tile mineTile = new MineTile(i, j, 0);//START HERE
+            oldTile = mineTile;
         }
     }
 
