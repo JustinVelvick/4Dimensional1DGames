@@ -9,11 +9,12 @@ import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.*;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.Display;
 import edu.colorado.fourdimensionalonedgames.render.gui.EnemyDisplay;
-import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -26,6 +27,7 @@ import java.util.List;
 public class Game {
 
     private static Game uniqueInstance;
+    private GameState gameState;
 
     private Stage primaryStage;
     private final Render renderer;
@@ -91,6 +93,7 @@ public class Game {
         this.height = columns*tileSize;
         this.numberofPlayers = numberofPlayers;
         this.player1Turn = false;
+        this.gameState = GameState.player1_setup;
 
         //create the players for this game (and their boards in the process)
         for(int i = 0; i < this.numberofPlayers; i++){
@@ -116,6 +119,7 @@ public class Game {
         this.height = columns*tileSize;
         this.numberofPlayers = numberofPlayers;
         this.player1Turn = true;
+        this.gameState = GameState.player1_setup;
 
         //create the players for this game (and their boards in the process)
         for(int i = 0; i < this.numberofPlayers; i++){
@@ -203,6 +207,34 @@ public class Game {
     }
 
     /////////////////////////////  LOGIC, NON GUI RELATED METHODS /////////////////////////////////////
+
+    //called once user presses start game from the main menu, gives restricted environment to force players to
+    //put all of their ships down before they can pass turns
+    public void passSetupTurn(){
+
+        if(gameState == GameState.player1_setup){
+            //Player 1's placing of ships
+            this.primaryStage.setTitle("Player 1: Ship Placement");
+            this.primaryStage.setScene(this.player1Scene);
+
+            player1Controller.showSetupButtons();
+
+            AlertBox.display("Place your ships!", "Place all ships down one by one on desired tiles.");
+
+            this.primaryStage.show();
+        }
+        if(gameState == GameState.player2_setup){
+            //Player 2's placing of ships
+            this.primaryStage.setTitle("Player 2: Ship Placement");
+            this.primaryStage.setScene(this.player2Scene);
+
+            player2Controller.showSetupButtons();
+
+            AlertBox.display("Place your ships!", "Place all ships down one by one on desired tiles.");
+            this.primaryStage.show();
+        }
+    }
+
     //called when a player's turn is over
     public void passTurn(){
         this.player1Turn = !this.player1Turn;
@@ -215,17 +247,25 @@ public class Game {
 
     //called when turns are passed back and forth
     public void updateScene(){
+
         //have JavaFX open up our player1Scene.fxml
         if(this.player1Turn){
             this.primaryStage.setTitle("Player 1's Turn");
             this.primaryStage.setScene(this.player1Scene);
             this.primaryStage.show();
+            if(gameState == GameState.first_turn){
+                AlertBox.display("Begin Combat!", "Welcome to the first turn Player 1! Please update this bland message :)");
+            }
         }
         //have JavaFX open up our player2Scene.fxml
         else{
             this.primaryStage.setTitle("Player 2's Turn");
             this.primaryStage.setScene(this.player2Scene);
             this.primaryStage.show();
+            if(gameState == GameState.first_turn){
+                AlertBox.display("Begin Combat!", "Welcome to the first turn Player 2! Please update this bland message :)");
+                setGameState(GameState.main_state);
+            }
         }
     }
 
@@ -261,8 +301,6 @@ public class Game {
         }
     }
 
-
-
     //checks if someone has won the game
     public boolean gameOver(){
         boolean over = true;
@@ -279,6 +317,14 @@ public class Game {
 
     public Render getRenderer() {
         return renderer;
+    }
+
+    public GameState getGameState(){
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public PlayerController getPlayer1Controller() {

@@ -57,8 +57,7 @@ public class MenuSceneController implements Initializable {
     */
     @FXML
     public void handleStartGameButton(ActionEvent event){
-
-        game.passTurn();
+        game.passSetupTurn();
     }
 
     @Override

@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames;
 
 import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
+import edu.colorado.fourdimensionalonedgames.game.GameState;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
@@ -21,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -117,9 +119,6 @@ public class PlayerController implements Initializable {
         formController.initialize(this.game);
         formController.populateFireForm(this.player.getWeapons());
 
-
-
-
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Fire Weapon Form");
@@ -196,11 +195,14 @@ public class PlayerController implements Initializable {
 
         //place a ship down on player1's actual board
         if(!this.player.placeShip(input)){
-            //ship placement did not succeed
+            AlertBox.display("Invalid Ship Placement", "Please place your ship on valid coordinates.");
         }
 
         else{
             enemyPlayer.placeEnemyShip(input);
+            if(player.getShipsToPlace().size() == 0){
+                passTurnButton.setVisible(true);
+            }
         }
     }
 
@@ -225,9 +227,66 @@ public class PlayerController implements Initializable {
 
 
     public void handlePassTurnButton(ActionEvent e){
+
+        if(game.getGameState() == GameState.player1_setup){
+            game.setGameState(GameState.player2_setup);
+            showCombatButtons();
+            game.passSetupTurn();
+            return;
+        }
+
+        if(game.getGameState() == GameState.player2_setup){
+            game.setGameState(GameState.first_turn);
+            showCombatButtons();
+            game.passTurn();
+            return;
+        }
+
+
         //Turn is over when button is pressed
         this.game.passTurn();
-        this.game.updateScene();
+        //this.game.updateScene();
+    }
+
+    //helper method to toggle visible tags on buttons we don't want the player seeing until game start
+    public void toggleButtonVisibility(){
+
+        List<Button> buttons = getButtons();
+
+        for(Button button : buttons){
+            boolean value = button.isVisible();
+            button.setVisible(!value);
+        }
+    }
+
+    //buttons to show for when in main game (after setup and ship placement)
+    public void showCombatButtons(){
+
+        List<Button> buttons = getButtons();
+
+        for(Button button : buttons){
+            if(button.equals(placeShipButton)){
+                button.setVisible(false);
+            }
+            else{
+                button.setVisible(true);
+            }
+        }
+    }
+
+    //buttons to show for when in setup and ship placement phase
+    public void showSetupButtons(){
+
+        List<Button> buttons = getButtons();
+
+        for(Button button : buttons){
+            if(button.equals(placeShipButton)){
+                button.setVisible(true);
+            }
+            else{
+                button.setVisible(false);
+            }
+        }
     }
 
 
@@ -244,5 +303,24 @@ public class PlayerController implements Initializable {
 
     public GridPane getEnemygpane() {
         return enemygpane;
+    }
+
+    public List<Button> getButtons(){
+        List<Button> buttons = new ArrayList<>();
+        buttons.add(fireWeaponButton);
+        buttons.add(passTurnButton);
+        buttons.add(moveFleetButton);
+        buttons.add(undoMoveFleetButton);
+        buttons.add(placeShipButton);
+
+        return buttons;
+    }
+
+    public Button getPassTurnButton() {
+        return passTurnButton;
+    }
+
+    public Button getFireWeaponButton() {
+        return fireWeaponButton;
     }
 }
