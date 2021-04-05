@@ -119,10 +119,21 @@ public class FleetTest {
         //need to be able to place mines in specific spots
         player2.placeShip(testInput1);
         assertTrue(player2.getFleet().hasShip());
-        player2.moveFleet(Orientation.left); //hits two mines
+        player2.moveFleet(Orientation.right); //hits two mines
         //CHANGE TO ASSERT FALSE
-        assertTrue(player2.getFleet().hasShip());
+        assertFalse(player2.getFleet().hasShip());
     }
+
+//    @Test //make sure mine tiles are not replacing the ship tiles and there are 4 mines
+//    void testMineTiles() {
+//        player2.placeShip(testInput1);
+//        player2.placeShip(testInput2);
+//        player2.placeShip(testInput3);
+//        player2.placeMines();
+//        if(){
+//
+//        }
+//    }
 
 
 //    @Test

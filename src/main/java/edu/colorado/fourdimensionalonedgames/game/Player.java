@@ -231,6 +231,9 @@ public class Player {
         }
     }
 
+
+
+
     public void checkMines(){
         if(shipsToPlace.isEmpty()){
             mines = MineCollection.AVAILABLE;
@@ -240,7 +243,7 @@ public class Player {
         }
     }
 
-    private void placeMines(){
+    public void placeMines(){
         Random random = new Random();
         for(int x = 0; x < 4; x++) {
             int i = random.nextInt(9) + 1;
@@ -249,6 +252,7 @@ public class Player {
             if (oldTile instanceof SeaTile){
                 Tile mineTile = new MineTile(i,j,0);//START HERE
                 oldTile = mineTile;
+
 
                 //re-register that spot with the renderer
                 //renderer.unregister(oldTile);

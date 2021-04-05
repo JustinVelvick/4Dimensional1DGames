@@ -126,6 +126,27 @@ public class Board implements Subject {
         return !(x < 1 || x > columns || y < 1 || y > rows || z < 0 || z >= this.getDepth());
     }
 
+
+    private Orientation findOrientation(Ship ship){
+        List<ShipTile> tiles = ship.getShipTiles();
+        ShipTile origin = tiles.get(0);
+        ShipTile next = tiles.get(1);
+        Orientation ret = Orientation.down;
+        if(origin.getRow() > next.getRow()){
+            ret = Orientation.up;
+        }
+        if(origin.getRow() < next.getRow()){
+            ret = Orientation.down;
+        }
+        if(origin.getColumn() < next.getColumn()){
+            ret = Orientation.right;
+        }
+        if(origin.getColumn() > next.getColumn()){
+            ret = Orientation.left;
+        }
+        return ret;
+    }
+
     public void moveShip(Ship ship, Orientation direction){
         switch (direction){
             case up:
@@ -147,16 +168,28 @@ public class Board implements Subject {
             case down:
                 for (ShipTile tile : ship.getShipTiles()){
                     int x = tile.getColumn();
-                    int old_y = tile.getRow();
-                    int y = old_y+1;
-                    tile.setRow(y);
+                    int y = tile.getRow();
+                    int new_y = y+1;
+                    int prev_y = y-1;
+                    tile.setRow(new_y);
                     int z = tile.getDepth();
-                    if(tiles[x][y][z] instanceof MineTile){
-                        tiles[z][y][z].shot = true;
+                    if(tiles[x][new_y][z] instanceof MineTile){
+                        tiles[z][new_y][z].shot = true;
                     }
 
-                    tiles[x][y][z] = tile;
-                    tiles[x][old_y][z] = new SeaTile(x, old_y, z);
+
+
+
+                    tiles[x][new_y][z] = tile;
+                    tiles[x][y][z] = new SeaTile(x, y, z);
+                    Point3D newOrigin = new Point3D(x,new_y,z);
+                    List<Point3D> coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
+                    for(int i = 0; i < ship.getSize(); i++){
+                        ship.getShipTiles().get(i).setColumn((int)coords.get(i).getX());
+                        ship.getShipTiles().get(i).setRow((int)coords.get(i).getY());
+                        ship.getShipTiles().get(i).setDepth((int)coords.get(i).getZ());
+                    }
+
                 }
                 break;
             case left:
