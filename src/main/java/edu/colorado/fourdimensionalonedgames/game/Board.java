@@ -1,11 +1,14 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.Observer;
 import edu.colorado.fourdimensionalonedgames.render.gui.Subject;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.GridPane;
 
@@ -191,7 +194,16 @@ public class Board implements Subject {
             currentTile.setRow((int)newCordinate.getY());
             currentTile.setDepth((int)newCordinate.getZ());
 
+            boolean shotFlag = false;
+            if (tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] instanceof MineTile) {
+                shotFlag = true;
+            }
+
             tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] = currentTile;
+            if (shotFlag) {
+                SmallWeapon mineWeapon = new SmallWeapon(new Attack(), "Mine");
+                mineWeapon.useAt(this, new Point2D(newCordinate.getX(), newCordinate.getY()));
+            }
         }
     }
 

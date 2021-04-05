@@ -264,10 +264,9 @@ public class Player {
 
 
     public void placeTestMines(int i, int j) {
-        Tile oldTile = board.tiles[i][j][0];
-        if (oldTile instanceof SeaTile) {
+        if (board.tiles[i][j][0] instanceof SeaTile) {
             Tile mineTile = new MineTile(i, j, 0);//START HERE
-            oldTile = mineTile;
+            board.tiles[i][j][0] = mineTile;
         }
     }
 
