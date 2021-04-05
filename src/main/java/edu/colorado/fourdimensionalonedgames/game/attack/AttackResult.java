@@ -3,13 +3,16 @@ package edu.colorado.fourdimensionalonedgames.game.attack;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 
 public class AttackResult {
-    public final AttackResultType type;
-    public final Ship ship;
+    private final AttackResultType type;
+    private final Ship ship;
 
     public AttackResult(AttackResultType type, Ship ship) {
         this.type = type;
         this.ship = ship;
     }
+
+    public Ship getShip(){ return ship; }
+    public AttackResultType getType(){ return type; }
 
     @Override
     public boolean equals(Object o) {

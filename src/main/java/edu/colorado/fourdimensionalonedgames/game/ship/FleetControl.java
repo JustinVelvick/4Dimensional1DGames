@@ -6,8 +6,8 @@ import java.util.Stack;
 
 //every turn, we will spawn a new FleetControl object which will have a "fresh" empty stack
 public class FleetControl {
-    Stack<MoveFleetCommand> fleetCommandStack;
-    Player player;
+    private Stack<MoveFleetCommand> fleetCommandStack;
+    private Player player;
 
     public FleetControl(Player player){
         this.player = player;

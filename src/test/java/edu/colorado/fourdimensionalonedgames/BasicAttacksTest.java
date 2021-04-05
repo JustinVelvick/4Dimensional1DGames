@@ -118,7 +118,7 @@ public class BasicAttacksTest {
         AttackResult expected = new AttackResult(AttackResultType.HIT, player2Minesweeper);
         // assertions after one hit
         assertEquals(expected, result);
-        assertEquals(1, result.ship.damage());
+        assertEquals(1, result.getShip().damage());
 
         // sink minesweeper ship
         fireInput1 = new PlayerFireInput("Single Shot", "1", "1");

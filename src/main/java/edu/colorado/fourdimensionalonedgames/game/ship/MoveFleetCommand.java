@@ -5,8 +5,8 @@ import edu.colorado.fourdimensionalonedgames.game.Player;
 public class MoveFleetCommand implements Command{
 
 
-    Orientation moveDirection;
-    Player player;
+    private Orientation moveDirection;
+    private Player player;
 
     public MoveFleetCommand(Player player, Orientation direction){
         this.player = player;
