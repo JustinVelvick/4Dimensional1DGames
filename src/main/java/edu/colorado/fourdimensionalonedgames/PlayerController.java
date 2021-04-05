@@ -148,7 +148,7 @@ public class PlayerController implements Initializable {
 
             //Inform player of result of attacking each enemy tile (could be 1 tile or many)
             for(AttackResult attackResult : results){
-                Ship attackedShip = attackResult.ship;
+                Ship attackedShip = attackResult.getShip();
 
                 if (attackedShip == null) {
                     AlertBox.display("Miss", "Shot missed");

@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class Ship implements IRenderable {
 
-    public int size;
+    protected int size;
     protected List<ShipTile> shipTiles;
     private boolean destroyed;
 
@@ -23,6 +23,7 @@ public abstract class Ship implements IRenderable {
     public void addTile(ShipTile tile) {
         shipTiles.add(tile);
     }
+    public int getSize(){return size;}
 
     /**
      * Calculate the damage done to the ship

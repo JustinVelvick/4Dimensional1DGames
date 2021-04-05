@@ -101,7 +101,7 @@ public class Player {
         enemyBoardGui.updateObservers();
 
         for(AttackResult attackResult : results){
-            Ship attackedShip = attackResult.ship;
+            Ship attackedShip = attackResult.getShip();
 
             if (attackedShip == null) {
                 //when missed shot

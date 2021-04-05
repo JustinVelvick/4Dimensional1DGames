@@ -276,10 +276,10 @@ public class Game {
         int player2score = player2.getScore();
 
         for(Ship ship : player1.getFleet().getDestroyedShips()){
-            player2score += ship.size;
+            player2score += ship.getSize();
         }
         for(Ship ship : player2.getFleet().getDestroyedShips()){
-            player1score += ship.size;
+            player1score += ship.getSize();
         }
 
         player1.setScore(player1score);

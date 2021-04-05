@@ -79,7 +79,7 @@ public class Board implements Subject {
             ShipTile currentTile;
            //update newShip's tiles to have newly generatedCoordinates
             List<ShipTile> tilesToAdd = newShip.getShipTiles();
-            for(int i = 0; i < newShip.size; i++){
+            for(int i = 0; i < newShip.getSize(); i++){
                 int x = (int) generatedCoordinates.get(i).getX();
                 int y = (int) generatedCoordinates.get(i).getY();
                 int z = (int) generatedCoordinates.get(i).getZ();

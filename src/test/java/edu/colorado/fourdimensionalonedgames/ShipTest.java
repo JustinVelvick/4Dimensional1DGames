@@ -179,7 +179,7 @@ class ShipTest {
         //for the weird submarine protrusion tile
         expected.add(new Point3D(8,7,0));
 
-        for(int i = 0; i < player2Submarine.size; i++){
+        for(int i = 0; i < player2Submarine.getSize(); i++){
             assertEquals(expected.get(i), results.get(i));
         }
 
@@ -194,7 +194,7 @@ class ShipTest {
         //for the weird submarine protrusion tile
         expected.add(new Point3D(8,7,1));
 
-        for(int i = 0; i < player2Submarine.size; i++){
+        for(int i = 0; i < player2Submarine.getSize(); i++){
             assertEquals(expected.get(i), results.get(i));
         }
 
@@ -210,7 +210,7 @@ class ShipTest {
         //for the weird submarine protrusion tile
         expected.add(new Point3D(7,10,0));
 
-        for(int i = 0; i < player2Submarine.size; i++){
+        for(int i = 0; i < player2Submarine.getSize(); i++){
             assertEquals(expected.get(i), results.get(i));
         }
 
@@ -225,7 +225,7 @@ class ShipTest {
         //for the weird submarine protrusion tile
         expected.add(new Point3D(9,3,0));
 
-        for(int i = 0; i < player2Submarine.size; i++){
+        for(int i = 0; i < player2Submarine.getSize(); i++){
             assertEquals(expected.get(i), results.get(i));
         }
 
@@ -244,7 +244,7 @@ class ShipTest {
             expected.add(new Point3D(9, y, 0));
         }
 
-        for (int i = 0; i < player2Battleship.size; i++) {
+        for (int i = 0; i < player2Battleship.getSize(); i++) {
             assertEquals(expected.get(i), results.get(i));
         }
     }
@@ -266,61 +266,61 @@ class ShipTest {
         fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
         List<AttackResult> results = player1.attack(player2.getBoard(), fireInput1);
         AttackResult result = results.get(0);
-        assertTrue(result.ship.destroyed());
-        CaptainsQuartersTile captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(0);
+        assertTrue(result.getShip().destroyed());
+        CaptainsQuartersTile captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(0);
         assertEquals(captainsQ.getHp(), 0);
-        assertSame(result.type, AttackResultType.SUNK);
+        assertSame(result.getType(), AttackResultType.SUNK);
 
 
         //damage Destroyer's CQ
         fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        assertFalse(result.ship.destroyed());
-        captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(1);
+        assertFalse(result.getShip().destroyed());
+        captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(1);
         assertEquals(captainsQ.getHp(), 1);
-        assertSame(result.type, AttackResultType.MISS);
+        assertSame(result.getType(), AttackResultType.MISS);
 
         //destroy entire Destroyer after hitting CQ one more time
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        assertTrue(result.ship.destroyed());
+        assertTrue(result.getShip().destroyed());
         assertEquals(captainsQ.getHp(), 0);
-        assertSame(result.type, AttackResultType.SUNK);
+        assertSame(result.getType(), AttackResultType.SUNK);
 
 
         //damage Battleship's CQ
         fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(2);
+        captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(2);
         assertEquals(captainsQ.getHp(), 1);
-        assertFalse(result.ship.destroyed());
-        assertSame(result.type, AttackResultType.MISS);
+        assertFalse(result.getShip().destroyed());
+        assertSame(result.getType(), AttackResultType.MISS);
 
         //destroy entire Battleship after hitting CQ one more time
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        assertTrue(result.ship.destroyed());
+        assertTrue(result.getShip().destroyed());
         assertEquals(captainsQ.getHp(), 0);
-        assertSame(result.type, AttackResultType.SUNK);
+        assertSame(result.getType(), AttackResultType.SUNK);
 
         //damage Submarine's CQ (sub at 2,2 down) (CQ at 2,5)
         player1.addWeapon(spaceLaser);
         fireInput1 = new PlayerFireInput("Space Laser", "2", "5");
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        captainsQ = (CaptainsQuartersTile)result.ship.getShipTiles().get(3);
+        captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(3);
         assertEquals(captainsQ.getHp(), 1);
-        assertFalse(result.ship.destroyed());
-        assertSame(result.type, AttackResultType.MISS);
+        assertFalse(result.getShip().destroyed());
+        assertSame(result.getType(), AttackResultType.MISS);
 
         //destroy entire Submarine after hitting CQ one more time
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        assertTrue(result.ship.destroyed());
+        assertTrue(result.getShip().destroyed());
         assertEquals(captainsQ.getHp(), 0);
-        assertSame(result.type, AttackResultType.SUNK);
+        assertSame(result.getType(), AttackResultType.SUNK);
     }
 
 }
