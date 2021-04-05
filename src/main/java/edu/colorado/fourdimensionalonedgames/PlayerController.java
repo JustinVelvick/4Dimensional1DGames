@@ -214,7 +214,6 @@ public class PlayerController implements Initializable {
         playerSceneHbox.getScene().addEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
 
-
     public void handleDoneButton(ActionEvent e){
         moveInstructionsPane.visibleProperty().setValue(false);
         passTurnButton.visibleProperty().setValue(true);
@@ -242,7 +241,6 @@ public class PlayerController implements Initializable {
             game.passTurn();
             return;
         }
-
 
         //Turn is over when button is pressed
         this.game.passTurn();

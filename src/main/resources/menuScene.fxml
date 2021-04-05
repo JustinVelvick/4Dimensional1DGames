@@ -30,7 +30,7 @@
                   <Insets left="3.0" />
                </HBox.margin>
             </ImageView>
-            <ImageView fitHeight="182.0" fitWidth="396.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
+            <ImageView fitHeight="106.0" fitWidth="389.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
                <image>
                   <Image url="@black_battleship.png" />
                </image>

@@ -100,7 +100,6 @@ public class Game {
             Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
-
         startGame(primaryStage);
     }
 
@@ -126,7 +125,6 @@ public class Game {
             Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
-
         initializeBoards();
     }
 
