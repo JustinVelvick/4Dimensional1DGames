@@ -178,13 +178,11 @@ public class Board implements Subject {
             case left:
                 newOrigin = new Point3D(x-1,y,z);
                 coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
-
                 break;
 
             case right:
                 newOrigin = new Point3D(x+1,y,z);
                 coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
-
                 break;
         }
         for(int i = 0; i < ship.getSize(); i++){
@@ -200,6 +198,8 @@ public class Board implements Subject {
             }
 
             tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] = currentTile;
+
+            //simulate a tile being damaged by the mine
             if (shotFlag) {
                 SmallWeapon mineWeapon = new SmallWeapon(new Attack(), "Mine");
                 mineWeapon.useAt(this, new Point2D(newCordinate.getX(), newCordinate.getY()));

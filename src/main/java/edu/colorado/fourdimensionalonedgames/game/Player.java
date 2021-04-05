@@ -231,37 +231,35 @@ public class Player {
         }
     }
 
-
-
-
     public void checkMines(){
         if(shipsToPlace.isEmpty()){
             mines = MineCollection.AVAILABLE;
         }
         if(mines == MineCollection.AVAILABLE){
+            mines = MineCollection.PLACED;
             placeMines();
         }
     }
 
     public void placeMines(){
         Random random = new Random();
-        for(int x = 0; x < 4; x++) {
+        int minesToPlace = 5;
+
+        while(minesToPlace > 0){
             int i = random.nextInt(9) + 1;
             int j = random.nextInt(9) + 1;
             Tile oldTile = board.tiles[i][j][0];
             if (oldTile instanceof SeaTile){
                 Tile mineTile = new MineTile(i,j,0);//START HERE
-                oldTile = mineTile;
+                board.tiles[i][j][0] = mineTile;
+                minesToPlace--;
                 //re-register that spot with the renderer
-                //renderer.unregister(oldTile);
-                //renderer.register(mineTile);
-            }
-            else{
-                //ship was placed at the spot
+                game.getRenderer().unregister(oldTile);
+                game.getRenderer().register(mineTile);
             }
         }
+        board.updateObservers();
     }
-
 
     public void placeTestMines(int i, int j) {
         if (board.tiles[i][j][0] instanceof SeaTile) {
