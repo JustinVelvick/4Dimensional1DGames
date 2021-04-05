@@ -116,24 +116,38 @@ public class FleetTest {
 
     @Test
     void testFleetMove() {
-        //need to be able to place mines in specific spots
-        player2.placeShip(testInput1);
-        assertTrue(player2.getFleet().hasShip());
+        player2.placeShip(testInput1); //minesweeper at 1,1 down
+        player2.placeTestMines(2,1);
+        player2.placeTestMines(2,2);
+        player1.placeTestMines(2,1);
+        player1.placeTestMines(2,2);
         player2.moveFleet(Orientation.right); //hits two mines
-        //CHANGE TO ASSERT FALSE
+
+
         assertFalse(player2.getFleet().hasShip());
     }
 
-//    @Test //make sure mine tiles are not replacing the ship tiles and there are 4 mines
-//    void testMineTiles() {
-//        player2.placeShip(testInput1);
-//        player2.placeShip(testInput2);
-//        player2.placeShip(testInput3);
-//        player2.placeMines();
-//        if(){
-//
-//        }
-//    }
+    @Test //make sure mine tiles are not replacing the ship tiles and there are 4 mines
+    void testMineTiles() {
+        Tile testTile = player2.getBoard().tiles[1][1][0];
+        Tile tt2 = player2.getBoard().tiles[1][2][0];
+        Tile tt3 = player2.getBoard().tiles[4][4][0];
+        Tile tt4 = player2.getBoard().tiles[4][5][0];
+        Tile tt5 = player2.getBoard().tiles[4][6][0];
+        Tile tt6 = player2.getBoard().tiles[5][5][0];
+        Tile tt7 = player2.getBoard().tiles[5][6][0];
+        player2.placeShip(testInput1); //minesweeper at 1,1 down
+        player2.placeShip(testInput2); //destroyer at 4,4 down
+        player2.placeShip(testInput3); //battleship at 5,5 down
+        player2.placeMines();
+        assertFalse(testTile instanceof MineTile);
+        assertFalse(tt2 instanceof MineTile);
+        assertFalse(tt3 instanceof MineTile);
+        assertFalse(tt4 instanceof MineTile);
+        assertFalse(tt5 instanceof MineTile);
+        assertFalse(tt6 instanceof MineTile);
+        assertFalse(tt7 instanceof MineTile);
+    }
 
 
 //    @Test
