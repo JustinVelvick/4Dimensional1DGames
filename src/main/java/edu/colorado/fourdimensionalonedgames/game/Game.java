@@ -240,7 +240,7 @@ public class Game {
         for(Player player : players){
             player.refreshFleetController();
         }
-        updateScene();
+
     }
 
     //called when turns are passed back and forth

@@ -239,12 +239,13 @@ public class PlayerController implements Initializable {
             game.setGameState(GameState.first_turn);
             showCombatButtons();
             game.passTurn();
+            game.updateScene();
             return;
         }
 
         //Turn is over when button is pressed
         this.game.passTurn();
-        //this.game.updateScene();
+        this.game.updateScene();
     }
 
     //helper method to toggle visible tags on buttons we don't want the player seeing until game start
