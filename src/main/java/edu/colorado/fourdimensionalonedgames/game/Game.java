@@ -14,6 +14,7 @@ import edu.colorado.fourdimensionalonedgames.render.gui.Display;
 import edu.colorado.fourdimensionalonedgames.render.gui.EnemyDisplay;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -158,11 +159,14 @@ public class Game {
         this.player2Controller= loader.getController();
         this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
 
-
-        //sets up observer pattern between boards and grid panes
-        linkBoardVisuals(player1Controller.getPlayergpane(), player1Controller.getEnemygpane(), player2Controller.getPlayergpane(), player2Controller.getEnemygpane());
         //initialize both player's boards (visually via linking board Tiles with FXML GridPanes)
         initializeBoards();
+
+        //sets up observer pattern between boards and grid panes
+        linkBoardVisuals(player1Controller.getPlayergpane(), player1Controller.getEnemyGrid(), player2Controller.getPlayergpane(), player2Controller.getEnemyGrid());
+        players.get(0).getBoard().updateObservers();
+        players.get(1).getBoard().updateObservers();
+
 
         //Change taskbar icon in client's OS
         Image icon = new Image("icon.jpg");
@@ -176,32 +180,32 @@ public class Game {
     private void initializeBoards(){
         //Player 1's own board
         players.get(0).getBoard().initializeBoard();
-        //Player 1's enemy board
-        players.get(0).getEnemyBoardGui().initializeBoard();
         //Player 2's own board
         players.get(1).getBoard().initializeBoard();
-        //Player 2's enemy board
-        players.get(1).getEnemyBoardGui().initializeBoard();
     }
 
     ////////////////////////////////////  GUI RELATED METHODS //////////////////////////////////////////////
-    private void linkBoardVisuals(GridPane p1gpane, GridPane p1Enemygpane, GridPane p2gpane, GridPane p2Enemygpane){
+    private void linkBoardVisuals(GridPane p1gpane, Canvas p1EnemyGrid, GridPane p2gpane, Canvas p2EnemyGrid){
 
         Board player1Board = players.get(0).getBoard();
-        Board player1EnemyBoard = players.get(0).getEnemyBoardGui();
         Board player2Board = players.get(1).getBoard();
-        Board player2EnemyBoard = players.get(1).getEnemyBoardGui();
 
         player1Display = new Display(p1gpane, player1Board.tiles, renderer);
-        player1EnemyDisplay = new EnemyDisplay(p1Enemygpane, player1EnemyBoard.tiles, renderer);
+        player1EnemyDisplay = new EnemyDisplay(p1EnemyGrid, player2Board.tiles);
         player2Display = new Display(p2gpane, player2Board.tiles, renderer);
-        player2EnemyDisplay = new EnemyDisplay(p2Enemygpane, player2EnemyBoard.tiles, renderer);
+        player2EnemyDisplay = new EnemyDisplay(p2EnemyGrid, player1Board.tiles);
 
+        //basically registering the canvas nodes to renderer
+        this.renderer.register(player1EnemyDisplay);
+        this.renderer.register(player2EnemyDisplay);
+
+        //who cares about player1's board? player 1's own display of course, but the enemy's enemy display also cares
         player1Board.registerObserver(player1Display);
+        player1Board.registerObserver(player2EnemyDisplay);
+        //same as above but mirrored
         player2Board.registerObserver(player2Display);
+        player2Board.registerObserver(player1EnemyDisplay);
 
-        player1EnemyBoard.registerObserver(player1EnemyDisplay);
-        player2EnemyBoard.registerObserver(player2EnemyDisplay);
     }
 
     /////////////////////////////  LOGIC, NON GUI RELATED METHODS /////////////////////////////////////

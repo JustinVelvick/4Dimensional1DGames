@@ -5,6 +5,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.gui.Display;
 import edu.colorado.fourdimensionalonedgames.render.gui.Observer;
 import edu.colorado.fourdimensionalonedgames.render.gui.Subject;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
@@ -159,12 +160,26 @@ public class Board implements Subject {
         List<Point3D> coords = new ArrayList<>();
         ShipTile currentTile;
         Point3D newCordinate;
+        Point3D previousCoord;
+        Tile previous;
 
         switch (direction){
             case up:
 
                 newOrigin = new Point3D(x,y-1,z);
                 coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
+                for(ShipTile tile : ship.getShipTiles()){
+                    previousCoord = new Point3D(tile.getColumn(), tile.getRow()+1, tile.getDepth());
+                    if(isWithinBounds(previousCoord)){
+                        previous = tiles[tile.getColumn()][tile.getRow()+1][tile.getDepth()];
+                        if(previous instanceof SeaTile){
+                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                        }
+                    }
+                    else{
+                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                    }
+                }
 
                 break;
 
@@ -173,16 +188,53 @@ public class Board implements Subject {
                 newOrigin = new Point3D(x,y+1,z);
                 coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
 
+                for(ShipTile tile : ship.getShipTiles()){
+                    previousCoord = new Point3D(tile.getColumn(), tile.getRow()-1, tile.getDepth());
+                    if(isWithinBounds(previousCoord)){
+                        previous = tiles[tile.getColumn()][tile.getRow()-1][tile.getDepth()];
+                        if(previous instanceof SeaTile){
+                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                        }
+                    }
+                    else{
+                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                    }
+                }
+
                 break;
 
             case left:
                 newOrigin = new Point3D(x-1,y,z);
                 coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
+                for(ShipTile tile : ship.getShipTiles()){
+                    previousCoord = new Point3D(tile.getColumn()+1, tile.getRow(), tile.getDepth());
+                    if(isWithinBounds(previousCoord)){
+                        previous = tiles[tile.getColumn()+1][tile.getRow()][tile.getDepth()];
+                        if(previous instanceof SeaTile){
+                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                        }
+                    }
+                    else{
+                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                    }
+                }
                 break;
 
             case right:
                 newOrigin = new Point3D(x+1,y,z);
                 coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
+                for(ShipTile tile : ship.getShipTiles()){
+                    previousCoord = new Point3D(tile.getColumn()-1, tile.getRow(), tile.getDepth());
+                    if(isWithinBounds(previousCoord)){
+                        previous = tiles[tile.getColumn()-1][tile.getRow()][tile.getDepth()];
+                        if(previous instanceof SeaTile){
+                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                        }
+                    }
+                    else{
+                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                    }
+                }
                 break;
         }
         for(int i = 0; i < ship.getSize(); i++){
@@ -222,10 +274,21 @@ public class Board implements Subject {
         observers.remove(observer);
     }
 
+    //all displays subscribed to this board
     @Override
     public void updateObservers() {
         for(Observer observer : observers){
             observer.update(tiles);
+        }
+    }
+
+    //only your own display subscribed to this board
+    @Override
+    public void updateLocalObservers() {
+        for(Observer observer : observers){
+            if(observer instanceof Display){
+                observer.update(tiles);
+            }
         }
     }
 }

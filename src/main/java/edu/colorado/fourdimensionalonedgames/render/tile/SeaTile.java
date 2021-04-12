@@ -19,7 +19,6 @@ public class SeaTile extends Tile implements IRenderable {
 
     public Color getColor() {
 
-
         //if shot and a sea tile, then this is a miss, return miss color
         if(this.shot){
             return Color.GREENYELLOW;
@@ -29,6 +28,4 @@ public class SeaTile extends Tile implements IRenderable {
         }
 
     }
-
-
 }

@@ -30,10 +30,8 @@ public class Player {
 
     private final Game game;
     private final Board board;
-    private final Board enemyBoardGui;
     private final List<Weapon> weapons = new ArrayList<>();
     private final List<Ship> shipsToPlace = new ArrayList<>();
-    private final List<Ship> phantomShipsToPlace = new ArrayList<>(); //for enemy boards (GUI RELATED)
     private final Fleet fleet;
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
     private MineCollection mines;
@@ -43,7 +41,6 @@ public class Player {
     public Player (Game game, Board board, Board enemyBoardGui) {
         this.game = game;
         this.board = board;
-        this.enemyBoardGui = enemyBoardGui;
         this.fleet = new Fleet();
         this.upgradeStatus = TierOneUpgrade.LOCKED;
         this.mines = MineCollection.UNAVAILABLE;
@@ -60,16 +57,10 @@ public class Player {
         ShipYard submergableShipYard = new SubmergableShipYard();
 
         shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
-        shipsToPlace.add(submergableShipYard.createShip("Submarine"));
+//        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+//        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+//        shipsToPlace.add(submergableShipYard.createShip("Submarine"));
 
-        //Ship objects to be placed on enemy boards (GUI RELATED)
-        //Need two separate objects thanks to tiles being individual canvases (GUI RELATED)
-        phantomShipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        phantomShipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-        phantomShipsToPlace.add(defaultShipYard.createShip("Battleship"));
-        phantomShipsToPlace.add(submergableShipYard.createShip("Submarine"));
     }
 
     private void generateWeapons(){
@@ -96,9 +87,7 @@ public class Player {
         }
 
         List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
-        weapon.useAt(enemyBoardGui, attackCoords);
         opponentBoard.updateObservers();
-        enemyBoardGui.updateObservers();
 
         for(AttackResult attackResult : results){
             Ship attackedShip = attackResult.getShip();
@@ -182,53 +171,6 @@ public class Player {
             return false;
         }
         return true;
-    }
-
-    //for opposite player to call after they successfully placed a ship on their own real board (GUI RELATED)
-    public void placeEnemyShip(PlayerShipInput input){
-        Orientation direction = Orientation.down;
-        double x =  Double.parseDouble(input.getxCord());
-        double y =  Double.parseDouble(input.getyCord());
-        Point3D origin = new Point3D(x, y, 0);
-        Ship newShip = new Destroyer();
-
-        String shipChoice = input.getShipChoice();
-        String orientationChoice = input.getDirection();
-
-        for(Ship ship : this.getPhantomShipsToPlace()){
-            if(shipChoice.equals(ship.getType())){
-                newShip = ship;
-            }
-        }
-
-        //Set z axis
-        if(input.getSubmergeChoice().equals("Yes")){
-            newShip.setShipTileDepth(1);
-            origin = new Point3D(origin.getX(), origin.getY(), 1);
-        }
-
-        switch (orientationChoice) {
-            case "Up":
-                direction = Orientation.up;
-                break;
-
-            case "Down":
-                direction = Orientation.down;
-                break;
-
-            case "Left":
-                direction = Orientation.left;
-                break;
-
-            case "Right":
-                direction = Orientation.right;
-                break;
-        }
-
-        if(getEnemyBoardGui().placeShip(direction, origin, newShip)){
-            //add mines
-            //checkMines();
-        }
     }
 
     public void checkMines(){
@@ -318,7 +260,7 @@ public class Player {
         for (Ship ship : fleet.getShips()){
             board.moveShip(ship, direction);
         }
-        board.updateObservers();
+        board.updateLocalObservers();
         return true;
     }
 
@@ -326,16 +268,8 @@ public class Player {
         return board;
     }
 
-    public Board getEnemyBoardGui() {
-        return enemyBoardGui;
-    }
-
     public List<Ship> getShipsToPlace() {
         return shipsToPlace;
-    }
-
-    public List<Ship> getPhantomShipsToPlace() {
-        return phantomShipsToPlace;
     }
 
     public List<Weapon> getWeapons(){return weapons;}
