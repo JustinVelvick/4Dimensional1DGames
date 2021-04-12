@@ -3,6 +3,7 @@ package edu.colorado.fourdimensionalonedgames.game;
 import edu.colorado.fourdimensionalonedgames.MenuSceneController;
 import edu.colorado.fourdimensionalonedgames.PlayerController;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
@@ -294,8 +295,7 @@ public class Game {
             if(player.getUpgradeStatus() == TierOneUpgrade.UNLOCKED){
                 player.setUpgradeStatus(TierOneUpgrade.USED);
                 //player gets 2 sonar pulses for the rest of the game to use
-                player.addWeapon(new LargeWeapon(new Reveal(), Game.SONAR_PULSE));
-                player.addWeapon(new LargeWeapon(new Reveal(), Game.SONAR_PULSE));
+                player.addWeapon(new LargeWeapon(new Reveal(), Game.SONAR_PULSE, new PopCountAfterAttackBehavior(2)));
                 //player replaces Single Shot weapon with Space Laser weapon
                 player.removeWeapon(Game.SINGLE_SHOT);
                 player.addWeapon(new PenetratingSmallWeapon(new Attack(), Game.SPACE_LASER));

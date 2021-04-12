@@ -1,10 +1,10 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_MULTIPLYPeer;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
@@ -68,7 +68,7 @@ public class WeaponsTest {
         player2Submarine = player2.getShipsToPlace().get(3);
 
         singleShot = new SmallWeapon(new Attack(), "Single Shot");
-        sonar = new LargeWeapon(new Reveal(), "Sonar");
+        sonar = new LargeWeapon(new Reveal(), "Sonar", new PopCountAfterAttackBehavior(2));
         spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
 
         shipInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
@@ -92,20 +92,26 @@ public class WeaponsTest {
         game.checkUpgrades();
 
         //should have Space Laser (one object infinite uses) and 2 Sonar Pulse objects
-        assertEquals(3, player1.getWeapons().size());
+        assertEquals(2, player1.getWeapons().size());
 
         //using space laser should do nothing to your total weapon count since it has infinite uses
         fireInput1 = new PlayerFireInput("Space Laser", "5", "8");
         player1.attack(player2.getBoard(), fireInput1);
 
         //should have Space Laser (one object infinite uses) and 2 Sonar Pulse objects
-        assertEquals(3, player1.getWeapons().size());
+        assertEquals(2, player1.getWeapons().size());
 
         //using space laser should do nothing to your total weapon count since it has infinite uses
         fireInput1 = new PlayerFireInput("Sonar Pulse", "4", "6");
         player1.attack(player2.getBoard(), fireInput1);
 
-        //should have Space Laser (one object infinite uses) and 1 sonar pulse remaining
+        //should have Space Laser (one object infinite uses) and sonar pulse remaining (sonar pulse now has count 1)
         assertEquals(2, player1.getWeapons().size());
+
+        fireInput1 = new PlayerFireInput("Sonar Pulse", "4", "7");
+        player1.attack(player2.getBoard(), fireInput1);
+
+        //should just have Space Laser (one object infinite uses)
+        assertEquals(1, player1.getWeapons().size());
     }
 }

@@ -26,7 +26,6 @@ public class Reveal implements IAttackBehavior {
 
         Tile originTile = board.tiles[x][y][depth];
         // if already attacked, throw exception
-        if (originTile.revealed) throw new InvalidAttackException("tile has already been revealed");
 
         List<AttackResult> ret = new ArrayList<>();
 
