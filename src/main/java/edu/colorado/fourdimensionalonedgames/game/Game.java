@@ -66,9 +66,9 @@ public class Game {
 
 
     //implements Singleton design pattern for Game object (only one is allowed to exist)
-    public static synchronized Game getInstance(Stage primaryStage, Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth) throws IOException {
+    public static synchronized Game getInstance(Stage primaryStage, Render renderer, GameSettings settings) throws IOException {
         if(uniqueInstance == null){
-            uniqueInstance = new Game(primaryStage, renderer, numberofPlayers, tileSize, columns, rows, depth);
+            uniqueInstance = new Game(primaryStage, renderer, settings);
         }
         return uniqueInstance;
     }
@@ -76,23 +76,22 @@ public class Game {
 
     //Game constructor which creates the Player objects
     /**
+     * @param primaryStage (Stage which the application will display on user's computer)
      * @param renderer (One renderer to contain all IRenderable objects)
-     * @param numberofPlayers (number of players in the game)
-     * @param tileSize (size of each tile in pixels
-     * @param columns (number of columns on a single battleships board)
-     * @param rows (number of rows on a single battleships board)
+     * @param settings (Package of various game settings)
      */
-    private Game(Stage primaryStage, Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth) throws IOException {
+    private Game(Stage primaryStage, Render renderer, GameSettings settings) throws IOException {
 
         //set all of our private game attributes
         this.renderer = renderer;
-        this.tileSize = tileSize;
-        this.columns = columns;
-        this.rows = rows;
-        this.depth = depth;
+        this.tileSize = settings.getTileSize();
+        this.columns = settings.getColumns();
+        this.rows = settings.getRows();
+        this.depth = settings.getDepth();
+        this.numberofPlayers = settings.getNumberOfPlayers();
+
         this.width = columns*tileSize;
         this.height = columns*tileSize;
-        this.numberofPlayers = numberofPlayers;
         this.player1Turn = false;
         this.gameState = GameState.player1_setup;
 
