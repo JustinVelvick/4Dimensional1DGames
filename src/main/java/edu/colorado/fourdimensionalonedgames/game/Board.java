@@ -26,7 +26,6 @@ public class Board implements Subject {
     public Render renderer;
 
     private List<Observer> observers;
-    private List<Observer> localObservers;
 
     public Board(int columns, int rows, int depth, Render renderer) {
 
@@ -177,6 +176,9 @@ public class Board implements Subject {
                             tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
                         }
                     }
+                    else{
+                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                    }
                 }
 
                 break;
@@ -212,6 +214,9 @@ public class Board implements Subject {
                             tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
                         }
                     }
+                    else{
+                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                    }
                 }
                 break;
 
@@ -225,6 +230,9 @@ public class Board implements Subject {
                         if(previous instanceof SeaTile){
                             tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
                         }
+                    }
+                    else{
+                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
                     }
                 }
                 break;

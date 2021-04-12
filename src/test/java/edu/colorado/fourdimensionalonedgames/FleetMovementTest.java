@@ -19,8 +19,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FleetMovementTest {
 
@@ -95,7 +94,7 @@ public class FleetMovementTest {
     }
 
     @Test
-    void testSingleMove() {
+    void testSingleMoveDown() {
 
         List<Integer> originalTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
@@ -119,6 +118,37 @@ public class FleetMovementTest {
         //check that all tiles in wake are still sea tiles and not copies of this ship tile moving around
         assertTrue(player2.getBoard().tiles[1][1][0] instanceof SeaTile);
         assertTrue(player2.getBoard().tiles[4][4][0] instanceof SeaTile);
+    }
+
+    @Test
+    void testSingleMoveRight() {
+
+        assertFalse(player2.getBoard().tiles[1][1][0] instanceof SeaTile);
+        assertFalse(player2.getBoard().tiles[2][2][0] instanceof SeaTile);
+
+
+        List<Integer> originalTiles = new ArrayList<>();
+        for (Ship ship : player2.getFleet().getShips()) {
+            for (ShipTile tile : ship.getShipTiles()){
+                originalTiles.add(tile.getColumn());
+            }
+        }
+
+        FleetControl controller = new FleetControl(player2);
+        controller.moveFleet(Orientation.right);
+
+        List<ShipTile> movedTiles = new ArrayList<>();
+        for (Ship ship : player2.getFleet().getShips()) {
+            movedTiles.addAll(ship.getShipTiles());
+        }
+
+        for (int i = 0; i < originalTiles.size(); i++) {
+            assertEquals(originalTiles.get(i) + 1, movedTiles.get(i).getColumn());
+        }
+
+        //check that all tiles in wake are still sea tiles and not copies of this ship tile moving around
+        assertTrue(player2.getBoard().tiles[1][1][0] instanceof SeaTile);
+        assertTrue(player2.getBoard().tiles[2][2][0] instanceof SeaTile);
     }
 
     @Test

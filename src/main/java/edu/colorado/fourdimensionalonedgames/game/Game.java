@@ -180,12 +180,8 @@ public class Game {
     private void initializeBoards(){
         //Player 1's own board
         players.get(0).getBoard().initializeBoard();
-        //Player 1's enemy board
-        players.get(0).getEnemyBoardGui().initializeBoard();
         //Player 2's own board
         players.get(1).getBoard().initializeBoard();
-        //Player 2's enemy board
-        players.get(1).getEnemyBoardGui().initializeBoard();
     }
 
     ////////////////////////////////////  GUI RELATED METHODS //////////////////////////////////////////////
@@ -199,16 +195,17 @@ public class Game {
         player2Display = new Display(p2gpane, player2Board.tiles, renderer);
         player2EnemyDisplay = new EnemyDisplay(p2EnemyGrid, player1Board.tiles);
 
+        //basically registering the canvas nodes to renderer
         this.renderer.register(player1EnemyDisplay);
         this.renderer.register(player2EnemyDisplay);
 
-
-
+        //who cares about player1's board? player 1's own display of course, but the enemy's enemy display also cares
         player1Board.registerObserver(player1Display);
-        player2Board.registerObserver(player2Display);
-
-        player2Board.registerObserver(player1EnemyDisplay);
         player1Board.registerObserver(player2EnemyDisplay);
+        //same as above but mirrored
+        player2Board.registerObserver(player2Display);
+        player2Board.registerObserver(player1EnemyDisplay);
+
     }
 
     /////////////////////////////  LOGIC, NON GUI RELATED METHODS /////////////////////////////////////
