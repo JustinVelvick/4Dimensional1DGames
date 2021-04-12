@@ -10,6 +10,7 @@ import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
+import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FleetMovementTest {
 
@@ -113,6 +115,10 @@ public class FleetMovementTest {
         for (int i = 0; i < originalTiles.size(); i++) {
             assertEquals(originalTiles.get(i) + 1, movedTiles.get(i).getRow());
         }
+
+        //check that all tiles in wake are still sea tiles and not copies of this ship tile moving around
+        assertTrue(player2.getBoard().tiles[1][1][0] instanceof SeaTile);
+        assertTrue(player2.getBoard().tiles[4][4][0] instanceof SeaTile);
     }
 
     @Test

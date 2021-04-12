@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
@@ -53,7 +54,7 @@ public class PlayerController implements Initializable {
     private GridPane playergpane;
 
     @FXML
-    private GridPane enemygpane;
+    private Canvas enemyGrid;
 
     @FXML
     private Pane moveInstructionsPane;
@@ -301,8 +302,8 @@ public class PlayerController implements Initializable {
         return playergpane;
     }
 
-    public GridPane getEnemygpane() {
-        return enemygpane;
+    public Canvas getEnemyGrid() {
+        return enemyGrid;
     }
 
     public List<Button> getButtons(){

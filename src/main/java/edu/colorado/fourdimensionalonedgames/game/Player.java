@@ -60,16 +60,16 @@ public class Player {
         ShipYard submergableShipYard = new SubmergableShipYard();
 
         shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
-        shipsToPlace.add(submergableShipYard.createShip("Submarine"));
+//        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+//        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+//        shipsToPlace.add(submergableShipYard.createShip("Submarine"));
 
         //Ship objects to be placed on enemy boards (GUI RELATED)
         //Need two separate objects thanks to tiles being individual canvases (GUI RELATED)
         phantomShipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        phantomShipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-        phantomShipsToPlace.add(defaultShipYard.createShip("Battleship"));
-        phantomShipsToPlace.add(submergableShipYard.createShip("Submarine"));
+//        phantomShipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+//        phantomShipsToPlace.add(defaultShipYard.createShip("Battleship"));
+//        phantomShipsToPlace.add(submergableShipYard.createShip("Submarine"));
     }
 
     private void generateWeapons(){
@@ -318,7 +318,7 @@ public class Player {
         for (Ship ship : fleet.getShips()){
             board.moveShip(ship, direction);
         }
-        board.updateObservers();
+        board.updateLocalObservers();
         return true;
     }
 
