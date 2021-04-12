@@ -13,6 +13,11 @@ public class PopCountAfterAttackBehavior implements IAfterAttackBehavior {
         return count <= 0;
     }
 
+    @Override
+    public int getCount() {
+        return count;
+    }
+
     public void addCount(int n) {
         count += n;
     }

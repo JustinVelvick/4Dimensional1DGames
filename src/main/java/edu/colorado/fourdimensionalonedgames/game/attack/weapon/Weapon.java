@@ -33,4 +33,8 @@ public abstract class Weapon {
     public boolean doRemove() {
         return afterBehavior.doRemove();
     }
+
+    public int getCount() {
+        return afterBehavior.getCount();
+    }
 }

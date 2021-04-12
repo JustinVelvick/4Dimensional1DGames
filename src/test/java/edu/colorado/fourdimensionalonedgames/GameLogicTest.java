@@ -177,7 +177,7 @@ public class GameLogicTest {
         int sonarPulseCount = 0;
         for(Weapon weapon : player1.getWeapons()){
             if(weapon.getType().equals("Sonar Pulse")){
-                sonarPulseCount++;
+                sonarPulseCount += weapon.getCount();
             }
         }
 

@@ -5,4 +5,9 @@ public class NoAfterAttackBehavior implements IAfterAttackBehavior {
     public boolean doRemove() {
         return false;
     }
+
+    @Override
+    public int getCount() {
+        return -1;
+    }
 }
