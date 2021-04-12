@@ -11,6 +11,7 @@ import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.MineTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,7 +93,7 @@ public class FleetTest {
 
 
         //placing a mine at (1,3,0), directly below the minesweeper
-        mine = new MineTile(1,3,0);
+        mine = new MineTile(1, 3, 0);
     }
 
     @Test
@@ -117,17 +118,18 @@ public class FleetTest {
     @Test
     void testFleetMove() {
         player2.placeShip(testInput1); //minesweeper at 1,1 down
-        player2.placeTestMines(2,1);
-        player2.placeTestMines(2,2);
-        player1.placeTestMines(2,1);
-        player1.placeTestMines(2,2);
+        player2.placeTestMines(2, 1);
+        player2.placeTestMines(2, 2);
+        player1.placeTestMines(2, 1);
+        player1.placeTestMines(2, 2);
         player2.moveFleet(Orientation.right); //hits two mines
 
 
         assertFalse(player2.getFleet().hasShip());
     }
 
-    @Test //make sure mine tiles are not replacing the ship tiles and there are 4 mines
+    @Test
+        //make sure mine tiles are not replacing the ship tiles and there are 4 mines
     void testMineTiles() {
         Tile testTile = player2.getBoard().tiles[1][1][0];
         Tile tt2 = player2.getBoard().tiles[1][2][0];
@@ -150,11 +152,25 @@ public class FleetTest {
     }
 
 
-//    @Test
-//    void testFleetDestroy() {
-//        player2.placeShip(testInput3);
-//        player2.getFleet().removeShip();
-//        assertTrue(game.gameOver());
-//
-//    }
+    @Test
+//make sure powerup tiles are not replacing ship tiles
+    void testPowerUpTiles() {
+        Tile testTile = player2.getBoard().tiles[1][1][0];
+        player2.placeShip(testInput1); //minesweeper at 1,1 down
+        player2.placeShip(testInput2); //destroyer at 4,4 down
+        player2.placeShip(testInput3); //battleship at 5,5 down
+        player2.placeMines();
+        assertFalse(testTile instanceof MineTile);
+        assertFalse(testTile instanceof SeaTile);
+        assertFalse(testTile instanceof ShipTile);
+    }
+
+
+    @Test
+    void testPowerUp() {
+        player2.placeShip(testInput1); //minesweeper at 1,1 down
+        player2.placePowerUps(2, 1);
+        player2.moveFleet(Orientation.right);
+        assertTrue(player2.getFleet().hasPowerUp());
+    }
 }

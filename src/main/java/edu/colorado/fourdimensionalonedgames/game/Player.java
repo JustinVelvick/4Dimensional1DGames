@@ -57,9 +57,9 @@ public class Player {
         ShipYard submergableShipYard = new SubmergableShipYard();
 
         shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-//        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-//        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
-//        shipsToPlace.add(submergableShipYard.createShip("Submarine"));
+        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+        shipsToPlace.add(submergableShipYard.createShip("Submarine"));
 
     }
 
