@@ -1,11 +1,11 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
@@ -15,7 +15,6 @@ import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
-import javafx.geometry.Point2D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,7 +56,7 @@ public class SonarWeaponTest {
     Ship player2Battleship;
 
     Weapon spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
-    Weapon sonarPulse = new LargeWeapon(new Reveal(), "Sonar Pulse");
+    Weapon sonarPulse = new LargeWeapon(new Reveal(), "Sonar Pulse", new PopCountAfterAttackBehavior(1));
     Weapon singleShot = new SmallWeapon(new Attack(), "Single Shot");
 
     @BeforeEach

@@ -1,27 +1,23 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
-import edu.colorado.fourdimensionalonedgames.game.ship.Destroyer;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.MineTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +64,7 @@ class ShipTest {
     Ship player2Submarine;
 
     Weapon spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
-    Weapon sonarPulse = new LargeWeapon(new Reveal(), "Sonar Pulse");
+    Weapon sonarPulse = new LargeWeapon(new Reveal(), "Sonar Pulse", new PopCountAfterAttackBehavior(1));
     Weapon singleShot = new SmallWeapon(new Attack(), "Single Shot");
 
 

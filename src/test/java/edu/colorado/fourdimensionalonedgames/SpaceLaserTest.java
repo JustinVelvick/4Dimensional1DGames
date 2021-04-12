@@ -4,6 +4,7 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
@@ -67,7 +68,7 @@ public class SpaceLaserTest {
         player2Submarine = player2.getShipsToPlace().get(3);
 
         singleShot = new SmallWeapon(new Attack(), "Single Shot");
-        sonar = new LargeWeapon(new Reveal(), "Sonar");
+        sonar = new LargeWeapon(new Reveal(), "Sonar", new PopCountAfterAttackBehavior(1));
         spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
 
         //Player2 places a minesweeper right at 1,1

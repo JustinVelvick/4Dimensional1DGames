@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game.attack.weapon;
 
 import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.IAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.IAttackBehavior;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -14,6 +15,10 @@ public class PenetratingSmallWeapon extends Weapon{
 
     public PenetratingSmallWeapon(IAttackBehavior behavior, String weaponName) {
         super(behavior, weaponName);
+    }
+
+    public PenetratingSmallWeapon(IAttackBehavior behavior, String weaponName, IAfterAttackBehavior afterBehavior) {
+        super(behavior, weaponName, afterBehavior);
     }
 
     @Override

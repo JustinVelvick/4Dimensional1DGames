@@ -81,8 +81,8 @@ public class Player {
         Point2D attackCoords = new Point2D(x, y);
 
         //if sonar being used, remove a sonar object from player's list of weapons to decrement uses
-        if(weapon.getType().equals("Sonar Pulse")){
-            removeWeapon("Sonar Pulse");
+        if(weapon.doRemove()){
+            this.weapons.remove(weapon);
         }
 
         List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
@@ -298,7 +298,9 @@ public class Player {
         board.updateObservers();
     }
 
-
+    public void removeWeapon(String weapon) {
+        this.weapons.remove(stringToWeapon(weapon));
+    }
 
     public Board getBoard() {
         return board;
@@ -352,16 +354,6 @@ public class Player {
 
     public void addWeapon(Weapon weapon) {
         this.weapons.add(weapon);
-    }
-
-    public void removeWeapon(String weaponToRemove){
-        Weapon weaponToDelete = new SmallWeapon(new Attack(),Game.SINGLE_SHOT);
-        for(Weapon weapon : this.weapons){
-            if(weapon.getType().equals(weaponToRemove)){
-                weaponToDelete = weapon;
-            }
-        }
-        this.getWeapons().remove(weaponToDelete);
     }
 
     public void removeShipToPlace(Ship ship){

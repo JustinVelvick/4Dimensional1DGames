@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game.attack.weapon;
 
 import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.IAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.IAttackBehavior;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -15,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class LargeWeapon extends Weapon{
     public LargeWeapon(IAttackBehavior behavior, String weaponName) {
         super(behavior, weaponName);
+    }
+
+    public LargeWeapon(IAttackBehavior behavior, String weaponName, IAfterAttackBehavior afterBehavior) {
+        super(behavior, weaponName, afterBehavior);
     }
 
     @Override
