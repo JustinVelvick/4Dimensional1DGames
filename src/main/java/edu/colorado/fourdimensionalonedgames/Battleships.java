@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames;
 
 import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
+import edu.colorado.fourdimensionalonedgames.game.GameSettings;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -29,8 +30,11 @@ public class Battleships extends Application {
             //The one renderer object the program will have to contain every IRenderable Object
             Render renderer = new Render();
 
+            GameSettings settings = new GameSettings(numberOfPlayers, columns, rows, depth, tileSize);
+
+
             //Create the game object
-            Game newGame = Game.getInstance(primaryStage, renderer, numberOfPlayers, tileSize, columns, rows, depth);
+            Game newGame = Game.getInstance(primaryStage, renderer, settings);
 
             //To give a refresh rate to our display
             new AnimationTimer() {
