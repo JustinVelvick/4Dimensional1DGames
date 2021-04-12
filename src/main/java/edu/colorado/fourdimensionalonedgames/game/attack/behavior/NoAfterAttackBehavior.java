@@ -8,6 +8,11 @@ public class NoAfterAttackBehavior implements IAfterAttackBehavior {
 
     @Override
     public int getCount() {
-        return -1;
+        return 0;
+    }
+
+    @Override
+    public void addCount(int n) {
+
     }
 }

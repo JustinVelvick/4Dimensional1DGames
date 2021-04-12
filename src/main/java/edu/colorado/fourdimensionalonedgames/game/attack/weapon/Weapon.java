@@ -37,4 +37,8 @@ public abstract class Weapon {
     public int getCount() {
         return afterBehavior.getCount();
     }
+
+    public void addCount(int n) {
+        afterBehavior.addCount(n);
+    }
 }
