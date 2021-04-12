@@ -169,7 +169,7 @@ public class FleetTest {
     @Test
     void testPowerUp() {
         player2.placeShip(testInput1); //minesweeper at 1,1 down
-        player2.placePowerUps(2, 1);
+        player2.placePowerUps();
         player2.moveFleet(Orientation.right);
         assertTrue(player2.getFleet().hasPowerUp());
     }

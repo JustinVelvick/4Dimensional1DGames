@@ -38,4 +38,14 @@ public class Fleet {
         }
         return destroyedShips;
     }
+
+
+    public boolean hasPowerUp() {
+        for (Ship ship : fleet) {
+            if (ship.getPowerUps() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

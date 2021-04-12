@@ -3,16 +3,14 @@ package edu.colorado.fourdimensionalonedgames.game;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.MineCollection;
+import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.PowerUpsCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
-import edu.colorado.fourdimensionalonedgames.render.tile.MineTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
+import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
@@ -36,6 +34,7 @@ public class Player {
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
     private MineCollection mines;
     private FleetControl fleetController;
+    private PowerUpsCollection PowerUps;
 
     //constructor
     public Player (Game game, Board board, Board enemyBoardGui) {
@@ -166,6 +165,7 @@ public class Player {
             removeShipToPlace(newShip);
             //add mines
             checkMines();
+            checkPowerUps();
         }
         else{
             return false;
@@ -263,6 +263,42 @@ public class Player {
         board.updateLocalObservers();
         return true;
     }
+
+
+
+    public void checkPowerUps(){
+        if(shipsToPlace.isEmpty()){
+            PowerUps = PowerUpsCollection.AVAILABLE;
+        }
+        if(PowerUps == PowerUpsCollection.AVAILABLE){
+            PowerUps = PowerUpsCollection.PLACED;
+            placePowerUps();
+        }
+    }
+
+
+
+    public void placePowerUps(){
+        Random random = new Random();
+        int powerUpsToPlace = 2;
+
+        while(powerUpsToPlace > 0){
+            int i = random.nextInt(9) + 1;
+            int j = random.nextInt(9) + 1;
+            Tile oldTile = board.tiles[i][j][0];
+            if (oldTile instanceof SeaTile){
+                Tile powerUpTile = new PowerUpTile(i,j,0);//START HERE
+                board.tiles[i][j][0] = powerUpTile;
+                powerUpsToPlace--;
+                //re-register that spot with the renderer
+                game.getRenderer().unregister(oldTile);
+                game.getRenderer().register(powerUpTile);
+            }
+        }
+        board.updateObservers();
+    }
+
+
 
     public Board getBoard() {
         return board;

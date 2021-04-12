@@ -14,6 +14,7 @@ public abstract class Ship implements IRenderable {
     protected int size;
     protected List<ShipTile> shipTiles;
     private boolean destroyed;
+    protected int powerUps = 0;
 
     //default constructor
     public Ship() {
@@ -24,6 +25,8 @@ public abstract class Ship implements IRenderable {
         shipTiles.add(tile);
     }
     public int getSize(){return size;}
+    public int getPowerUps(){return powerUps;}
+
 
     /**
      * Calculate the damage done to the ship
