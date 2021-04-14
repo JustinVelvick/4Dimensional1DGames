@@ -9,10 +9,6 @@ public class Minesweeper extends Ship {
         this.size = 2;
     }
 
-    @Override
-    public void render() {
-
-    }
 
     @Override
     public Color getBaseColor() {

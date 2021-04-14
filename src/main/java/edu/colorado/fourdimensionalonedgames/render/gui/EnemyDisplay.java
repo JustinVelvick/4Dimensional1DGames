@@ -83,10 +83,6 @@ public class EnemyDisplay implements Observer, IRenderable {
         }
     }
 
-    private List<Color> getSubmergedColors(){
-        return null;
-    }
-
     @Override
     public void render() {
         GraphicsContext gc = this.canvas.getGraphicsContext2D();

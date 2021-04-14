@@ -9,10 +9,6 @@ public class Battleship extends Ship {
         this.size = 4;
     }
 
-    @Override
-    public void render() {
-
-    }
 
     @Override
     public Color getBaseColor() {

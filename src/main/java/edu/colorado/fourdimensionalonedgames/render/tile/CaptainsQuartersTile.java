@@ -21,8 +21,7 @@ public class CaptainsQuartersTile extends ShipTile{
     }
 
     @Override
-    public void render() {
-        GraphicsContext gc = this.getGraphicsContext2D();
+    public void draw(GraphicsContext gc) {
         gc.setFill(getColor());
         Rectangle rect = new Rectangle(40,40);
         gc.fillRect(0, 0, rect.getWidth(), rect.getHeight());

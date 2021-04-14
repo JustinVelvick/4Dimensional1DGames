@@ -1,19 +1,29 @@
 package edu.colorado.fourdimensionalonedgames.render.gui;
 
+import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import edu.colorado.fourdimensionalonedgames.render.Render;
+import edu.colorado.fourdimensionalonedgames.render.tile.GenericTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
-public class Display implements Observer{
-    protected GridPane gpane;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.Math.floor;
+
+public class Display implements Observer, IRenderable {
+    protected Canvas grid;
     protected Tile[][][] boardState;
-    protected Render renderer;
 
     //Send initial board to display
-    public Display(GridPane gpane, Tile[][][] board, Render renderer){
+    public Display(Canvas grid, Tile[][][] board){
         this.boardState = board;
-        this.renderer = renderer;
-        this.gpane = gpane;
+        this.grid = grid;
     }
 
     @Override
@@ -21,51 +31,90 @@ public class Display implements Observer{
         //unregister and reregister tiles to renderer
         //remove and add children to gpane
 
-        for(Tile[][] tileColumn : newBoardState){
-            for(Tile[] tileRow : tileColumn){
-                swapTile(tileRow[0]);
-            }
-        }
+//        for(Tile[][] tileColumn : newBoardState){
+//            for(Tile[] tileRow : tileColumn){
+//                swapTile(tileRow[0]);
+//            }
+//        }
 
         boardState = newBoardState;
     }
 
-    //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
-    protected void swapTile(Tile newTile){
-        Tile oldTile;
+//    //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
+//    protected void swapTile(Tile newTile){
+//        Tile oldTile;
+//
+//        int x = newTile.getColumn();
+//        int y = newTile.getRow();
+//        int z = newTile.getDepth();
+//
+//        oldTile = boardState[x][y][z];
+//
+//
+//        //remove old tile, add new tile to our GridPane
+//        gpane.getChildren().remove(oldTile);
+//        gpane.add(newTile, x, y);
+//    }
 
-        int x = newTile.getColumn();
-        int y = newTile.getRow();
-        int z = newTile.getDepth();
+    public Canvas getGrid() {
+        return grid;
+    }
 
-        oldTile = boardState[x][y][z];
+    public void setGrid(Canvas grid) {
+        this.grid = grid;
+    }
 
-        //re-register that spot with the renderer
-        renderer.unregister(oldTile);
-        renderer.register(newTile);
+    @Override
+    public void render() {
+        GraphicsContext gc = this.grid.getGraphicsContext2D();
 
-        //remove old tile, add new tile to our GridPane
-        gpane.getChildren().remove(oldTile);
-        gpane.add(newTile, x, y);
+        for(Tile[][] tileColumn : boardState){
+            for(Tile[] tileStack : tileColumn){
+                List<Color> colors = shipColors(tileStack);
+                Tile surfaceTile = tileStack[0];
+                //implies no ships were on this tile, so just render the surface tile (mine, seatile, or powerup)
+                if(colors.size() == 0){
+                    surfaceTile.draw(gc);
+                }
+                //if two or more ships are on the same spot, or a ship is submerged, we need to mix their colors
+                else{
+                    drawOverlappingTiles(gc, colors, surfaceTile.getColumn(), surfaceTile.getRow());
+                }
+            }
+        }
+    }
 
-        //Update display object with the new board state
-        //boardState[x][y][z] = newTile;
+    public void drawOverlappingTiles(GraphicsContext gc, List<Color> colors, int column, int row){
+
+        int xOrigin = column*40;
+        int yOrigin = row*40;
+
+        //lines for the tile
+        gc.setStroke(Color.BLACK);
+        gc.strokeLine(xOrigin,yOrigin,xOrigin+40,yOrigin);
+        gc.strokeLine(xOrigin+40,yOrigin,xOrigin+40,yOrigin+40);
+        gc.strokeLine(xOrigin+40,yOrigin+40,xOrigin,yOrigin+40);
+        gc.strokeLine(xOrigin,yOrigin+40,xOrigin,yOrigin);
+
+        int colorCount= colors.size();
+        int height = (int)floor(40/colorCount);
+
+        for(int i = 0; i < colorCount; i++){
+            gc.setFill(colors.get(i));
+            gc.fillRect(xOrigin, yOrigin + (i*height), 40, height);
+        }
     }
 
 
-    public GridPane getGpane() {
-        return gpane;
-    }
-
-    public void setGpane(GridPane gpane) {
-        this.gpane = gpane;
-    }
-
-    public Render getRenderer() {
-        return renderer;
-    }
-
-    public void setRenderer(Render renderer) {
-        this.renderer = renderer;
+    //takes in an array of tiles all on top of each other (same x and y, differing z's)
+    //returns a list of all colors of all ships on this x and y, if any exist
+    private List<Color> shipColors(Tile[] tiles){
+        List<Color> returnColors = new ArrayList<>();
+        for(Tile tile : tiles){
+            if(tile instanceof ShipTile){
+                returnColors.add(tile.getColor());
+            }
+        }
+        return returnColors;
     }
 }

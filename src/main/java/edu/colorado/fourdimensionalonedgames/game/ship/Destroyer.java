@@ -9,10 +9,6 @@ public class Destroyer extends Ship {
         this.size = 3;
     }
 
-    @Override
-    public void render() {
-
-    }
 
     @Override
     public Color getBaseColor() {

@@ -36,6 +36,8 @@ public class Player {
     private FleetControl fleetController;
     private PowerUpsCollection PowerUps;
 
+    private boolean devMode = true;
+
     //constructor
     public Player (Game game, Board board, Board enemyBoardGui) {
         this.game = game;
@@ -56,10 +58,11 @@ public class Player {
         ShipYard submergableShipYard = new SubmergableShipYard();
 
         shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
         shipsToPlace.add(submergableShipYard.createShip("Submarine"));
-
+        if(!devMode){
+            shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+            shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+        }
     }
 
     private void generateWeapons(){
@@ -188,21 +191,19 @@ public class Player {
         int minesToPlace = 5;
 
         while(minesToPlace > 0){
-            int i = random.nextInt(9) + 1;
-            int j = random.nextInt(9) + 1;
+            int i = random.nextInt(10) + 1;
+            int j = random.nextInt(10) + 1;
             Tile oldTile = board.tiles[i][j][0];
             if (oldTile instanceof SeaTile){
                 Tile mineTile = new MineTile(i,j,0);//START HERE
                 board.tiles[i][j][0] = mineTile;
                 minesToPlace--;
-                //re-register that spot with the renderer
-                game.getRenderer().unregister(oldTile);
-                game.getRenderer().register(mineTile);
             }
         }
-        board.updateObservers();
+        board.updateLocalObservers();
     }
 
+    //for testing purposes only to give a deterministic spawning of mines
     public void placeTestMines(int i, int j) {
         if (board.tiles[i][j][0] instanceof SeaTile) {
             Tile mineTile = new MineTile(i, j, 0);//START HERE
@@ -283,19 +284,16 @@ public class Player {
         int powerUpsToPlace = 2;
 
         while(powerUpsToPlace > 0){
-            int i = random.nextInt(9) + 1;
-            int j = random.nextInt(9) + 1;
+            int i = random.nextInt(10) + 1;
+            int j = random.nextInt(10) + 1;
             Tile oldTile = board.tiles[i][j][0];
             if (oldTile instanceof SeaTile){
                 Tile powerUpTile = new PowerUpTile(i,j,0);//START HERE
                 board.tiles[i][j][0] = powerUpTile;
                 powerUpsToPlace--;
-                //re-register that spot with the renderer
-                game.getRenderer().unregister(oldTile);
-                game.getRenderer().register(powerUpTile);
             }
         }
-        board.updateObservers();
+        board.updateLocalObservers();
     }
 
     public void removeWeapon(String weapon) {

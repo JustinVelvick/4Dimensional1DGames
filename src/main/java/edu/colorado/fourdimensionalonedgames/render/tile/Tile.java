@@ -2,11 +2,12 @@ package edu.colorado.fourdimensionalonedgames.render.tile;
 
 import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.gui.IDrawable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public abstract class Tile extends Canvas implements IRenderable {
+public abstract class Tile implements IDrawable {
 
     public boolean shot;
     public boolean revealed;
@@ -16,7 +17,6 @@ public abstract class Tile extends Canvas implements IRenderable {
 
     //default constructor for surface tiles
     public Tile(int column, int row) {
-        super(40,40);
         this.row = row;
         this.column = column;
         this.depth = 0;
@@ -25,7 +25,6 @@ public abstract class Tile extends Canvas implements IRenderable {
 
     //overloaded constructor for submerged tiles
     public Tile(int column, int row, int depth) {
-        super(40,40);
         this.row = row;
         this.column = column;
         this.depth = depth;
@@ -38,16 +37,17 @@ public abstract class Tile extends Canvas implements IRenderable {
 
     public abstract Color getColor();
 
-    @Override
-    public void render() {
-        GraphicsContext gc = this.getGraphicsContext2D();
+    public void draw(GraphicsContext gc) {
+        int xOrigin = this.getColumn()*40;
+        int yOrigin = this.getRow()*40;
+
         gc.setStroke(Color.BLACK);
         gc.setFill(getColor());
-        gc.fillRect(0, 0, 40, 40);
-        gc.strokeLine(0,0,40,0);
-        gc.strokeLine(40,0,40,40);
-        gc.strokeLine(40,40,0,40);
-        gc.strokeLine(0,40,0,0);
+        gc.fillRect(xOrigin, yOrigin, 40, 40);
+        gc.strokeLine(xOrigin,yOrigin,xOrigin+40,yOrigin);
+        gc.strokeLine(xOrigin+40,yOrigin,xOrigin+40,yOrigin+40);
+        gc.strokeLine(xOrigin+40,yOrigin+40,xOrigin,yOrigin+40);
+        gc.strokeLine(xOrigin,yOrigin+40,xOrigin,yOrigin);
     }
 
     public int getRow() {
