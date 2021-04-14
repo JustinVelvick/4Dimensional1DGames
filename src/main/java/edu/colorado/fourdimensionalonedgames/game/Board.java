@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
@@ -151,7 +152,7 @@ public class Board implements Subject {
         return ret;
     }
 
-    public void moveShip(Ship ship, Orientation direction){
+    public List<Weapon> moveShip(Ship ship, Orientation direction){
         List<ShipTile> shipTiles = ship.getShipTiles();
         int x = shipTiles.get(0).getColumn();
         int y = shipTiles.get(0).getRow();
@@ -237,6 +238,7 @@ public class Board implements Subject {
                 }
                 break;
         }
+        List<Weapon> weaponsToAdd = new ArrayList<>();
         for(int i = 0; i < ship.getSize(); i++){
             currentTile = shipTiles.get(i);
             newCordinate = coords.get(i);
@@ -245,8 +247,12 @@ public class Board implements Subject {
             currentTile.setDepth((int)newCordinate.getZ());
 
             boolean shotFlag = false;
+            boolean powerUpFlag = false;
             if (tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] instanceof MineTile) {
                 shotFlag = true;
+            }
+            if (tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] instanceof PowerUpTile) {
+                powerUpFlag = true;
             }
 
             tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] = currentTile;
@@ -255,6 +261,9 @@ public class Board implements Subject {
             if (shotFlag) {
                 SmallWeapon mineWeapon = new SmallWeapon(new Attack(), "Mine");
                 mineWeapon.useAt(this, new Point2D(newCordinate.getX(), newCordinate.getY()));
+            }
+            if (powerUpFlag) {
+                weaponsToAdd.add(n)
             }
         }
     }

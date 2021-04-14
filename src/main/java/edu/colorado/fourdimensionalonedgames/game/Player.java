@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.MineCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.PowerUpsCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
