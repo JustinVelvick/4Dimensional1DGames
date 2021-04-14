@@ -261,7 +261,19 @@ public class Player {
 
         // actually move the fleet now that we confirmed it can be moved
         for (Ship ship : fleet.getShips()){
-            board.moveShip(ship, direction);
+            List<Weapon> weaponsToAdd = board.moveShip(ship, direction);
+            for (Weapon weapon : weaponsToAdd) {
+                boolean isInAlreadyExistingWeapons = false;
+                for (Weapon weapon2 : weapons) {
+                    if (weapon2.getType().equals(weapon.getType())) {
+                        isInAlreadyExistingWeapons = true;
+                        weapon2.addCount(weapon.getCount());
+                    }
+                }
+                if (!isInAlreadyExistingWeapons) {
+                    weapons.add(weapon);
+                }
+            }
         }
         board.updateLocalObservers();
         return true;

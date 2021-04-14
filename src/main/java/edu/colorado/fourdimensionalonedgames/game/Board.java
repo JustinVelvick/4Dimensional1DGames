@@ -1,6 +1,8 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.MediumWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
@@ -263,9 +265,10 @@ public class Board implements Subject {
                 mineWeapon.useAt(this, new Point2D(newCordinate.getX(), newCordinate.getY()));
             }
             if (powerUpFlag) {
-                weaponsToAdd.add(n)
+                weaponsToAdd.add(new MediumWeapon(new Attack(), Game.CLUSTER_BOMB, new PopCountAfterAttackBehavior(1)));
             }
         }
+        return weaponsToAdd;
     }
 
     public int getDepth() {
