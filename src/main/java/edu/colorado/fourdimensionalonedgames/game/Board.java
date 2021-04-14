@@ -97,8 +97,8 @@ public class Board implements Subject {
                 tiles[x][y][z] = currentTile;
 
                 //re-register that spot with the renderer
-                renderer.unregister(oldTile);
-                renderer.register(currentTile);
+                //renderer.unregister(oldTile);
+                //renderer.register(currentTile);
             }
             updateObservers();
             return true;

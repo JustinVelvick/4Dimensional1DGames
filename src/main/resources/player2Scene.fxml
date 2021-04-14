@@ -3,11 +3,8 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -30,36 +27,7 @@
       </VBox>
       <VBox>
          <children>
-            <GridPane fx:id="playergpane" maxHeight="440.0" maxWidth="440.0" minHeight="440.0" minWidth="440.0" prefHeight="440.0" prefWidth="440.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="40.0" prefWidth="40.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-               </rowConstraints>
-            </GridPane>
+            <Canvas fx:id="playerGrid" height="440.0" width="440.0" />
             <Pane prefHeight="68.0" prefWidth="440.0">
                <children>
                   <Button fx:id="placeShipButton" layoutX="7.0" layoutY="21.0" mnemonicParsing="false" onAction="#handlePlaceShipButton" text="Place Ship" />

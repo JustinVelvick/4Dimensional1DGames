@@ -56,8 +56,8 @@ public class Player {
         ShipYard submergableShipYard = new SubmergableShipYard();
 
         shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+//        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+//        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
         shipsToPlace.add(submergableShipYard.createShip("Submarine"));
 
     }
@@ -196,8 +196,8 @@ public class Player {
                 board.tiles[i][j][0] = mineTile;
                 minesToPlace--;
                 //re-register that spot with the renderer
-                game.getRenderer().unregister(oldTile);
-                game.getRenderer().register(mineTile);
+                //game.getRenderer().unregister(oldTile);
+                //game.getRenderer().register(mineTile);
             }
         }
         board.updateObservers();
@@ -290,9 +290,6 @@ public class Player {
                 Tile powerUpTile = new PowerUpTile(i,j,0);//START HERE
                 board.tiles[i][j][0] = powerUpTile;
                 powerUpsToPlace--;
-                //re-register that spot with the renderer
-                game.getRenderer().unregister(oldTile);
-                game.getRenderer().register(powerUpTile);
             }
         }
         board.updateObservers();

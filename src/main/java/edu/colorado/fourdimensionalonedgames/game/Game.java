@@ -163,7 +163,7 @@ public class Game {
         initializeBoards();
 
         //sets up observer pattern between boards and grid panes
-        linkBoardVisuals(player1Controller.getPlayergpane(), player1Controller.getEnemyGrid(), player2Controller.getPlayergpane(), player2Controller.getEnemyGrid());
+        linkBoardVisuals(player1Controller.getPlayerGrid(), player1Controller.getEnemyGrid(), player2Controller.getPlayerGrid(), player2Controller.getEnemyGrid());
         players.get(0).getBoard().updateObservers();
         players.get(1).getBoard().updateObservers();
 
@@ -185,18 +185,20 @@ public class Game {
     }
 
     ////////////////////////////////////  GUI RELATED METHODS //////////////////////////////////////////////
-    private void linkBoardVisuals(GridPane p1gpane, Canvas p1EnemyGrid, GridPane p2gpane, Canvas p2EnemyGrid){
+    private void linkBoardVisuals(Canvas p1Grid, Canvas p1EnemyGrid, Canvas p2Grid, Canvas p2EnemyGrid){
 
         Board player1Board = players.get(0).getBoard();
         Board player2Board = players.get(1).getBoard();
 
-        player1Display = new Display(p1gpane, player1Board.tiles, renderer);
+        player1Display = new Display(p1Grid, player1Board.tiles);
         player1EnemyDisplay = new EnemyDisplay(p1EnemyGrid, player2Board.tiles);
-        player2Display = new Display(p2gpane, player2Board.tiles, renderer);
+        player2Display = new Display(p2Grid, player2Board.tiles);
         player2EnemyDisplay = new EnemyDisplay(p2EnemyGrid, player1Board.tiles);
 
         //basically registering the canvas nodes to renderer
+        this.renderer.register(player1Display);
         this.renderer.register(player1EnemyDisplay);
+        this.renderer.register(player2Display);
         this.renderer.register(player2EnemyDisplay);
 
         //who cares about player1's board? player 1's own display of course, but the enemy's enemy display also cares

@@ -45,7 +45,7 @@ public class PlayerController implements Initializable {
     private HBox playerSceneHbox;
 
     @FXML
-    private GridPane playergpane;
+    private Canvas playerGrid;
 
     @FXML
     private Canvas enemyGrid;
@@ -292,8 +292,8 @@ public class PlayerController implements Initializable {
 
     }
 
-    public GridPane getPlayergpane() {
-        return playergpane;
+    public Canvas getPlayerGrid() {
+        return playerGrid;
     }
 
     public Canvas getEnemyGrid() {

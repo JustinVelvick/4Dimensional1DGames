@@ -19,10 +19,10 @@ public class LetterTile extends Tile {
     }
 
     @Override
-    public void render() {
-        GraphicsContext gc = this.getGraphicsContext2D();
-
+    public void draw(GraphicsContext gc) {
+        int xOrigin = this.getColumn()*40;
+        int yOrigin = this.getRow()*40;
         gc.setStroke(Color.BLACK);
-        gc.strokeText(letter, 20,20);
+        gc.strokeText(letter, xOrigin+20,yOrigin+20);
     }
 }

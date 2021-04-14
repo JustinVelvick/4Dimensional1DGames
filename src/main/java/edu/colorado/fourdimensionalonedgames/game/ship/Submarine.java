@@ -18,11 +18,6 @@ public class Submarine extends Ship {
     }
 
     @Override
-    public void render() {
-
-    }
-
-    @Override
     public List<Point3D> generateCoordinates(Point3D origin, Orientation direction) {
 
         List<Point3D> coords = new ArrayList<>();

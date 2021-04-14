@@ -3,6 +3,8 @@ package edu.colorado.fourdimensionalonedgames.render.tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+
+//GENERIC TILE AND LETTER TILE ARE FOR THE ENEMY DISPLAY
 public class GenericTile{
 
     Color fillColor;
