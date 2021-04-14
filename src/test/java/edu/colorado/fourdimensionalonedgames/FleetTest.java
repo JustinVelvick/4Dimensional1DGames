@@ -159,7 +159,7 @@ public class FleetTest {
         player2.placeShip(testInput1); //minesweeper at 1,1 down
         player2.placeShip(testInput2); //destroyer at 4,4 down
         player2.placeShip(testInput3); //battleship at 5,5 down
-        player2.placeMines();
+        player2.placePowerUps();
         assertFalse(testTile instanceof MineTile);
         assertFalse(testTile instanceof SeaTile);
         assertFalse(testTile instanceof ShipTile);

@@ -280,6 +280,7 @@ public class Board implements Subject {
         for(Observer observer : observers){
             observer.update(tiles);
         }
+        renderer.tick();
     }
 
     //only your own display subscribed to this board
@@ -290,5 +291,6 @@ public class Board implements Subject {
                 observer.update(tiles);
             }
         }
+        renderer.tick();
     }
 }

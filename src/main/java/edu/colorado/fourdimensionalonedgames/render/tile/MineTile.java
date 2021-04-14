@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class MineTile extends Tile implements IRenderable {
+public class MineTile extends Tile{
 
     public MineTile(int column, int row, int depth) { super(column, row, depth); }
 
@@ -15,9 +15,8 @@ public class MineTile extends Tile implements IRenderable {
     }
 
     @Override
-    public void render(){
-        GraphicsContext gc = this.getGraphicsContext2D();
+    public void draw(GraphicsContext gc){
         Image image = new Image("mine.png");
-        gc.drawImage(image,0,0,40,40);
+        gc.drawImage(image,getColumn()*40,getRow()*40,40,40);
     }
 }

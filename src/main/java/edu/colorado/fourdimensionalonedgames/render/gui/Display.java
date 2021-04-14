@@ -106,8 +106,8 @@ public class Display implements Observer, IRenderable {
     }
 
 
-    //takes in an array of tiles all on top of eachother (same x and y, differing z's)
-    //returns a list of all colors of all ships on this x and y
+    //takes in an array of tiles all on top of each other (same x and y, differing z's)
+    //returns a list of all colors of all ships on this x and y, if any exist
     private List<Color> shipColors(Tile[] tiles){
         List<Color> returnColors = new ArrayList<>();
         for(Tile tile : tiles){
