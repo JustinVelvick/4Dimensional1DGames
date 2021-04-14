@@ -5,6 +5,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.MineCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.PowerUpsCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.MediumWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
