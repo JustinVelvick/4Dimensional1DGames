@@ -16,7 +16,7 @@
             <Pane fx:id="moveInstructionsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="396.0" visible="false">
                <children>
                   <Button fx:id="doneButton" layoutX="296.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleDoneButton" prefHeight="26.0" prefWidth="86.0" text="Done" />
-                  <Label layoutX="8.0" layoutY="7.0" prefHeight="60.0" prefWidth="275.0" text="Use arrow keys to move all ships at once" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                  <Label layoutX="8.0" layoutY="7.0" prefHeight="60.0" prefWidth="275.0" text="Use 'WASD' to move all ships at once" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                      <font>
                         <Font size="22.0" />
                      </font>
