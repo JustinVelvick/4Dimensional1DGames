@@ -5,6 +5,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterA
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.MediumWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.XLargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
@@ -265,7 +266,10 @@ public class Board implements Subject {
                 mineWeapon.useAt(this, new Point2D(newCordinate.getX(), newCordinate.getY()));
             }
             if (powerUpFlag) {
-                weaponsToAdd.add(new MediumWeapon(new Attack(), Game.CLUSTER_BOMB, new PopCountAfterAttackBehavior(1)));
+                if (Math.random() < 0.5)
+                    weaponsToAdd.add(new MediumWeapon(new Attack(), Game.CLUSTER_BOMB, new PopCountAfterAttackBehavior(1)));
+                else
+                    weaponsToAdd.add(new XLargeWeapon(new Attack(), Game.NUKE, new PopCountAfterAttackBehavior(1)));
             }
         }
         return weaponsToAdd;
