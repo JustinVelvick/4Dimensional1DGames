@@ -4,6 +4,7 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.NoAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.*;
@@ -113,8 +114,14 @@ public class WeaponsTest {
         //should just have Space Laser (one object infinite uses)
         assertEquals(1, player1.getWeapons().size());
 
+
+        Weapon nuke = new XLargeWeapon(new Attack(), "Nuke", new PopCountAfterAttackBehavior(1));
+        player2.addWeapon(nuke);
+
         // test nuke
-        fireInput1 = new PlayerFireInput("Nuke", "-1", "-1"); // coordinates dont matter, kills whole board
+        fireInput1 = new PlayerFireInput("Nuke", "2", "2"); // coordinates dont matter, kills whole board
         player2.attack(player1.getBoard(), fireInput1);
+
+
     }
 }

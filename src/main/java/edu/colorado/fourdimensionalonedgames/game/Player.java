@@ -286,7 +286,6 @@ public class Player {
         }
     }
 
-
     public void placePowerUps(){
         Random random = new Random();
         int powerUpsToPlace = 2;
