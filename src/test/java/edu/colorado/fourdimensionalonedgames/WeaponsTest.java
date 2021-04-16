@@ -6,10 +6,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Reveal;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.PenetratingSmallWeapon;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.LargeWeapon;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
+import edu.colorado.fourdimensionalonedgames.game.attack.weapon.*;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
@@ -54,7 +51,7 @@ public class WeaponsTest {
     Ship player2Destroyer;
     Ship player2Battleship;
     Ship player2Submarine;
-    Weapon singleShot, sonar, spaceLaser;
+    Weapon singleShot, sonar, spaceLaser, nuke;
 
     @BeforeEach
     void setUp(){
@@ -70,6 +67,7 @@ public class WeaponsTest {
         singleShot = new SmallWeapon(new Attack(), "Single Shot");
         sonar = new LargeWeapon(new Reveal(), "Sonar", new PopCountAfterAttackBehavior(2));
         spaceLaser = new PenetratingSmallWeapon(new Attack(), "Space Laser");
+        nuke = new XLargeWeapon(new Attack(), "Nuke");
 
         shipInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
         player2.placeShip(shipInput1);
@@ -79,6 +77,7 @@ public class WeaponsTest {
         assertEquals(singleShot.getType(), "Single Shot");
         assertEquals(sonar.getType(), "Sonar");
         assertEquals(spaceLaser.getType(), "Space Laser");
+        assertEquals(nuke.getType(), "Nuke");
     }
 
     @Test
@@ -113,5 +112,9 @@ public class WeaponsTest {
 
         //should just have Space Laser (one object infinite uses)
         assertEquals(1, player1.getWeapons().size());
+
+        // test nuke
+        fireInput1 = new PlayerFireInput("Nuke", "-1", "-1"); // coordinates dont matter, kills whole board
+        player2.attack(player1.getBoard(), fireInput1);
     }
 }
