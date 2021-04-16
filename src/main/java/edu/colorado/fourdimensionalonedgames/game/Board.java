@@ -165,79 +165,45 @@ public class Board implements Subject {
         Point3D previousCoord;
         Tile previous;
 
+
+        int xChange = 0;
+        int yChange = 0;
+
         switch (direction){
             case up:
-
-                newOrigin = new Point3D(x,y-1,z);
-                coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
-                for(ShipTile tile : ship.getShipTiles()){
-                    previousCoord = new Point3D(tile.getColumn(), tile.getRow()+1, tile.getDepth());
-                    if(isWithinBounds(previousCoord)){
-                        previous = tiles[tile.getColumn()][tile.getRow()+1][tile.getDepth()];
-                        if(previous instanceof SeaTile){
-                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                        }
-                    }
-                    else{
-                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                    }
-                }
-
+                xChange = 0;
+                yChange = -1;
                 break;
 
             case down:
-
-                newOrigin = new Point3D(x,y+1,z);
-                coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
-
-                for(ShipTile tile : ship.getShipTiles()){
-                    previousCoord = new Point3D(tile.getColumn(), tile.getRow()-1, tile.getDepth());
-                    if(isWithinBounds(previousCoord)){
-                        previous = tiles[tile.getColumn()][tile.getRow()-1][tile.getDepth()];
-                        if(previous instanceof SeaTile){
-                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                        }
-                    }
-                    else{
-                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                    }
-                }
-
+                xChange = 0;
+                yChange = 1;
                 break;
 
             case left:
-                newOrigin = new Point3D(x-1,y,z);
-                coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
-                for(ShipTile tile : ship.getShipTiles()){
-                    previousCoord = new Point3D(tile.getColumn()+1, tile.getRow(), tile.getDepth());
-                    if(isWithinBounds(previousCoord)){
-                        previous = tiles[tile.getColumn()+1][tile.getRow()][tile.getDepth()];
-                        if(previous instanceof SeaTile){
-                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                        }
-                    }
-                    else{
-                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                    }
-                }
+                xChange = -1;
+                yChange = 0;
                 break;
 
             case right:
-                newOrigin = new Point3D(x+1,y,z);
-                coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
-                for(ShipTile tile : ship.getShipTiles()){
-                    previousCoord = new Point3D(tile.getColumn()-1, tile.getRow(), tile.getDepth());
-                    if(isWithinBounds(previousCoord)){
-                        previous = tiles[tile.getColumn()-1][tile.getRow()][tile.getDepth()];
-                        if(previous instanceof SeaTile){
-                            tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                        }
-                    }
-                    else{
-                        tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
-                    }
-                }
+                xChange = 1;
+                yChange = 0;
                 break;
+        }
+
+        newOrigin = new Point3D(x+xChange,y+yChange,z);
+        coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
+        for(ShipTile tile : ship.getShipTiles()){
+            previousCoord = new Point3D(tile.getColumn()-xChange, tile.getRow()-yChange, tile.getDepth());
+            if(isWithinBounds(previousCoord)){
+                previous = tiles[tile.getColumn()-xChange][tile.getRow()-yChange][tile.getDepth()];
+                if(previous instanceof SeaTile){
+                    tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+                }
+            }
+            else{
+                tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
+            }
         }
 
         List<Weapon> weaponsToAdd = new ArrayList<>();
