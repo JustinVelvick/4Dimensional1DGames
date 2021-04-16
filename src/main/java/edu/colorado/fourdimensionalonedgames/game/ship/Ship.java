@@ -119,6 +119,10 @@ public abstract class Ship{
         }
     }
 
+    public void incrementPowerups(){
+        powerUps++;
+    }
+
     public abstract String getType();
 
     public List<ShipTile> getShipTiles() {

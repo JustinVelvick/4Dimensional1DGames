@@ -265,6 +265,7 @@ public class Board implements Subject {
                 mineWeapon.useAt(this, new Point2D(newCordinate.getX(), newCordinate.getY()));
             }
             if (powerUpFlag) {
+                ship.incrementPowerups();
                 if (Math.random() < 0.5)
                     weaponsToAdd.add(new MediumWeapon(new Attack(), Game.CLUSTER_BOMB, new PopCountAfterAttackBehavior(1)));
                 else

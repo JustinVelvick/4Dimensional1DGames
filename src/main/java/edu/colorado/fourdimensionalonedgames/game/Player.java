@@ -204,10 +204,9 @@ public class Player {
     }
 
     //for testing purposes only to give a deterministic spawning of mines
-    public void placeTestMines(int i, int j) {
+    public void placeTestTile(int i, int j, Tile tile) {
         if (board.tiles[i][j][0] instanceof SeaTile) {
-            Tile mineTile = new MineTile(i, j, 0);//START HERE
-            board.tiles[i][j][0] = mineTile;
+            board.tiles[i][j][0] = tile;
         }
     }
 
