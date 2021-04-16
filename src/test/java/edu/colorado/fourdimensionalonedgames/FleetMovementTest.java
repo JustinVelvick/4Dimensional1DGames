@@ -10,6 +10,8 @@ import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
+import edu.colorado.fourdimensionalonedgames.render.tile.MineTile;
+import edu.colorado.fourdimensionalonedgames.render.tile.PowerUpTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.SeaTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import javafx.scene.layout.GridPane;
@@ -116,8 +118,22 @@ public class FleetMovementTest {
         }
 
         //check that all tiles in wake are still sea tiles and not copies of this ship tile moving around
-        assertTrue(player2.getBoard().tiles[1][1][0] instanceof SeaTile);
-        assertTrue(player2.getBoard().tiles[4][4][0] instanceof SeaTile);
+        boolean isSeaTile = player2.getBoard().tiles[1][1][0] instanceof SeaTile;
+        boolean isMineTile = player2.getBoard().tiles[1][1][0] instanceof MineTile;
+        boolean isPowerUpTile = player2.getBoard().tiles[1][1][0] instanceof PowerUpTile;
+
+        boolean tripleOR = isSeaTile || isMineTile || isPowerUpTile;
+
+        assertTrue(tripleOR);
+
+
+        isSeaTile = player2.getBoard().tiles[4][4][0] instanceof SeaTile;
+        isMineTile = player2.getBoard().tiles[4][4][0] instanceof MineTile;
+        isPowerUpTile = player2.getBoard().tiles[4][4][0] instanceof PowerUpTile;
+
+        tripleOR = isSeaTile || isMineTile || isPowerUpTile;
+
+        assertTrue(tripleOR);
     }
 
     @Test

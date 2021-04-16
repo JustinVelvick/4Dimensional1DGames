@@ -98,9 +98,6 @@ public class SpaceLaserTest {
 
     @Test
     void testSubmergedSpaceLaser(){
-
-
-
         //Player 1 fires a space laser at 3,3
         fireInput1 = new PlayerFireInput("Space Laser", "3", "3");
         player1.addWeapon(spaceLaser);
