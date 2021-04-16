@@ -151,7 +151,14 @@ public class ColorTest {
 
     @Test
     void testNonShipTileColors() {
-        assertEquals(Color.CORNFLOWERBLUE, player2.getBoard().tiles[1][3][0].getColor());
+
+        boolean seaColor = player2.getBoard().tiles[1][3][0].getColor() == Color.CORNFLOWERBLUE;
+        boolean powerUpColor = player2.getBoard().tiles[1][3][0].getColor() == Color.GOLD;
+        boolean mineColor = player2.getBoard().tiles[1][3][0].getColor() == Color.DARKSLATEGRAY;
+
+        boolean tripleOR = seaColor || powerUpColor || mineColor;
+
+        assertTrue(tripleOR);
         assertEquals(Color.TRANSPARENT, player2.getBoard().tiles[0][0][0].getColor());
     }
 }

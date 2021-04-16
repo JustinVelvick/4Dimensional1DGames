@@ -38,7 +38,7 @@ public class Player {
     private FleetControl fleetController;
     private PowerUpsCollection PowerUps;
 
-    private boolean devMode = true;
+    private boolean devMode = false;
 
     //constructor
     public Player (Game game, Board board, Board enemyBoardGui) {
@@ -213,8 +213,6 @@ public class Player {
         }
     }
 
-
-
     //will only move entire fleet if every ship is able to move specified direction
     public boolean moveFleet(Orientation direction){
         // check for border collision
@@ -280,7 +278,6 @@ public class Player {
     }
 
 
-
     public void checkPowerUps(){
         if(shipsToPlace.isEmpty()){
             PowerUps = PowerUpsCollection.AVAILABLE;
@@ -290,7 +287,6 @@ public class Player {
             placePowerUps();
         }
     }
-
 
 
     public void placePowerUps(){

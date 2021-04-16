@@ -66,7 +66,6 @@ public class Board implements Subject {
         updateObservers();
     }
 
-
     /**
      * Place a new ship on the board given a placement orientation
      *
@@ -113,7 +112,6 @@ public class Board implements Subject {
 
     //given a ship length, origin, and direction, placeable returns true if valid placement
     private boolean placeable(List<Point3D> newCoordinates) {
-
         // check each coordinate to make sure not off board or occupied by other ship
         for (Point3D coordinate : newCoordinates) {
             if (!isWithinBounds(coordinate)) return false;
@@ -240,6 +238,7 @@ public class Board implements Subject {
                 }
                 break;
         }
+
         List<Weapon> weaponsToAdd = new ArrayList<>();
         for(int i = 0; i < ship.getSize(); i++){
             currentTile = shipTiles.get(i);
@@ -274,7 +273,6 @@ public class Board implements Subject {
     public int getDepth() {
         return depth;
     }
-
 
     @Override
     public void registerObserver(Observer observer) {
