@@ -65,6 +65,7 @@ public class Game {
     public final static String SONAR_PULSE = "Sonar Pulse";
     public final static String SPACE_LASER = "Space Laser";
     public final static String CLUSTER_BOMB = "Cluster Bomb";
+    public final static String NUKE = "Nuke";
 
 
     //implements Singleton design pattern for Game object (only one is allowed to exist)
