@@ -1,5 +1,6 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
+import edu.colorado.fourdimensionalonedgames.EndCreditsController;
 import edu.colorado.fourdimensionalonedgames.MenuSceneController;
 import edu.colorado.fourdimensionalonedgames.PlayerController;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
@@ -100,7 +101,7 @@ public class Game {
 
         //create the players for this game (and their boards in the process)
         for(int i = 0; i < this.numberofPlayers; i++){
-            Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
+            Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
         startGame(primaryStage);
@@ -125,58 +126,69 @@ public class Game {
 
         //create the players for this game (and their boards in the process)
         for(int i = 0; i < this.numberofPlayers; i++){
-            Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer), new Board(columns, rows, depth, this.renderer));
+            Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
         initializeBoards();
     }
 
     //called ONCE on game start
-    private void startGame(Stage primaryStage) throws IOException {
-        //Store our application's parent stage (the stage we set all our scenes to upon turn switch)
-        this.primaryStage = primaryStage;
-        //Load our menu scene and accompying controller and store them
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("menuScene.fxml"));
-        Pane menuRoot = loader.load();
-        this.menuScene = new Scene(menuRoot, (width*2), (height*1.2));
+    private void startGame(Stage primaryStage){
 
-        this.menuSceneController = loader.getController();
-        this.menuSceneController.initialize(this);
+        try{
+            //Store our application's parent stage (the stage we set all our scenes to upon turn switch)
+            this.primaryStage = primaryStage;
+            //Load our menu scene and accompying controller and store them
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("menuScene.fxml"));
+            Pane menuRoot = loader.load();
+            this.menuScene = new Scene(menuRoot, (width*2), (height*1.2));
 
-
-        //Load our player1Scene and accompying controller and store them
-        loader = new FXMLLoader(getClass().getClassLoader().getResource("player1Scene.fxml"));
-        HBox player1Root = loader.load();
-        this.player1Scene = new Scene(player1Root, (width*2.3) , (height*1.3));
-
-        this.player1Controller = loader.getController();
-        this.player1Controller.initialize(this, getPlayers().get(0), getPlayers().get(1));
+            this.menuSceneController = loader.getController();
+            this.menuSceneController.initialize(this);
 
 
-        //Load our player2Scene and accompying controller and store them
-        loader = new FXMLLoader(getClass().getClassLoader().getResource("player2Scene.fxml"));
-        HBox player2Root = loader.load();
-        this.player2Scene = new Scene(player2Root, (width*2.3) , (height*1.3));
+            //Load our player1Scene and accompying controller and store them
+            loader = new FXMLLoader(getClass().getClassLoader().getResource("player1Scene.fxml"));
+            HBox player1Root = loader.load();
+            this.player1Scene = new Scene(player1Root, (width*2.3) , (height*1.3));
 
-        this.player2Controller= loader.getController();
-        this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
-
-        //initialize both player's boards (visually via linking board Tiles with FXML GridPanes)
-        initializeBoards();
-
-        //sets up observer pattern between boards and grid panes
-        linkBoardVisuals(player1Controller.getPlayerGrid(), player1Controller.getEnemyGrid(), player2Controller.getPlayerGrid(), player2Controller.getEnemyGrid());
-        players.get(0).getBoard().updateObservers();
-        players.get(1).getBoard().updateObservers();
+            this.player1Controller = loader.getController();
+            this.player1Controller.initialize(this, getPlayers().get(0), getPlayers().get(1));
 
 
-        //Change taskbar icon in client's OS
-        Image icon = new Image("icon.jpg");
-        this.primaryStage.getIcons().add(icon);
+            //Load our player2Scene and accompying controller and store them
+            loader = new FXMLLoader(getClass().getClassLoader().getResource("player2Scene.fxml"));
+            HBox player2Root = loader.load();
+            this.player2Scene = new Scene(player2Root, (width*2.3) , (height*1.3));
 
-        this.primaryStage.setScene(menuScene);
-        this.primaryStage.setTitle("Battleships");
-        this.primaryStage.show();
+            this.player2Controller= loader.getController();
+            this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
+
+            //initialize both player's boards (visually via linking board Tiles with FXML GridPanes)
+            initializeBoards();
+
+            //sets up observer pattern between boards and grid panes
+            linkBoardVisuals(player1Controller.getPlayerGrid(), player1Controller.getEnemyGrid(), player2Controller.getPlayerGrid(), player2Controller.getEnemyGrid());
+            players.get(0).getBoard().updateObservers();
+            players.get(1).getBoard().updateObservers();
+
+
+            //Change taskbar icon in client's OS
+            Image icon = new Image("icon.jpg");
+            this.primaryStage.getIcons().add(icon);
+
+            this.primaryStage.setScene(menuScene);
+            this.primaryStage.setTitle("Battleships");
+            this.primaryStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startNewGame(){
+        startGame(primaryStage);
+        setGameState(GameState.player1_setup);
     }
 
     private void initializeBoards(){
@@ -248,12 +260,10 @@ public class Game {
         for(Player player : players){
             player.refreshFleetController();
         }
-
     }
 
     //called when turns are passed back and forth
     public void updateScene(){
-
         //have JavaFX open up our player1Scene.fxml
         if(this.player1Turn){
             this.primaryStage.setTitle("Player 1's Turn");
@@ -261,6 +271,9 @@ public class Game {
             this.primaryStage.show();
             if(gameState == GameState.first_turn){
                 AlertBox.display("Begin Combat!", "Welcome to the first turn Player 1! Please update this bland message :)");
+            }
+            else{
+                player1Controller.showAllButtons();
             }
         }
         //have JavaFX open up our player2Scene.fxml
@@ -271,6 +284,9 @@ public class Game {
             if(gameState == GameState.first_turn){
                 AlertBox.display("Begin Combat!", "Welcome to the first turn Player 2! Please update this bland message :)");
                 setGameState(GameState.main_state);
+            }
+            else{
+                player2Controller.showAllButtons();
             }
         }
     }
@@ -307,13 +323,45 @@ public class Game {
     }
 
     //checks if someone has won the game
-    public boolean gameOver(){
+    public boolean isGameOver(){
         boolean over = true;
-
         if (getPlayers().get(0).getFleet().hasShip() && getPlayers().get(1).getFleet().hasShip()){
             over = false;
         }
         return over;
+    }
+
+    //goes through various tasks that need to happen when the game ends (one player has no ships remaining)
+    public void gameOver(){
+        Player player1 = getPlayers().get(0);
+        Player player2 = getPlayers().get(1);
+
+        //player 1 lost
+        if(!player1.getFleet().hasShip()){
+            AlertBox.display("GAME OVER", "Congratulations Player 2, you won!" );
+        }
+        else if(!player2.getFleet().hasShip()){
+            AlertBox.display("GAME OVER", "Congratulations Player 1, you won!" );
+        }
+
+        try{
+            //Load our play again pop up scene
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("endCredits.fxml"));
+            Pane endSceenRoot = loader.load();
+            EndCreditsController controller = loader.getController();
+            controller.initialize(this);
+            Scene endScene = new Scene(endSceenRoot);
+
+            Stage endCreditsStage = new Stage();
+            endCreditsStage.setScene(endScene);
+            endCreditsStage.setTitle("Game Over!");
+            endCreditsStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public List<Player> getPlayers() {

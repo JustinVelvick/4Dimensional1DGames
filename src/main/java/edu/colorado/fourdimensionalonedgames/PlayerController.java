@@ -89,6 +89,11 @@ public class PlayerController implements Initializable {
                 default:
                     break;
             }
+
+            //after each individual move, check if game ended from player ramming own ships into mines
+            if(game.isGameOver()){
+                game.gameOver();
+            }
         }
     };
 
@@ -129,6 +134,10 @@ public class PlayerController implements Initializable {
         //checks for conditional items (such as gaining sonar pulse after sinking first ship of the game)
         game.updateScores();
         game.checkUpgrades();
+        if(game.isGameOver()){
+            game.gameOver();
+        }
+        fireWeaponButton.visibleProperty().setValue(false);
     }
 
     //generates appropriate alertbox to user from what resulted in attack
@@ -244,13 +253,10 @@ public class PlayerController implements Initializable {
     }
 
     //helper method to toggle visible tags on buttons we don't want the player seeing until game start
-    public void toggleButtonVisibility(){
-
+    public void showAllButtons(){
         List<Button> buttons = getButtons();
-
         for(Button button : buttons){
-            boolean value = button.isVisible();
-            button.setVisible(!value);
+            button.setVisible(true);
         }
     }
 
@@ -288,7 +294,6 @@ public class PlayerController implements Initializable {
 
     //JavaFX calls this at the creation of any new form
     public void initialize(URL location, ResourceBundle resources) {
-
 
     }
 

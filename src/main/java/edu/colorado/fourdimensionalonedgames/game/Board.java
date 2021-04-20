@@ -197,7 +197,7 @@ public class Board implements Subject {
             previousCoord = new Point3D(tile.getColumn()-xChange, tile.getRow()-yChange, tile.getDepth());
             if(isWithinBounds(previousCoord)){
                 previous = tiles[tile.getColumn()-xChange][tile.getRow()-yChange][tile.getDepth()];
-                if(previous instanceof SeaTile){
+                if(previous instanceof SeaTile || previous instanceof MineTile || previous instanceof PowerUpTile){
                     tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
                 }
             }

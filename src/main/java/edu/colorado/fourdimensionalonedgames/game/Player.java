@@ -2,11 +2,9 @@ package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
-import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.MineCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.PowerUpsCollection;
 import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade;
-import edu.colorado.fourdimensionalonedgames.game.attack.weapon.MediumWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
@@ -36,12 +34,12 @@ public class Player {
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
     private MineCollection mines;
     private FleetControl fleetController;
-    private PowerUpsCollection PowerUps;
+    private PowerUpsCollection powerUps;
 
-    private boolean devMode = false;
+    private boolean devMode = true;
 
     //constructor
-    public Player (Game game, Board board, Board enemyBoardGui) {
+    public Player (Game game, Board board) {
         this.game = game;
         this.board = board;
         this.fleet = new Fleet();
@@ -60,8 +58,10 @@ public class Player {
         ShipYard submergableShipYard = new SubmergableShipYard();
 
         shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+        if(!devMode){
+            shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+            shipsToPlace.add(defaultShipYard.createShip("Battleship"));
+        }
         shipsToPlace.add(submergableShipYard.createShip("Submarine"));
     }
 
@@ -256,6 +256,10 @@ public class Player {
 
         // actually move the fleet now that we confirmed it can be moved
         for (Ship ship : fleet.getShips()){
+            //dead ships should not move
+            if(ship.destroyed()){
+                continue;
+            }
             List<Weapon> weaponsToAdd = board.moveShip(ship, direction);
             for (Weapon weapon : weaponsToAdd) {
                 boolean isInAlreadyExistingWeapons = false;
@@ -277,10 +281,10 @@ public class Player {
 
     public void checkPowerUps(){
         if(shipsToPlace.isEmpty()){
-            PowerUps = PowerUpsCollection.AVAILABLE;
+            powerUps = PowerUpsCollection.AVAILABLE;
         }
-        if(PowerUps == PowerUpsCollection.AVAILABLE){
-            PowerUps = PowerUpsCollection.PLACED;
+        if(powerUps == PowerUpsCollection.AVAILABLE){
+            powerUps = PowerUpsCollection.PLACED;
             placePowerUps();
         }
     }

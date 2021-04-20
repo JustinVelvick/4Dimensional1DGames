@@ -1,20 +1,16 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_MULTIPLYPeer;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResult;
 import edu.colorado.fourdimensionalonedgames.game.attack.AttackResultType;
-import edu.colorado.fourdimensionalonedgames.game.attack.InvalidAttackException;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
-import edu.colorado.fourdimensionalonedgames.game.ship.Fleet;
 import edu.colorado.fourdimensionalonedgames.game.ship.FleetControl;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
-import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -110,7 +106,7 @@ public class GameLogicTest {
     @Test
     void gameOver() {
         player1.placeShip(testInput1);
-        assertFalse(game.gameOver());
+        assertFalse(game.isGameOver());
 
         // sink all ships on board
         ///////////////////////////////  player1's attacks ///////////////////////////////////////////////
@@ -149,7 +145,7 @@ public class GameLogicTest {
 
 
 
-        assertTrue(game.gameOver());
+        assertTrue(game.isGameOver());
     }
 
     @Test

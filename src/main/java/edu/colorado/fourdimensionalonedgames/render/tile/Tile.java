@@ -35,8 +35,6 @@ public abstract class Tile implements IDrawable {
         return null;
     }
 
-    public abstract Color getColor();
-
     public void draw(GraphicsContext gc) {
         int xOrigin = this.getColumn()*40;
         int yOrigin = this.getRow()*40;
@@ -49,6 +47,8 @@ public abstract class Tile implements IDrawable {
         gc.strokeLine(xOrigin+40,yOrigin+40,xOrigin,yOrigin+40);
         gc.strokeLine(xOrigin,yOrigin+40,xOrigin,yOrigin);
     }
+
+    public abstract Color getColor();
 
     public int getRow() {
         return row;

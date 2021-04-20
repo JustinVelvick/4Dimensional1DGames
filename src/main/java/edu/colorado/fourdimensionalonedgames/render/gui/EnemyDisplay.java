@@ -1,26 +1,20 @@
 package edu.colorado.fourdimensionalonedgames.render.gui;
 
 import edu.colorado.fourdimensionalonedgames.render.IRenderable;
-import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-
-import java.lang.reflect.GenericSignatureFormatError;
-import java.util.List;
 
 public class EnemyDisplay implements Observer, IRenderable {
 
     private GenericTile[][] displayTiles;
     private Tile[][][] oldState;
     private Tile[][][] newState;
-    private Canvas canvas;
+    private Canvas grid;
     //Send initial board to display
-    public EnemyDisplay(Canvas canvas, Tile[][][] board){
+    public EnemyDisplay(Canvas grid, Tile[][][] board){
         this.displayTiles = new GenericTile[board.length][board.length];
-        this.canvas = canvas;
+        this.grid = grid;
         oldState = board;
         newState = board;
 
@@ -56,11 +50,12 @@ public class EnemyDisplay implements Observer, IRenderable {
         oldState = this.newState;
         this.newState = board;
 
-
+        boolean isPrimativeTileType = false;
         for(int x = 1; x < newState.length; x++){
             for(int y = 1; y < newState.length; y++){
                 Tile oldTile = oldState[x][y][0];
                 Tile newTile = newState[x][y][0];
+                isPrimativeTileType = oldTile instanceof PowerUpTile || oldTile instanceof MineTile;
 
                 if(newTile.shot || newTile.revealed){
                     if(newTile instanceof ShipTile){
@@ -75,17 +70,25 @@ public class EnemyDisplay implements Observer, IRenderable {
                         }
                     }
                     if(oldTile.shot || oldTile.revealed){
-
+                        if(isPrimativeTileType){
+                            continue;
+                        }
                     }
                     displayTiles[x][y].setColor(newTile.getColor());
                 }
+                //************UNCOMMENT BELOW IF YOU WANT ENEMY TO SEE A HIT, BUT NOT DESTROYED CC TILE
+//                else if(newTile instanceof CaptainsQuartersTile){
+//                    if(((CaptainsQuartersTile) newTile).getHp() < ((CaptainsQuartersTile) newTile).getStartingHp()){
+//                        displayTiles[x][y].setColor(newTile.getColor());
+//                    }
+//                }
             }
         }
     }
 
     @Override
     public void render() {
-        GraphicsContext gc = this.canvas.getGraphicsContext2D();
+        GraphicsContext gc = this.grid.getGraphicsContext2D();
 
         for(GenericTile[] tileColumn : displayTiles){
             for(GenericTile tile : tileColumn){

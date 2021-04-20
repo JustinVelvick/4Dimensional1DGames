@@ -24,10 +24,10 @@ public class CaptainsQuartersTile extends ShipTile{
     public void draw(GraphicsContext gc) {
         gc.setFill(getColor());
         Rectangle rect = new Rectangle(40,40);
-        gc.fillRect(0, 0, rect.getWidth(), rect.getHeight());
+        gc.fillRect(getColumn()*40, getRow()*40, rect.getWidth(), rect.getHeight());
         gc.setStroke(Color.BLACK);
-        gc.strokeOval(5,5,30,30);
-        gc.strokeOval(10,10,20,20);
+        gc.strokeOval(getColumn()*40 +5,getRow()*40 +5,30,30);
+        gc.strokeOval(getColumn()*40 +10,getRow()*40 +10,20,20);
     }
 
     @Override
@@ -35,10 +35,13 @@ public class CaptainsQuartersTile extends ShipTile{
         if (hp < startingHP) {
             return Color.ORANGE;
         } else {
-            return parentShip.getColor();
+            Color ccColor = parentShip.getColor();
+            return ccColor.darker();
         }
     }
-
+    public int getStartingHp(){
+        return startingHP;
+    }
     public int getHp() {
         return hp;
     }

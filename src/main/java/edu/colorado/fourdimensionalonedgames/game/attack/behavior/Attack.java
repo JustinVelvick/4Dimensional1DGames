@@ -50,7 +50,6 @@ public class Attack implements IAttackBehavior {
                     continue;
                 }
             }
-
             // otherwise set shot flag and return ship that contains tile
             attackedTile.shot = true;
 
@@ -64,9 +63,7 @@ public class Attack implements IAttackBehavior {
             else{
                 ret.add(new AttackResult(AttackResultType.HIT, ship));
             }
-
         }
-
         return ret;
     }
 }

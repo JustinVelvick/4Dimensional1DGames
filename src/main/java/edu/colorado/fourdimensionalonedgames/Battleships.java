@@ -3,9 +3,11 @@ package edu.colorado.fourdimensionalonedgames;
 import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.GameSettings;
+import edu.colorado.fourdimensionalonedgames.game.GameState;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -29,8 +31,9 @@ public class Battleships extends Application {
             Render renderer = new Render();
             //Define the game settings
             GameSettings settings = new GameSettings(numberOfPlayers, columns, rows, depth, tileSize);
-            //Create the game object
-            Game newGame = Game.getInstance(primaryStage, renderer, settings);
+            //Create the Singleton game object
+            Game.getInstance(primaryStage, renderer, settings);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

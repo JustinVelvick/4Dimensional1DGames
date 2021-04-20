@@ -3,6 +3,7 @@ package edu.colorado.fourdimensionalonedgames.render.gui;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import edu.colorado.fourdimensionalonedgames.render.Render;
+import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.GenericTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
@@ -38,30 +39,6 @@ public class Display implements Observer, IRenderable {
 //        }
 
         boardState = newBoardState;
-    }
-
-//    //replace a tile on the board with an input tile (newTile) and do proper re registering and gridpane updating
-//    protected void swapTile(Tile newTile){
-//        Tile oldTile;
-//
-//        int x = newTile.getColumn();
-//        int y = newTile.getRow();
-//        int z = newTile.getDepth();
-//
-//        oldTile = boardState[x][y][z];
-//
-//
-//        //remove old tile, add new tile to our GridPane
-//        gpane.getChildren().remove(oldTile);
-//        gpane.add(newTile, x, y);
-//    }
-
-    public Canvas getGrid() {
-        return grid;
-    }
-
-    public void setGrid(Canvas grid) {
-        this.grid = grid;
     }
 
     @Override
@@ -116,5 +93,13 @@ public class Display implements Observer, IRenderable {
             }
         }
         return returnColors;
+    }
+
+    public Canvas getGrid() {
+        return grid;
+    }
+
+    public void setGrid(Canvas grid) {
+        this.grid = grid;
     }
 }
