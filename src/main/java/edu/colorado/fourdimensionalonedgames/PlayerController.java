@@ -204,7 +204,6 @@ public class PlayerController implements Initializable {
         }
 
         else{
-            //enemyPlayer.placeEnemyShip(input);
             if(player.getShipsToPlace().size() == 0){
                 passTurnButton.setVisible(true);
                 placeShipButton.setVisible(false);

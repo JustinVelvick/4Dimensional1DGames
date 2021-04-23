@@ -1,14 +1,21 @@
 package edu.colorado.fourdimensionalonedgames;
 
 import edu.colorado.fourdimensionalonedgames.game.Player;
+import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,6 +35,9 @@ public class ShipChoiceFormController implements Initializable {
     private TextField yCord;
 
     @FXML
+    private Label submergeText;
+
+    @FXML
     private ChoiceBox<String> directionChoiceBox;
 
     @FXML
@@ -41,7 +51,20 @@ public class ShipChoiceFormController implements Initializable {
 
     private PlayerShipInput input;
 
-
+    //declaring a handler for changing ship choice event (to show submerge related text/boxes or not)
+    ChangeListener<String> changeHandler = new ChangeListener<>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observableValue, String oldChoice, String newChoice) {
+            if(newChoice.equals("Submarine")){
+                submergeText.visibleProperty().setValue(true);
+                submergeChoiceBox.visibleProperty().setValue(true);
+            }
+            else{
+                submergeText.visibleProperty().setValue(false);
+                submergeChoiceBox.visibleProperty().setValue(false);
+            }
+        }
+    };
 
     public PlayerShipInput display(){
         return this.input;
@@ -108,7 +131,6 @@ public class ShipChoiceFormController implements Initializable {
             return false;
         }
 
-
         //for x, values entered are either a-j or A-J, use ascii table values to check
         boolean xValid = false;
         int xAscii = input.getxCord().charAt(0);
@@ -141,7 +163,8 @@ public class ShipChoiceFormController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //field initialization on form creation
         this.input = new PlayerShipInput();
-
+        //adding an event listener
+        shipChoiceBox.getSelectionModel().selectedItemProperty().addListener(changeHandler);
         directionChoiceBox.getItems().removeAll(directionChoiceBox.getItems());
         directionChoiceBox.getItems().addAll("Up", "Down", "Left", "Right");
         directionChoiceBox.getSelectionModel().select("Up");

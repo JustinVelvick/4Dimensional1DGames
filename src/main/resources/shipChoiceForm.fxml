@@ -23,6 +23,6 @@
          </font>
       </Label>
       <ChoiceBox fx:id="submergeChoiceBox" layoutX="189.0" layoutY="55.0" prefHeight="26.0" prefWidth="73.0" />
-      <Label layoutX="190.0" layoutY="35.0" text="Submerge?" />
+      <Label fx:id="submergeText" layoutX="190.0" layoutY="35.0" text="Submerge?" />
    </children>
 </Pane>
