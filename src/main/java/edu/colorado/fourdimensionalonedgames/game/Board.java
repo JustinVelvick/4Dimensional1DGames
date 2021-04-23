@@ -1,6 +1,7 @@
 package edu.colorado.fourdimensionalonedgames.game;
 
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.Attack;
+import edu.colorado.fourdimensionalonedgames.game.attack.behavior.OneShotAttack;
 import edu.colorado.fourdimensionalonedgames.game.attack.behavior.PopCountAfterAttackBehavior;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.MediumWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
@@ -9,6 +10,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.weapon.XLargeWeapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.render.Render;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.Display;
 import edu.colorado.fourdimensionalonedgames.render.gui.Observer;
 import edu.colorado.fourdimensionalonedgames.render.gui.Subject;
@@ -234,8 +236,9 @@ public class Board implements Subject {
                 ship.incrementPowerups();
                 if (Math.random() < 0.5)
                     weaponsToAdd.add(new MediumWeapon(new Attack(), Game.CLUSTER_BOMB, new PopCountAfterAttackBehavior(1)));
-                else
-                    weaponsToAdd.add(new XLargeWeapon(new Attack(), Game.NUKE, new PopCountAfterAttackBehavior(1)));
+                else{
+                    weaponsToAdd.add(new XLargeWeapon(new OneShotAttack(), Game.NUKE, new PopCountAfterAttackBehavior(1)));
+                }
             }
         }
         return weaponsToAdd;

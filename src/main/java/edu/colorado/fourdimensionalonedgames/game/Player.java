@@ -8,6 +8,7 @@ import edu.colorado.fourdimensionalonedgames.game.attack.upgrades.TierOneUpgrade
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.SmallWeapon;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
@@ -255,26 +256,32 @@ public class Player {
         }
 
         // actually move the fleet now that we confirmed it can be moved
+        List<Weapon> weaponsToAdd = new ArrayList<>();
         for (Ship ship : fleet.getShips()){
             //dead ships should not move
             if(ship.destroyed()){
                 continue;
             }
-            List<Weapon> weaponsToAdd = board.moveShip(ship, direction);
-            for (Weapon weapon : weaponsToAdd) {
-                boolean isInAlreadyExistingWeapons = false;
-                for (Weapon weapon2 : weapons) {
-                    if (weapon2.getType().equals(weapon.getType())) {
-                        isInAlreadyExistingWeapons = true;
-                        weapon2.addCount(weapon.getCount());
-                    }
-                }
-                if (!isInAlreadyExistingWeapons) {
-                    weapons.add(weapon);
+            weaponsToAdd.addAll(board.moveShip(ship, direction));
+        }
+        //update GUI to show the ships moved
+        board.updateLocalObservers();
+        //now add all weapons that user may have picked up and display AlertBoxes for each one picked up
+        for (Weapon weapon : weaponsToAdd) {
+            boolean isInAlreadyExistingWeapons = false;
+            for (Weapon weapon2 : weapons) {
+                if (weapon2.getType().equals(weapon.getType())) {
+                    isInAlreadyExistingWeapons = true;
+                    weapon2.addCount(weapon.getCount());
+                    AlertBox.display("Power Up Acquired", "You just picked up another " + weaponsToAdd.get(0).getType() + "! Use it wisely, you now have " +
+                            weaponsToAdd.get(0).getCount()+" left");
                 }
             }
+            if (!isInAlreadyExistingWeapons) {
+                weapons.add(weapon);
+                AlertBox.display("Power Up Acquired", "You just picked up a " + weaponsToAdd.get(0).getType() + "! Use it wisely, you only have one!");
+            }
         }
-        board.updateLocalObservers();
         return true;
     }
 

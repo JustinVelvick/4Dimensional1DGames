@@ -155,10 +155,11 @@ public class PlayerController implements Initializable {
                 Ship attackedShip = attackResult.getShip();
 
                 if (attackedShip == null) {
-                    AlertBox.display("Miss", "Shot missed");
+                    if(!userInput.getWeaponChoice().equals("Nuke")){
+                        AlertBox.display("Miss", "Shot missed");
+                    }
                 }
                 else{
-
                     if (attackedShip.destroyed()) {
                         AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
                     }
