@@ -215,6 +215,7 @@ public class PlayerController implements Initializable {
     public void handleMoveFleetButton(ActionEvent e){
         moveInstructionsPane.visibleProperty().setValue(true);
         passTurnButton.visibleProperty().setValue(false);
+        moveFleetButton.visibleProperty().setValue(false);
         movingFleet = true;
         playerSceneHbox.getScene().addEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
@@ -222,6 +223,7 @@ public class PlayerController implements Initializable {
     public void handleDoneButton(ActionEvent e){
         moveInstructionsPane.visibleProperty().setValue(false);
         passTurnButton.visibleProperty().setValue(true);
+        moveFleetButton.visibleProperty().setValue(true);
         playerSceneHbox.getScene().removeEventHandler(KeyEvent.KEY_PRESSED, handler);
         movingFleet = false;
     }
