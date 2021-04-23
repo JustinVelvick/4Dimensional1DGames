@@ -197,12 +197,21 @@ public class Board implements Subject {
         coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
         for(ShipTile tile : ship.getShipTiles()){
             previousCoord = new Point3D(tile.getColumn()-xChange, tile.getRow()-yChange, tile.getDepth());
+
+
+            //if shipTile was not up against the edge of the board
             if(isWithinBounds(previousCoord)){
                 previous = tiles[tile.getColumn()-xChange][tile.getRow()-yChange][tile.getDepth()];
+
                 if(previous instanceof SeaTile || previous instanceof MineTile || previous instanceof PowerUpTile){
                     tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
                 }
+
+//                else if(previous instanceof MineTile || previous instanceof PowerUpTile){
+//
+//                }
             }
+            //when spot ship is leaving is on edge of board, this guarantees it needs to be a sea tile in the ships wake
             else{
                 tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
             }

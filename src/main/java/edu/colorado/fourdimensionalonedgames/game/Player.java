@@ -37,7 +37,7 @@ public class Player {
     private FleetControl fleetController;
     private PowerUpsCollection powerUps;
 
-    private boolean devMode = false;
+    private boolean devMode = true;
 
     //constructor
     public Player (Game game, Board board) {
