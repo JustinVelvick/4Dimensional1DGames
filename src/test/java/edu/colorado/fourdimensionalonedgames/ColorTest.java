@@ -144,7 +144,7 @@ public class ColorTest {
         assertEquals(Color.HOTPINK, player2.getBoard().tiles[1][2][0].getColor());
         assertEquals(Color.HOTPINK, player2.getBoard().tiles[4][4][0].getColor());
         assertEquals(Color.HOTPINK, player2.getBoard().tiles[5][5][0].getColor());
-        assertEquals(Color.GREEN, player2.getBoard().tiles[1][1][0].getColor());
+        assertEquals(Color.GREEN.darker(), player2.getBoard().tiles[1][1][0].getColor());
         assertEquals(Color.BLUE, player2.getBoard().tiles[4][6][0].getColor());
         assertEquals(Color.INDIGO, player2.getBoard().tiles[5][6][0].getColor());
     }

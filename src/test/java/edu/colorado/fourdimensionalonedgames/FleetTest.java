@@ -58,6 +58,7 @@ public class FleetTest {
     void setUp() {
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
+        game.setTestMode(true);
         player1 = game.getPlayers().get(0);
         player2 = game.getPlayers().get(1);
 
@@ -147,7 +148,6 @@ public class FleetTest {
         assertFalse(tt6 instanceof MineTile);
         assertFalse(tt7 instanceof MineTile);
     }
-
 
     @Test
 //make sure powerup tiles are not replacing ship tiles

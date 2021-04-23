@@ -37,7 +37,7 @@ public class Player {
     private FleetControl fleetController;
     private PowerUpsCollection powerUps;
 
-    private boolean devMode = true;
+    private boolean devMode = false;
 
     //constructor
     public Player (Game game, Board board) {
@@ -273,18 +273,21 @@ public class Player {
                 if (weapon2.getType().equals(weapon.getType())) {
                     isInAlreadyExistingWeapons = true;
                     weapon2.addCount(weapon.getCount());
-                    AlertBox.display("Power Up Acquired", "You just picked up another " + weaponsToAdd.get(0).getType() + "! Use it wisely, you now have " +
-                            weaponsToAdd.get(0).getCount()+" left");
+                    if(!game.isTestMode()){
+                        AlertBox.display("Power Up Acquired", "You just picked up another " + weaponsToAdd.get(0).getType() + "! Use it wisely, you now have " +
+                                weaponsToAdd.get(0).getCount()+" left");
+                    }
                 }
             }
             if (!isInAlreadyExistingWeapons) {
                 weapons.add(weapon);
-                AlertBox.display("Power Up Acquired", "You just picked up a " + weaponsToAdd.get(0).getType() + "! Use it wisely, you only have one!");
+                if(!game.isTestMode()){
+                    AlertBox.display("Power Up Acquired", "You just picked up a " + weaponsToAdd.get(0).getType() + "! Use it wisely, you only have one!");
+                }
             }
         }
         return true;
     }
-
 
     public void checkPowerUps(){
         if(shipsToPlace.isEmpty()){

@@ -59,6 +59,7 @@ public class Game {
     private final int depth; //z
 
     private boolean player1Turn;
+    private boolean testMode = false;
 
     private final List<Player> players = new ArrayList<>();
 
@@ -378,6 +379,14 @@ public class Game {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public boolean isTestMode() {
+        return testMode;
+    }
+
+    public void setTestMode(boolean testMode) {
+        this.testMode = testMode;
     }
 
     public PlayerController getPlayer1Controller() {

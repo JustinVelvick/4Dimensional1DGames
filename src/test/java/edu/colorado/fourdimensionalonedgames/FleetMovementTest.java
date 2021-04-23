@@ -61,6 +61,7 @@ public class FleetMovementTest {
     void setUp() {
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
+        game.setTestMode(true);
         player1 = game.getPlayers().get(0);
         player2 = game.getPlayers().get(1);
 
