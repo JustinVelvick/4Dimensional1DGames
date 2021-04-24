@@ -1,5 +1,6 @@
 package edu.colorado.fourdimensionalonedgames.render.gui;
 
+//Nice little class to hold all data that a player will fill out in shipChoiceForm.fxml
 public class PlayerShipInput {
     private String direction;
     private String shipChoice;

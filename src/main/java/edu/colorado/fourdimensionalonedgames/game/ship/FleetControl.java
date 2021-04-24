@@ -4,7 +4,9 @@ import edu.colorado.fourdimensionalonedgames.game.Player;
 
 import java.util.Stack;
 
-//every turn, we will spawn a new FleetControl object which will have a "fresh" empty stack
+//FleetControl is what the client interacts with when wanting to move their fleet
+//The stack holds the history of all moves the player has made this turn
+//Every turn, we will spawn a new FleetControl object which will have a "fresh" empty stack
 public class FleetControl {
     private Stack<MoveFleetCommand> fleetCommandStack;
     private Player player;
@@ -16,6 +18,7 @@ public class FleetControl {
 
     public void moveFleet(Orientation direction){
         MoveFleetCommand moveCommand = new MoveFleetCommand(player, direction);
+        //only add to the stack if the ships were actually able to move
         if (moveCommand.execute())
             fleetCommandStack.push(moveCommand);
     }

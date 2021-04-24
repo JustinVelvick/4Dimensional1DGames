@@ -6,6 +6,7 @@ import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 
 import java.util.List;
 
+//concrete factory for submergable ships
 public class SubmergableShipYard extends ShipYard{
 
     @Override

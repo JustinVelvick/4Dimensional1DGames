@@ -3,6 +3,7 @@ package edu.colorado.fourdimensionalonedgames;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.ship.Orientation;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-//TODO - Create this popup box in scene builder and then FXML load it here
 public class ShipChoiceFormController implements Initializable {
 
     @FXML
@@ -75,30 +75,25 @@ public class ShipChoiceFormController implements Initializable {
 
         PlayerShipInput tentativeInput = new PlayerShipInput();
 
+        tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
+        tentativeInput.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
+        tentativeInput.setxCord(xCord.getText());
+        tentativeInput.setyCord(yCord.getText());
+
         if(shipChoiceBox.getSelectionModel().getSelectedItem().equals("Submarine")){
-            tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
-            tentativeInput.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
-            tentativeInput.setxCord(xCord.getText());
-            tentativeInput.setyCord(yCord.getText());
             tentativeInput.setSubmergeChoice(submergeChoiceBox.getSelectionModel().getSelectedItem());
-        }
-        else{
-            tentativeInput.setShipChoice(shipChoiceBox.getSelectionModel().getSelectedItem());
-            tentativeInput.setDirection(directionChoiceBox.getSelectionModel().getSelectedItem());
-            tentativeInput.setxCord(xCord.getText());
-            tentativeInput.setyCord(yCord.getText());
         }
 
         if(this.validateForm(tentativeInput)){
             this.input = tentativeInput;
-
             //close this window (Stage)
             Stage currentStage = (Stage) confirmButton.getScene().getWindow();
             currentStage.close();
         }
+        else{
+            AlertBox.display("Invalid Input!", "Please enter valid coordinates for ship placement.");
+        }
     }
-
-
 
     public void populateShipForm(List<Ship> ships){
 
@@ -120,8 +115,6 @@ public class ShipChoiceFormController implements Initializable {
             shipChoiceBox.getSelectionModel().select(choices.get(0));
         }
     }
-
-
 
     //helper method to validate form before sending PlayerShipInput object
     public boolean validateForm(PlayerShipInput input) {
@@ -150,7 +143,16 @@ public class ShipChoiceFormController implements Initializable {
 
         //y values can be integers [1,10]
         boolean yValid = true;
-        int y = Integer.parseInt(input.getyCord());
+        int y;
+
+        try{
+            y = Integer.parseInt(input.getyCord());
+        }
+        catch (NumberFormatException e) {
+            //e.printStackTrace();
+            return false;
+        }
+
         if(y > 10 || y < 1){
             yValid = false;
         }
@@ -163,7 +165,7 @@ public class ShipChoiceFormController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //field initialization on form creation
         this.input = new PlayerShipInput();
-        //adding an event listener
+        //adding an event listener to trigger on user switching selection in shipChoiceBox
         shipChoiceBox.getSelectionModel().selectedItemProperty().addListener(changeHandler);
         directionChoiceBox.getItems().removeAll(directionChoiceBox.getItems());
         directionChoiceBox.getItems().addAll("Up", "Down", "Left", "Right");

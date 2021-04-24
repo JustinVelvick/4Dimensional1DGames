@@ -1,24 +1,15 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.Board;
 import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.GameSettings;
-import edu.colorado.fourdimensionalonedgames.game.GameState;
 import edu.colorado.fourdimensionalonedgames.render.Render;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+//Main entry point for the application, but for the jar executable, the main entry point is GUIStarter.java
 public class Battleships extends Application {
-    // fields
-    static int speed = 5;
+
+    //various game settings
     static int tileSize = 40;
     static int rows = 10;
     static int columns = 10;
@@ -26,6 +17,7 @@ public class Battleships extends Application {
     static int numberOfPlayers = 2;
 
     public void start(Stage primaryStage) {
+
         try {
             //The one renderer object the program will contain every IRenderable Object
             Render renderer = new Render();
@@ -38,7 +30,6 @@ public class Battleships extends Application {
             e.printStackTrace();
         }
     }
-
     public static void main(String[] args) {
         launch(args);
     }

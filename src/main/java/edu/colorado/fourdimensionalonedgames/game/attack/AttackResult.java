@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game.attack;
 
 import edu.colorado.fourdimensionalonedgames.game.ship.*;
 
+//for each tile effected by an attack, one of these objects will be generated to represent what happened and to what
 public class AttackResult {
     private final AttackResultType type;
     private final Ship ship;

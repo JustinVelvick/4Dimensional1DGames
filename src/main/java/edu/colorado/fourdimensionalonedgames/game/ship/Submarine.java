@@ -7,10 +7,12 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+//a Submarine is 5 total tiles, with 4 in a straight line and the 5th being directly to the left of the 3rd in said line.
+//Submarines are yellow in color with the CC belonging to the 4th tile (last in the straight line of 4 tiles)
+//CAN BE SUBMERGED
 public class Submarine extends Ship {
 
     private int depth;
-
 
     public Submarine() {
         this.size = 5;

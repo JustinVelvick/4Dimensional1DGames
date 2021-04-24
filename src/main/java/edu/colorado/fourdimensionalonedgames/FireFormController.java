@@ -4,6 +4,7 @@ import edu.colorado.fourdimensionalonedgames.game.Game;
 import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
+import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,27 +20,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
-//TODO - Create this popup box in scene builder and then FXML load it here
 public class FireFormController implements Initializable {
 
-
     private Game game;
-
     @FXML
     private TextField xCord;
-
     @FXML
     private TextField yCord;
-
     @FXML
     private ChoiceBox<String> weaponChoiceBox;
-
     @FXML
     private Button confirmButton;
 
     private PlayerFireInput input;
-
 
     public void initialize(Game game) {
 
@@ -85,7 +78,7 @@ public class FireFormController implements Initializable {
             currentStage.close();
         }
         else{
-            //TODO - Have a box pop up asking for valid input
+            AlertBox.display("Invalid Input!", "Please enter valid coordinates for weapon launch.");
         }
     }
 
@@ -100,7 +93,7 @@ public class FireFormController implements Initializable {
     public boolean validateForm(PlayerFireInput input) {
         //for x, values entered are either a-j or A-J, use ascii table values to check
 
-        // len of x cord input should be 1 (aka a letter between a-j)
+        //len of x cord input should be 1 (aka a letter between a-j)
         //len of y cord input should be 1 or 2 (number 1-10 including 1 and 10)
         if((input.getxCord().length() != 1) || (input.getyCord().length() > 2) || (input.getyCord().length() < 1)) {
             return false;

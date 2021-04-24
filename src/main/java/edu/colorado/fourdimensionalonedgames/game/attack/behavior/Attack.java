@@ -13,6 +13,8 @@ import javafx.geometry.Point3D;
 import java.util.ArrayList;
 import java.util.List;
 
+//concrete class for weapon strategy pattern IAttackBehavior
+//this behavior reveals and toggles the shot flag on tiles
 public class Attack implements IAttackBehavior {
     @Override
     public List<AttackResult> attackAt(Board board, List<Point3D> positions, Point3D origin) {
@@ -20,7 +22,6 @@ public class Attack implements IAttackBehavior {
         // check that provided coords are on board, throw exception if not
         if (!board.isWithinBounds(origin))
             throw new InvalidAttackException("Attack coordinates off of board");
-
 
         List<AttackResult> ret = new ArrayList<>();
 

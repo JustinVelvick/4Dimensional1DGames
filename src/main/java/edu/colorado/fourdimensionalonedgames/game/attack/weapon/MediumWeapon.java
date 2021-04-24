@@ -10,10 +10,8 @@ import javafx.geometry.Point3D;
 import java.util.ArrayList;
 import java.util.List;
 
+//attacks in the shape of a cross with 5 total tiles
 public class MediumWeapon extends Weapon{
-    public MediumWeapon(IAttackBehavior behavior, String weaponName) {
-        super(behavior, weaponName);
-    }
 
     public MediumWeapon(IAttackBehavior behavior, String weaponName, IAfterAttackBehavior afterBehavior) {
         super(behavior, weaponName, afterBehavior);

@@ -1,10 +1,11 @@
 package edu.colorado.fourdimensionalonedgames.render.gui;
 
+//Nice little class to hold all data that a player will fill out in the fireForm.fxml
 public class PlayerFireInput {
+
     private String weaponChoice;
     private String xCord;
     private String yCord;
-
 
     public PlayerFireInput(String weaponChoice, String x, String y) {
         this.weaponChoice = weaponChoice;
@@ -13,7 +14,6 @@ public class PlayerFireInput {
 
     }
 
-    //get
     public String getWeaponChoice() {
         return weaponChoice;
     }

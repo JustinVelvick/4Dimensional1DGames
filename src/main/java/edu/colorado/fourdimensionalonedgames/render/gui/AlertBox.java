@@ -9,8 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
-//TODO - Create this popup box in scene builder and then FXML load it here
+//static method display for anyone to call at anytime they need a popup (ship has been hit, miss, etc)
 public class AlertBox {
     public static void display(String title, String message) {
         if(Screen.getPrimary() == null){

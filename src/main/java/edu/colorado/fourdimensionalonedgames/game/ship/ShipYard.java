@@ -1,7 +1,6 @@
 package edu.colorado.fourdimensionalonedgames.game.ship;
 
-import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
-
+//abstract factory for ship creation
 public abstract class ShipYard {
     protected abstract Ship buildShip(String choice);
 

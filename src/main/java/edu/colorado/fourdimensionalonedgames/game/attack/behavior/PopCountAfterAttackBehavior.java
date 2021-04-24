@@ -1,5 +1,6 @@
 package edu.colorado.fourdimensionalonedgames.game.attack.behavior;
 
+//concrete class for weapon strategy pattern IAfterAttackBehavior
 public class PopCountAfterAttackBehavior implements IAfterAttackBehavior {
     private int count;
 

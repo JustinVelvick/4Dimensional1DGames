@@ -1,21 +1,18 @@
 package edu.colorado.fourdimensionalonedgames.render;
 
-
-import edu.colorado.fourdimensionalonedgames.render.IRenderable;
-
 import java.util.ArrayList;
 import java.util.List;
 
-//Keeps track of sprites, etc to render onto the canvas
+//Keeps track of sprites, etc to render onto each Canvas
 public class Render {
+
     List<IRenderable> renderRegistry = new ArrayList<>();
-
-
 
     public Render() {
 
     }
 
+    //All render-able elements registered will have their render method called (object will be displayed on the screen)
     public void tick() {
         for (IRenderable element : renderRegistry) {
             element.render();
@@ -29,6 +26,4 @@ public class Render {
     public void unregister(IRenderable element) {
         renderRegistry.remove(element);
     }
-
-
 }

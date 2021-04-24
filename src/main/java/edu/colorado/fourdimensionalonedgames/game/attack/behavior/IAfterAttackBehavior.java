@@ -1,9 +1,10 @@
 package edu.colorado.fourdimensionalonedgames.game.attack.behavior;
 
+//strategy pattern for weapons
 public interface IAfterAttackBehavior {
-    public boolean doRemove();
+    boolean doRemove();
 
-    public int getCount(); // returns -1 if infinity
+    int getCount(); // returns -1 if infinity
 
-    public void addCount(int n);
+    void addCount(int n);
 }

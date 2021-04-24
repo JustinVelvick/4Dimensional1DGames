@@ -1,4 +1,5 @@
 package edu.colorado.fourdimensionalonedgames.render.tile;
+
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -39,13 +40,17 @@ public class CaptainsQuartersTile extends ShipTile{
             return ccColor.darker();
         }
     }
+
     public int getStartingHp(){
         return startingHP;
     }
+
     public int getHp() {
         return hp;
     }
+
     public void damage(){
         hp-=1;
     }
+
 }

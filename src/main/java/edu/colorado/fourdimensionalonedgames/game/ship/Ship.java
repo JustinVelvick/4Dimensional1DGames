@@ -9,6 +9,10 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @size -A ship has a size (total number of tiles)
+ * @shipTiles - List of tiles belonging to the ship
+ */
 public abstract class Ship{
 
     protected int size;
@@ -21,19 +25,12 @@ public abstract class Ship{
         shipTiles = new ArrayList<>();
     }
 
-    public void addTile(ShipTile tile) {
-        shipTiles.add(tile);
-    }
-    public int getSize(){return size;}
-    public int getPowerUps(){return powerUps;}
-
-
     /**
-     * Calculate the damage done to the ship
+     * returns "what-if we placed this ship here" coordinates FOR LINEAR SHIPS ONLY, OTHER SHAPES NEED TO OVERRIDE
      *
-     * @return the number of damaged ship tiles in the ship
+     * @param origin
+     * @param direction
      */
-    //generating "what-if we placed this ship here" coordinates FOR LINEAR SHIPS ONLY, OTHER SHAPES NEED TO OVERRIDE
     public List<Point3D> generateCoordinates(Point3D origin, Orientation direction){
         double xCoordinate = origin.getX();
         double yCoordinate = origin.getY();
@@ -69,7 +66,7 @@ public abstract class Ship{
         return newCoordinates;
     }
 
-
+    //calculates total number of this ship's tiles that have been shot
     public int damage() {
         int damage = 0;
         for (ShipTile tile : shipTiles){
@@ -95,6 +92,7 @@ public abstract class Ship{
         return (allTilesShot || this.destroyed);
     }
 
+    //manually destroy this ship
     public void destroy(){
         this.destroyed = true;
         for (ShipTile tile : shipTiles){
@@ -102,6 +100,7 @@ public abstract class Ship{
         }
     }
 
+    //give the entire ship a new depth
     public void setShipTileDepth(int newDepth){
         List<ShipTile> tilesToUpdate = this.getShipTiles();
         for(ShipTile tile : tilesToUpdate){
@@ -128,4 +127,12 @@ public abstract class Ship{
     public List<ShipTile> getShipTiles() {
         return shipTiles;
     }
+
+    public void addTile(ShipTile tile) {
+        shipTiles.add(tile);
+    }
+
+    public int getSize(){return size;}
+
+    public int getPowerUps(){return powerUps;}
 }

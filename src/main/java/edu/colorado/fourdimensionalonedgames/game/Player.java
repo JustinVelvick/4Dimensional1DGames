@@ -14,7 +14,6 @@ import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,20 +25,18 @@ public class Player {
     private int score;
     private int missedShots;
     private int totalShots;
-
+    //core player fields
     private final Game game;
     private final Board board;
     private final List<Weapon> weapons = new ArrayList<>();
     private final List<Ship> shipsToPlace = new ArrayList<>();
     private final Fleet fleet;
+    private FleetControl fleetController;
+    //enums that keep track of one time events in the game
     private TierOneUpgrade upgradeStatus; //unlocks 2 sonar pulses and replaces single shot with space laser at int = 0
     private MineCollection mines;
-    private FleetControl fleetController;
     private PowerUpsCollection powerUps;
 
-    private boolean devMode = true;
-
-    //constructor
     public Player (Game game, Board board) {
         this.game = game;
         this.board = board;
@@ -59,13 +56,12 @@ public class Player {
         ShipYard submergableShipYard = new SubmergableShipYard();
 
         shipsToPlace.add(defaultShipYard.createShip("Minesweeper"));
-        if(!devMode){
-            shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
-            shipsToPlace.add(defaultShipYard.createShip("Battleship"));
-        }
+        shipsToPlace.add(defaultShipYard.createShip("Destroyer"));
+        shipsToPlace.add(defaultShipYard.createShip("Battleship"));
         shipsToPlace.add(submergableShipYard.createShip("Submarine"));
     }
 
+    //creates starting weapons for the players, as of now that is just SingleShot
     private void generateWeapons(){
         weapons.add(new SmallWeapon(new Attack(), Game.SINGLE_SHOT));
     }
@@ -74,7 +70,7 @@ public class Player {
      * Mount an attack on the given enemy board at attackCoords with weaponChoice
      *NOTE: PLAYER INPUT SHOULD BE VALIDATED AND FILTERED BY THIS POINT
      *
-     * @return   returns list of resulting AttackResult objects in the form of {AttackResultType enum, Ship(if applicable)}
+     * @return - list of resulting AttackResult objects in the form of {AttackResultType enum, Ship(if applicable)}
      */
     public List<AttackResult> attack(Board opponentBoard, PlayerFireInput input) {
 
@@ -84,7 +80,7 @@ public class Player {
 
         Point2D attackCoords = new Point2D(x, y);
 
-        //if sonar being used, remove a sonar object from player's list of weapons to decrement uses
+        //if a finite weapon is being used, decrement uses. If decrement uses becomes zero, remove from player's weapons
         if(weapon.doRemove()){
             this.weapons.remove(weapon);
         }
@@ -122,6 +118,15 @@ public class Player {
         return returnWeapon;
     }
 
+    /**
+     * placeShip() in the Player object first converts everything from strings into their appropriate objects,
+     * then attempts to place the ship on the board. If this succeeds, the newly placed ship is added to the player's
+     * fleet, the player's "shipsToPlace" list is updated and finally Mines and Powerups are placed if that ship was
+     * the last one the user had to place down.*
+     *
+     * @param input: An object that contains all relevant data the user filled out in the GUI form
+     * @return: returns true if placement succeeded, false otherwise
+     */
     public Boolean placeShip(PlayerShipInput input){
         Orientation direction = Orientation.down;
         double x =  Double.parseDouble(input.getxCord());
@@ -177,31 +182,14 @@ public class Player {
         return true;
     }
 
-    public void checkMines(){
+    private void checkMines(){
         if(shipsToPlace.isEmpty()){
             mines = MineCollection.AVAILABLE;
         }
         if(mines == MineCollection.AVAILABLE){
             mines = MineCollection.PLACED;
-            placeMines();
+            board.placeMines();
         }
-    }
-
-    public void placeMines(){
-        Random random = new Random();
-        int minesToPlace = 5;
-
-        while(minesToPlace > 0){
-            int i = random.nextInt(10) + 1;
-            int j = random.nextInt(10) + 1;
-            Tile oldTile = board.tiles[i][j][0];
-            if (oldTile instanceof SeaTile){
-                Tile mineTile = new MineTile(i,j,0);//START HERE
-                board.tiles[i][j][0] = mineTile;
-                minesToPlace--;
-            }
-        }
-        board.updateLocalObservers();
     }
 
     //for testing purposes only to give a deterministic spawning of mines
@@ -211,15 +199,61 @@ public class Player {
         }
     }
 
-    //will only move entire fleet if every ship is able to move specified direction
+    /**
+     * moveFleet() will only move entire fleet if every ship is able to move specified direction
+     *
+     * @param direction: direction to attempt to move every ship in the fleet towards
+     * @return: returns false if no movement was possible
+     */
     public boolean moveFleet(Orientation direction){
-        // check for border collision
+        // check for border collision on all ships in the fleet
+        if(borderCollision(direction)){
+            return false;
+        }
+        else{
+            // actually move the fleet now that we confirmed it can be moved
+            List<Weapon> weaponsToAdd = new ArrayList<>();
+            for (Ship ship : fleet.getShips()){
+                //dead ships should not move
+                if(ship.destroyed()){
+                    continue;
+                }
+                weaponsToAdd.addAll(board.moveShip(ship, direction));
+            }
+            //update GUI to show the ships moved
+            board.updateLocalObservers();
+            //now add all weapons that user may have picked up and display AlertBoxes for each one picked up
+            for (Weapon weapon : weaponsToAdd) {
+                boolean isInAlreadyExistingWeapons = false;
+                for (Weapon weapon2 : weapons) {
+                    if (weapon2.getType().equals(weapon.getType())) {
+                        isInAlreadyExistingWeapons = true;
+                        weapon2.addCount(weapon.getCount());
+                        if(!game.isTestMode()){
+                            AlertBox.display("Power Up Acquired", "You just picked up another " + weaponsToAdd.get(0).getType() + "! Use it wisely, you now have " +
+                                    weaponsToAdd.get(0).getCount()+" left");
+                        }
+                    }
+                }
+                if (!isInAlreadyExistingWeapons) {
+                    weapons.add(weapon);
+                    if(!game.isTestMode()){
+                        AlertBox.display("Power Up Acquired", "You just picked up a " + weaponsToAdd.get(0).getType() + "! Use it wisely, you only have one!");
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    //helper method for moveFleet to see if any ship cannot move (up against an edge of the board in desired direction)
+    private boolean borderCollision(Orientation direction){
         switch (direction){
             case up:
                 for (Ship ship : fleet.getShips()){
                     for (ShipTile tile : ship.getShipTiles()){
                         if (tile.getRow() - 1 < 1){
-                            return false;
+                            return true;
                         }
                     }
                 }
@@ -228,7 +262,7 @@ public class Player {
                 for (Ship ship : fleet.getShips()){
                     for (ShipTile tile : ship.getShipTiles()){
                         if (tile.getRow() + 1 > 10){
-                            return false;
+                            return true;
                         }
                     }
                 }
@@ -237,7 +271,7 @@ public class Player {
                 for (Ship ship : fleet.getShips()){
                     for (ShipTile tile : ship.getShipTiles()){
                         if (tile.getColumn() + 1 > 10){
-                            return false;
+                            return true;
                         }
                     }
                 }
@@ -246,7 +280,7 @@ public class Player {
                 for (Ship ship : fleet.getShips()){
                     for (ShipTile tile : ship.getShipTiles()){
                         if (tile.getColumn() - 1 < 1){
-                            return false;
+                            return true;
                         }
                     }
                 }
@@ -254,39 +288,7 @@ public class Player {
             default:
                 break;
         }
-
-        // actually move the fleet now that we confirmed it can be moved
-        List<Weapon> weaponsToAdd = new ArrayList<>();
-        for (Ship ship : fleet.getShips()){
-            //dead ships should not move
-            if(ship.destroyed()){
-                continue;
-            }
-            weaponsToAdd.addAll(board.moveShip(ship, direction));
-        }
-        //update GUI to show the ships moved
-        board.updateLocalObservers();
-        //now add all weapons that user may have picked up and display AlertBoxes for each one picked up
-        for (Weapon weapon : weaponsToAdd) {
-            boolean isInAlreadyExistingWeapons = false;
-            for (Weapon weapon2 : weapons) {
-                if (weapon2.getType().equals(weapon.getType())) {
-                    isInAlreadyExistingWeapons = true;
-                    weapon2.addCount(weapon.getCount());
-                    if(!game.isTestMode()){
-                        AlertBox.display("Power Up Acquired", "You just picked up another " + weaponsToAdd.get(0).getType() + "! Use it wisely, you now have " +
-                                weaponsToAdd.get(0).getCount()+" left");
-                    }
-                }
-            }
-            if (!isInAlreadyExistingWeapons) {
-                weapons.add(weapon);
-                if(!game.isTestMode()){
-                    AlertBox.display("Power Up Acquired", "You just picked up a " + weaponsToAdd.get(0).getType() + "! Use it wisely, you only have one!");
-                }
-            }
-        }
-        return true;
+        return false;
     }
 
     public void checkPowerUps(){
@@ -295,25 +297,8 @@ public class Player {
         }
         if(powerUps == PowerUpsCollection.AVAILABLE){
             powerUps = PowerUpsCollection.PLACED;
-            placePowerUps();
+            board.placePowerUps();
         }
-    }
-
-    public void placePowerUps(){
-        Random random = new Random();
-        int powerUpsToPlace = 2;
-
-        while(powerUpsToPlace > 0){
-            int i = random.nextInt(10) + 1;
-            int j = random.nextInt(10) + 1;
-            Tile oldTile = board.tiles[i][j][0];
-            if (oldTile instanceof SeaTile){
-                Tile powerUpTile = new PowerUpTile(i,j,0);//START HERE
-                board.tiles[i][j][0] = powerUpTile;
-                powerUpsToPlace--;
-            }
-        }
-        board.updateLocalObservers();
     }
 
     public void removeWeapon(String weapon) {

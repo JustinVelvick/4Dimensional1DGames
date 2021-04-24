@@ -5,6 +5,8 @@ import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+//Contains all that is needed for a player to see the ENEMY'S BOARD (what they have seen so far)
+//This class differs from Display in how tiles are selected before they are actually drawn on the Canvas
 public class EnemyDisplay implements Observer, IRenderable {
 
     private GenericTile[][] displayTiles;
@@ -43,6 +45,7 @@ public class EnemyDisplay implements Observer, IRenderable {
         }
     }
 
+    //UPDATE METHOD in EnemyDisplay differs greatly from Display as it must decide if each tile should be seen or not
     //cycles through all GenericTiles and updates their colors based on
     //what the new board state looks like compared to the old state
     public void update(Tile[][][] board) {
@@ -50,7 +53,7 @@ public class EnemyDisplay implements Observer, IRenderable {
         oldState = this.newState;
         this.newState = board;
 
-        boolean isPrimativeTileType = false;
+        boolean isPrimativeTileType;
         for(int x = 1; x < newState.length; x++){
             for(int y = 1; y < newState.length; y++){
                 Tile oldTile = oldState[x][y][0];
@@ -77,6 +80,7 @@ public class EnemyDisplay implements Observer, IRenderable {
                     displayTiles[x][y].setColor(newTile.getColor());
                 }
                 //************UNCOMMENT BELOW IF YOU WANT ENEMY TO SEE A HIT, BUT NOT DESTROYED CC TILE
+                //************CSCI 4448 REQUIREMENTS SAID FOR HIT ON CC TO ACT AS A MISS
 //                else if(newTile instanceof CaptainsQuartersTile){
 //                    if(((CaptainsQuartersTile) newTile).getHp() < ((CaptainsQuartersTile) newTile).getStartingHp()){
 //                        displayTiles[x][y].setColor(newTile.getColor());

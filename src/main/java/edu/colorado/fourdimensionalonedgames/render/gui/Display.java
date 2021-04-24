@@ -17,6 +17,8 @@ import java.util.List;
 
 import static java.lang.Math.floor;
 
+//Contains all that is needed for a player to see their own board
+//This class differs from EnemyDisplay in how tiles are selected before they are actually drawn on the Canvas
 public class Display implements Observer, IRenderable {
     protected Canvas grid;
     protected Tile[][][] boardState;
@@ -29,15 +31,6 @@ public class Display implements Observer, IRenderable {
 
     @Override
     public void update(Tile[][][] newBoardState) {
-        //unregister and reregister tiles to renderer
-        //remove and add children to gpane
-
-//        for(Tile[][] tileColumn : newBoardState){
-//            for(Tile[] tileRow : tileColumn){
-//                swapTile(tileRow[0]);
-//            }
-//        }
-
         boardState = newBoardState;
     }
 

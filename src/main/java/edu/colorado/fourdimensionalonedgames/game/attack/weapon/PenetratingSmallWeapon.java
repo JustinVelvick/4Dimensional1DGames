@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//attacks one tile (2D wise), but hits every tile below it as well (all z axis coords below it)
 public class PenetratingSmallWeapon extends Weapon{
 
     public PenetratingSmallWeapon(IAttackBehavior behavior, String weaponName) {

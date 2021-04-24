@@ -10,6 +10,7 @@ import javafx.geometry.Point3D;
 import java.util.ArrayList;
 import java.util.List;
 
+//for weapons that hit the entire board
 public class XLargeWeapon extends Weapon{
 
     public XLargeWeapon(IAttackBehavior behavior, String weaponName) {

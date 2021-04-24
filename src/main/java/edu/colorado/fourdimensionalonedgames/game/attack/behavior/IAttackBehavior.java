@@ -7,6 +7,7 @@ import javafx.geometry.Point3D;
 
 import java.util.List;
 
+//strategy pattern for weapons
 public interface IAttackBehavior {
-    public abstract List<AttackResult> attackAt(Board board, List<Point3D> positions, Point3D origin);
+    List<AttackResult> attackAt(Board board, List<Point3D> positions, Point3D origin);
 }

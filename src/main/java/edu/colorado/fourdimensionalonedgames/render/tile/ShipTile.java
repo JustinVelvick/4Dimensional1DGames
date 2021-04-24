@@ -1,6 +1,5 @@
 package edu.colorado.fourdimensionalonedgames.render.tile;
 
-import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -9,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 public class ShipTile extends Tile {
 
     protected Ship parentShip;
-    //GUI needs this bool to only record a hit tile once, and never move that red tile again
+    //GUI needs this bool to only record a hit tile once, and never move that red tile again on EnemyDisplays
     boolean beenRecorded = false;
 
     public ShipTile(Ship parentShip, int column, int row) {

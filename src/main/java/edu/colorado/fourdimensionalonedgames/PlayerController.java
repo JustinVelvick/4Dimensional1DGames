@@ -20,12 +20,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,8 +36,6 @@ public class PlayerController implements Initializable {
     private Game game;
     private Player player;
     private Player enemyPlayer;
-    private boolean movingFleet;
-
 
     @FXML
     private HBox playerSceneHbox;
@@ -66,9 +62,6 @@ public class PlayerController implements Initializable {
 
     @FXML
     private Button fireWeaponButton;
-
-    @FXML
-    private Button doneButton;
 
     EventHandler<KeyEvent> handler = new EventHandler<>() {
         @Override
@@ -105,7 +98,6 @@ public class PlayerController implements Initializable {
         this.game = game;
         this.player = thisPlayer;
         this.enemyPlayer = enemyPlayer;
-        this.movingFleet = false;
     }
 
     @FXML
@@ -140,7 +132,7 @@ public class PlayerController implements Initializable {
         fireWeaponButton.visibleProperty().setValue(false);
     }
 
-    //generates appropriate alertbox to user from what resulted in attack
+    //generates appropriate AlertBox to user based on what resulted in attack
     public void fireWeapon(Board opponentBoard, PlayerFireInput userInput){
 
         List<AttackResult> results;
@@ -176,7 +168,7 @@ public class PlayerController implements Initializable {
 
     //spawn a ShipChoiceForm, populate it's fields, and retrieve user input from ShipChoiceForm when it closes
     public void handlePlaceShipButton(ActionEvent event) throws IOException{
-
+        //load and pop up the ShipChoiceForm
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("shipChoiceForm.fxml"));
         Pane root = loader.load();
 
@@ -198,7 +190,7 @@ public class PlayerController implements Initializable {
 
     public void placeShip(PlayerShipInput input) {
 
-        //place a ship down on player1's actual board
+        //if placing a ship down on player's board fails
         if(!this.player.placeShip(input)){
             AlertBox.display("Invalid Ship Placement", "Please place your ship on valid coordinates.");
         }
@@ -215,7 +207,6 @@ public class PlayerController implements Initializable {
         moveInstructionsPane.visibleProperty().setValue(true);
         passTurnButton.visibleProperty().setValue(false);
         moveFleetButton.visibleProperty().setValue(false);
-        movingFleet = true;
         playerSceneHbox.getScene().addEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
 
@@ -224,7 +215,6 @@ public class PlayerController implements Initializable {
         passTurnButton.visibleProperty().setValue(true);
         moveFleetButton.visibleProperty().setValue(true);
         playerSceneHbox.getScene().removeEventHandler(KeyEvent.KEY_PRESSED, handler);
-        movingFleet = false;
     }
 
     public void handleUndoMoveFleetButton(ActionEvent e){
@@ -233,25 +223,27 @@ public class PlayerController implements Initializable {
 
 
     public void handlePassTurnButton(ActionEvent e){
-
-        if(game.getGameState() == GameState.player1_setup){
-            game.setGameState(GameState.player2_setup);
-            showCombatButtons();
-            game.passSetupTurn();
-            return;
-        }
-
+        //one time if statement for passing to player 1's first combat turn
         if(game.getGameState() == GameState.player2_setup){
             game.setGameState(GameState.first_turn);
             showCombatButtons();
             game.passTurn();
             game.updateScene();
-            return;
         }
 
-        //Turn is over when button is pressed
-        this.game.passTurn();
-        this.game.updateScene();
+        //one time if statement for passing to player 2's setup turn
+        if(game.getGameState() == GameState.player1_setup){
+            game.setGameState(GameState.player2_setup);
+            showCombatButtons();
+            game.passSetupTurn();
+        }
+
+        //normal game pass turn conditions
+        else{
+            //Turn is over when button is pressed
+            this.game.passTurn();
+            this.game.updateScene();
+        }
     }
 
     //helper method to toggle visible tags on buttons we don't want the player seeing until game start
@@ -291,8 +283,6 @@ public class PlayerController implements Initializable {
             }
         }
     }
-
-
 
     //JavaFX calls this at the creation of any new form
     public void initialize(URL location, ResourceBundle resources) {

@@ -28,26 +28,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-
+    //most important game related objects
     private static Game uniqueInstance;
     private GameState gameState;
-
     private Stage primaryStage;
+    //render that gets called when display refreshes are needed
     private final Render renderer;
+    //scenes and their accompanying controllers
     private MenuSceneController menuSceneController;
-    private PlayerController player1Controller;
-    private PlayerController player2Controller;
-
-    private Scene player1Scene;
-    private Scene player2Scene;
     private Scene menuScene;
 
-    private Display player1Display;
-    private EnemyDisplay player1EnemyDisplay;
-    private Display player2Display;
-    private EnemyDisplay player2EnemyDisplay;
+    private PlayerController player1Controller;
+    private Scene player1Scene;
 
+    private PlayerController player2Controller;
+    private Scene player2Scene;
 
+    //game settings
     private final int numberofPlayers;
     private final int tileSize;
     private final int columns;
@@ -85,7 +82,7 @@ public class Game {
      * @param renderer (One renderer to contain all IRenderable objects)
      * @param settings (Package of various game settings)
      */
-    private Game(Stage primaryStage, Render renderer, GameSettings settings) throws IOException {
+    private Game(Stage primaryStage, Render renderer, GameSettings settings){
 
         //set all of our private game attributes
         this.renderer = renderer;
@@ -205,12 +202,13 @@ public class Game {
         Board player1Board = players.get(0).getBoard();
         Board player2Board = players.get(1).getBoard();
 
-        player1Display = new Display(p1Grid, player1Board.tiles);
-        player1EnemyDisplay = new EnemyDisplay(p1EnemyGrid, player2Board.tiles);
-        player2Display = new Display(p2Grid, player2Board.tiles);
-        player2EnemyDisplay = new EnemyDisplay(p2EnemyGrid, player1Board.tiles);
+        //display objects for all "4" battlefield grids
+        Display player1Display = new Display(p1Grid, player1Board.tiles);
+        EnemyDisplay player1EnemyDisplay = new EnemyDisplay(p1EnemyGrid, player2Board.tiles);
+        Display player2Display = new Display(p2Grid, player2Board.tiles);
+        EnemyDisplay player2EnemyDisplay = new EnemyDisplay(p2EnemyGrid, player1Board.tiles);
 
-        //basically registering the canvas nodes to renderer
+        //registering the canvas nodes to renderer
         this.renderer.register(player1Display);
         this.renderer.register(player1EnemyDisplay);
         this.renderer.register(player2Display);
@@ -222,7 +220,6 @@ public class Game {
         //same as above but mirrored
         player2Board.registerObserver(player2Display);
         player2Board.registerObserver(player1EnemyDisplay);
-
     }
 
     /////////////////////////////  LOGIC, NON GUI RELATED METHODS /////////////////////////////////////
@@ -235,13 +232,11 @@ public class Game {
             //Player 1's placing of ships
             this.primaryStage.setTitle("Player 1: Ship Placement");
             this.primaryStage.setScene(this.player1Scene);
-
             player1Controller.showSetupButtons();
-
             AlertBox.display("Place your ships!", "Place all ships down one by one on desired tiles.");
-
             this.primaryStage.show();
         }
+
         if(gameState == GameState.player2_setup){
             //Player 2's placing of ships
             this.primaryStage.setTitle("Player 2: Ship Placement");
@@ -361,8 +356,6 @@ public class Game {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public List<Player> getPlayers() {

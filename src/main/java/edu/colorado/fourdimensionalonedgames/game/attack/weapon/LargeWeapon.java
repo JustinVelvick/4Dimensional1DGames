@@ -13,10 +13,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+//attacks in the shape of a filled in diamond
 public class LargeWeapon extends Weapon{
-    public LargeWeapon(IAttackBehavior behavior, String weaponName) {
-        super(behavior, weaponName);
-    }
 
     public LargeWeapon(IAttackBehavior behavior, String weaponName, IAfterAttackBehavior afterBehavior) {
         super(behavior, weaponName, afterBehavior);
