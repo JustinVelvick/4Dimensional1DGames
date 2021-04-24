@@ -1,6 +1,6 @@
 # 4Dimensional1D Games BattleShip Project
 
-## Running the BattleShip Game
+## Running the BattleShip Game:
 ### Option 1: Jar Executable
 -In the main directory of our repo (same as README.md), there is an executable jar file. If everything went as planned and nothing unexpected occurs, opening this file should run the game just fine.
 ### Option 2: Through IDE
@@ -10,6 +10,17 @@
   <li> Now if nothing weird happens and our collective inexperience with projects didn't mess anything up, then you should be able to just hit the green run arrow in the rop right (or press Shift+F10). </li>
    <li> If all else fails with the above run config, then manually go to Battleships.java and click the green run arrow next to the Battleships class statement on line 19. </li>
  </ol>
+ 
+ 
+## Where all of our PDF's are located: 
+ ### All PDF's are located in our Repo's DOCUMENTS folder
+ - UML of entire system: 4D1DGames_UML.pdf
+ - UML of just the Factory and Command patterns: Factory+Command_Pattern_UMLs - UML Class.pdf
+ - Sequence diagram for placing a ship: PlaceShipSequence.pdf
+ - Sequence diagram for attacking: FireWeaponSequence.pdf
+ - CodeSmells + Refactoring after milestone 5: M6_Refactoring_CodeSmells.pdf
+ - Older refactoring: Refactoring_Before_After.pdf
+ 
  
  ## Names: 
  - Harry Ainsworth
