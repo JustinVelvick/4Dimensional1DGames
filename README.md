@@ -16,3 +16,9 @@
  - Justin Velvick
  - Kaden Ostendorf
  - Luke Phillips  
+
+
+ ## Copyright info:
+  - Huge thanks to the open source framework JavaFX which our project's GUI is based on
+  - Maven's project generation tools helped us early on, but became more useless after we were up and running
+  - Jetbeans Intellij IDE, which we used to code our project
