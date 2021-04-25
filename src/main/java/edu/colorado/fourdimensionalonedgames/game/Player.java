@@ -194,7 +194,9 @@ public class Player {
         }
         if (mines == MineCollection.AVAILABLE) {
             mines = MineCollection.PLACED;
-            board.placeMines();
+            if(!game.isTestMode()){
+                board.placeMines();
+            }
         }
     }
 
@@ -339,7 +341,9 @@ public class Player {
         }
         if (powerUps == PowerUpsCollection.AVAILABLE) {
             powerUps = PowerUpsCollection.PLACED;
-            board.placePowerUps();
+            if(!game.isTestMode()){
+                board.placePowerUps();
+            }
         }
     }
 

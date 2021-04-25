@@ -165,7 +165,7 @@ public class FleetMovementTest {
 
         //check that all tiles in wake are still sea tiles and not copies of this ship tile moving around
         assertTrue(player2.getBoard().tiles[1][1][0] instanceof SeaTile);
-        assertTrue(player2.getBoard().tiles[2][2][0] instanceof SeaTile);
+        assertTrue(player2.getBoard().tiles[9][9][0] instanceof SeaTile);
     }
 
     @Test
