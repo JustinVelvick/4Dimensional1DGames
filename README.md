@@ -11,6 +11,21 @@
    <li> If all else fails with the above run config, then manually go to Battleships.java and click the green run arrow next to the Battleships class statement on line 19. </li>
  </ol>
  
+ ## Running the Test Suite:
+ ### Option 1: No build configuration for running tests
+ - In Intellij, right click the root folder named "4Dimensional1DGames." This will be the highest folder in the project tree. After right clicking it, select (Run 'All Tests')
+ ### Option 2: Configuring a build for all tests
+<ol>
+   <li> In Intellij, click the builds dropdown in the top right (next to the green hammer and arrow) and select "Edit configurations" </li>
+ <li> Add a new configuration by clicking the plus sign in the top left and select JUnit</li>
+ <li> Name it whatever you want, and select a java SDK version of at least 15</li>
+ <li> Make sure that "4Dimensional1DGames" is selected for -cp (class path)</li>
+ <li> Type "-ea" in the VM options</li>
+ <li> Select "All in package" for type of resource to search for tests</li>
+ <li> Change to the working directory to be the module directory by typing: $MODULE_WORKING_DIR$</li>
+ <li> Click OK and run the newly created build config in the top right drop down, then run it by pressing the green arrow</li>
+</ol>
+ 
  
 ## Where all of our PDF's are located: 
  ### All PDF's are located in our Repo's DOCUMENTS folder
