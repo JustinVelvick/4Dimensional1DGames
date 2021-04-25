@@ -55,7 +55,7 @@ public class WeaponsTest {
     Weapon singleShot, sonar, spaceLaser, nuke;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
         player1 = game.getPlayers().get(0);
@@ -73,6 +73,7 @@ public class WeaponsTest {
         shipInput1 = new PlayerShipInput("Down", "Minesweeper", "1", "1");
         player2.placeShip(shipInput1);
     }
+
     @Test
     void testNames() {
         assertEquals(singleShot.getType(), "Single Shot");
@@ -82,7 +83,7 @@ public class WeaponsTest {
     }
 
     @Test
-    void testWeaponCount(){
+    void testWeaponCount() {
         //only single shot should be available at the start of the game
         assertEquals(1, player1.getWeapons().size());
 

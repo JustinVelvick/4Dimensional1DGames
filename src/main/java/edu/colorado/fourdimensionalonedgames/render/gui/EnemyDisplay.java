@@ -13,8 +13,9 @@ public class EnemyDisplay implements Observer, IRenderable {
     private Tile[][][] oldState;
     private Tile[][][] newState;
     private Canvas grid;
+
     //Send initial board to display
-    public EnemyDisplay(Canvas grid, Tile[][][] board){
+    public EnemyDisplay(Canvas grid, Tile[][][] board) {
         this.displayTiles = new GenericTile[board.length][board.length];
         this.grid = grid;
         oldState = board;
@@ -25,7 +26,7 @@ public class EnemyDisplay implements Observer, IRenderable {
         update(newState);
     }
 
-    private void initializeDisplayTiles(){
+    private void initializeDisplayTiles() {
         GenericTile tile;
 
         for (int j = 0; j < oldState.length; j++) {
@@ -38,8 +39,8 @@ public class EnemyDisplay implements Observer, IRenderable {
             this.displayTiles[i][0] = tile;
         }
 
-        for(int i = 1; i < oldState.length; i++){
-            for(int j = 1; j < oldState.length; j++){
+        for (int i = 1; i < oldState.length; i++) {
+            for (int j = 1; j < oldState.length; j++) {
                 displayTiles[i][j] = new GenericTile(i, j);
             }
         }
@@ -54,26 +55,25 @@ public class EnemyDisplay implements Observer, IRenderable {
         this.newState = board;
 
         boolean isPrimativeTileType;
-        for(int x = 1; x < newState.length; x++){
-            for(int y = 1; y < newState.length; y++){
+        for (int x = 1; x < newState.length; x++) {
+            for (int y = 1; y < newState.length; y++) {
                 Tile oldTile = oldState[x][y][0];
                 Tile newTile = newState[x][y][0];
                 isPrimativeTileType = oldTile instanceof PowerUpTile || oldTile instanceof MineTile;
 
-                if(newTile.shot || newTile.revealed){
-                    if(newTile instanceof ShipTile){
+                if (newTile.shot || newTile.revealed) {
+                    if (newTile instanceof ShipTile) {
                         ShipTile newShipTile = (ShipTile) newTile;
-                        if(!newShipTile.hasBeenRecorded()){
+                        if (!newShipTile.hasBeenRecorded()) {
                             newShipTile.setBeenRecorded(true);
-                        }
-                        else{
-                            if(!newShipTile.getShip().destroyed()){
+                        } else {
+                            if (!newShipTile.getShip().destroyed()) {
                                 continue;
                             }
                         }
                     }
-                    if(oldTile.shot || oldTile.revealed){
-                        if(isPrimativeTileType){
+                    if (oldTile.shot || oldTile.revealed) {
+                        if (isPrimativeTileType) {
                             continue;
                         }
                     }
@@ -94,8 +94,8 @@ public class EnemyDisplay implements Observer, IRenderable {
     public void render() {
         GraphicsContext gc = this.grid.getGraphicsContext2D();
 
-        for(GenericTile[] tileColumn : displayTiles){
-            for(GenericTile tile : tileColumn){
+        for (GenericTile[] tileColumn : displayTiles) {
+            for (GenericTile tile : tileColumn) {
                 tile.draw(gc);
             }
         }

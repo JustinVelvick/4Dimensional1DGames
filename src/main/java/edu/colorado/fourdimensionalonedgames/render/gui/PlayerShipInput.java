@@ -10,7 +10,7 @@ public class PlayerShipInput {
 
 
     //default constructor
-    public PlayerShipInput(){
+    public PlayerShipInput() {
         this.direction = "Default";
         this.submergeChoice = "N/A";
         this.shipChoice = "Default";

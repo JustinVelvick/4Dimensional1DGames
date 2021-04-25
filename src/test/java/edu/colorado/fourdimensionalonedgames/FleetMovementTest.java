@@ -101,7 +101,7 @@ public class FleetMovementTest {
 
         List<Integer> originalTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            for (ShipTile tile : ship.getShipTiles()){
+            for (ShipTile tile : ship.getShipTiles()) {
                 originalTiles.add(tile.getRow());
             }
         }
@@ -146,7 +146,7 @@ public class FleetMovementTest {
 
         List<Integer> originalTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            for (ShipTile tile : ship.getShipTiles()){
+            for (ShipTile tile : ship.getShipTiles()) {
                 originalTiles.add(tile.getColumn());
             }
         }
@@ -173,7 +173,7 @@ public class FleetMovementTest {
 
         List<Integer> originalTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            for (ShipTile tile : ship.getShipTiles()){
+            for (ShipTile tile : ship.getShipTiles()) {
                 originalTiles.add(tile.getRow());
             }
         }
@@ -197,7 +197,7 @@ public class FleetMovementTest {
         List<Integer> originalTileRows = new ArrayList<>();
         List<Integer> originalTileColumns = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            for (ShipTile tile : ship.getShipTiles()){
+            for (ShipTile tile : ship.getShipTiles()) {
                 originalTileRows.add(tile.getRow());
                 originalTileColumns.add(tile.getColumn());
             }
@@ -213,7 +213,7 @@ public class FleetMovementTest {
 
         //assert that each tile is at the same position after moving and then undoing once
         for (int i = 0; i < originalTileRows.size(); i++) {
-            assertEquals(originalTileRows.get(i)+1, movedTiles.get(i).getRow());
+            assertEquals(originalTileRows.get(i) + 1, movedTiles.get(i).getRow());
             assertEquals(originalTileColumns.get(i), movedTiles.get(i).getColumn());
         }
 
@@ -232,12 +232,12 @@ public class FleetMovementTest {
     }
 
     @Test
-    //down, right, undo, down, right, left, left
-    void complexFleetMovement(){
+        //down, right, undo, down, right, left, left
+    void complexFleetMovement() {
         List<Integer> originalTileRows = new ArrayList<>();
         List<Integer> originalTileColumns = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            for (ShipTile tile : ship.getShipTiles()){
+            for (ShipTile tile : ship.getShipTiles()) {
                 originalTileRows.add(tile.getRow());
                 originalTileColumns.add(tile.getColumn());
             }
@@ -264,18 +264,18 @@ public class FleetMovementTest {
 
         //assert that each tile is at the same position after moving and then undoing once
         for (int i = 0; i < originalTileRows.size(); i++) {
-            assertEquals(originalTileRows.get(i)+1, movedTiles.get(i).getRow());
-            assertEquals(originalTileColumns.get(i)+1, movedTiles.get(i).getColumn());
+            assertEquals(originalTileRows.get(i) + 1, movedTiles.get(i).getRow());
+            assertEquals(originalTileColumns.get(i) + 1, movedTiles.get(i).getColumn());
         }
     }
 
     @Test
         //down, right, undo, down, right, left, left
-    void complexUndoFleetMovement(){
+    void complexUndoFleetMovement() {
         List<Integer> originalTileRows = new ArrayList<>();
         List<Integer> originalTileColumns = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
-            for (ShipTile tile : ship.getShipTiles()){
+            for (ShipTile tile : ship.getShipTiles()) {
                 originalTileRows.add(tile.getRow());
                 originalTileColumns.add(tile.getColumn());
             }

@@ -47,7 +47,7 @@ public class ShipTile extends Tile {
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(getColor());
-        Rectangle rect = new Rectangle(40,40);
+        Rectangle rect = new Rectangle(40, 40);
         gc.fillRect(0, 0, rect.getWidth(), rect.getHeight());
     }
 }

@@ -11,19 +11,19 @@ public class FleetControl {
     private Stack<MoveFleetCommand> fleetCommandStack;
     private Player player;
 
-    public FleetControl(Player player){
+    public FleetControl(Player player) {
         this.player = player;
         this.fleetCommandStack = new Stack<>();
     }
 
-    public void moveFleet(Orientation direction){
+    public void moveFleet(Orientation direction) {
         MoveFleetCommand moveCommand = new MoveFleetCommand(player, direction);
         //only add to the stack if the ships were actually able to move
         if (moveCommand.execute())
             fleetCommandStack.push(moveCommand);
     }
 
-    public void undoMoveFleet(){
+    public void undoMoveFleet() {
         MoveFleetCommand commandToUndo = fleetCommandStack.pop();
         commandToUndo.undo();
     }

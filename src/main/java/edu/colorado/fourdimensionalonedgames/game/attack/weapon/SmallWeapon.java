@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 //most basic weapon, just hits one single tile on the surface (depth = 0)
-public class SmallWeapon extends Weapon{
+public class SmallWeapon extends Weapon {
 
     public SmallWeapon(IAttackBehavior behavior, String weaponName) {
         super(behavior, weaponName);

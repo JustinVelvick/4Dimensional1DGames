@@ -116,9 +116,9 @@ public class FleetTest {
     @Test
     void testFleetMove() {
         player2.placeShip(testInput1); //minesweeper at 1,1 down
-        Tile tile = new MineTile(2,1,0);
+        Tile tile = new MineTile(2, 1, 0);
         player2.placeTestTile(2, 1, tile);
-        tile = new MineTile(2,2,0);
+        tile = new MineTile(2, 2, 0);
         player2.placeTestTile(2, 2, tile);
 
         player2.moveFleet(Orientation.right); //hits two mines
@@ -155,8 +155,8 @@ public class FleetTest {
         player2.placeShip(testInput1); //minesweeper at 1,1 down
         player2.placeShip(testInput2); //destroyer at 4,4 down
         player2.placeShip(testInput3); //battleship at 5,5 down
-        Tile tile = new PowerUpTile(2,1,0);
-        player2.placeTestTile(2,1,tile);
+        Tile tile = new PowerUpTile(2, 1, 0);
+        player2.placeTestTile(2, 1, tile);
 
         Tile testTile = player2.getBoard().tiles[2][1][0];
 
@@ -168,8 +168,8 @@ public class FleetTest {
     @Test
     void testPowerUp() {
         player2.placeShip(testInput1); //minesweeper at 1,1 down
-        Tile tile = new PowerUpTile(2,1,0);
-        player2.placeTestTile(2,1,tile);
+        Tile tile = new PowerUpTile(2, 1, 0);
+        player2.placeTestTile(2, 1, tile);
         player2.moveFleet(Orientation.right);
         assertTrue(player2.getFleet().hasPowerUp());
     }

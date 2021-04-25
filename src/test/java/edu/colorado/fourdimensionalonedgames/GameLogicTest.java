@@ -53,7 +53,7 @@ public class GameLogicTest {
 
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
         player1 = game.getPlayers().get(0);
@@ -85,7 +85,6 @@ public class GameLogicTest {
         //Player 1 placing a battleship at 5,5 down
         testInput3 = new PlayerShipInput("Down", "Battleship", "5", "5");
         player1.placeShip(testInput3);
-
 
 
         //Player 2 placing a minesweeper at 1,1 down
@@ -144,19 +143,18 @@ public class GameLogicTest {
         player2.attack(player1.getBoard(), fireInput1);
 
 
-
         assertTrue(game.isGameOver());
     }
 
     @Test
-    //make sure that sonar pulse is only available AFTER successfully sinking the first enemy ship.
-    //only 2 get added to their player object
-    void sonarAvaliableTest(){
+        //make sure that sonar pulse is only available AFTER successfully sinking the first enemy ship.
+        //only 2 get added to their player object
+    void sonarAvaliableTest() {
 
         //start of the game, do nothing, player should not have Sonar Pulse
         boolean hasSonar = false;
-        for(Weapon weapon : player1.getWeapons()){
-            if(weapon.getType().equals("Sonar Pulse")){
+        for (Weapon weapon : player1.getWeapons()) {
+            if (weapon.getType().equals("Sonar Pulse")) {
                 hasSonar = true;
             }
         }
@@ -171,8 +169,8 @@ public class GameLogicTest {
         //update game to see that player1 has now unlocked Sonar Pulse
         game.checkUpgrades();
         int sonarPulseCount = 0;
-        for(Weapon weapon : player1.getWeapons()){
-            if(weapon.getType().equals("Sonar Pulse")){
+        for (Weapon weapon : player1.getWeapons()) {
+            if (weapon.getType().equals("Sonar Pulse")) {
                 sonarPulseCount += weapon.getCount();
             }
         }
@@ -182,18 +180,18 @@ public class GameLogicTest {
 
     @Test
         //FROM THE REQUIREMENTS OF SPACE LASER:
-            //The player receives the activation codes for the space laser only after sinking the first
-            //enemy ship (i.e. this weapon is an upgrade, and replaces the conventional bomb in the
-            //player’s arsenal).
-    void spaceLaserAvaliableTest(){
+        //The player receives the activation codes for the space laser only after sinking the first
+        //enemy ship (i.e. this weapon is an upgrade, and replaces the conventional bomb in the
+        //player’s arsenal).
+    void spaceLaserAvaliableTest() {
         //start of the game, do nothing, player should not have Sonar Pulse
         boolean hasSingleShot = false;
         boolean hasSpaceLaser = false;
-        for(Weapon weapon : player1.getWeapons()){
-            if(weapon.getType().equals("Single Shot")){
+        for (Weapon weapon : player1.getWeapons()) {
+            if (weapon.getType().equals("Single Shot")) {
                 hasSingleShot = true;
             }
-            if(weapon.getType().equals("Space Laser")){
+            if (weapon.getType().equals("Space Laser")) {
                 hasSpaceLaser = true;
             }
         }
@@ -212,11 +210,11 @@ public class GameLogicTest {
 
         hasSingleShot = false;
         hasSpaceLaser = false;
-        for(Weapon weapon : player1.getWeapons()){
-            if(weapon.getType().equals("Single Shot")){
+        for (Weapon weapon : player1.getWeapons()) {
+            if (weapon.getType().equals("Single Shot")) {
                 hasSingleShot = true;
             }
-            if(weapon.getType().equals("Space Laser")){
+            if (weapon.getType().equals("Space Laser")) {
                 hasSpaceLaser = true;
             }
         }
@@ -226,7 +224,7 @@ public class GameLogicTest {
     }
 
     @Test
-    void passTurnSimulationTest(){
+    void passTurnSimulationTest() {
 
         assertTrue(game.isPlayer1Turn());
         assertEquals(0, player1.getScore());
@@ -239,7 +237,7 @@ public class GameLogicTest {
 
         //sinking player 2's minesweeper by hitting captains quarters once
         fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
-        player1.attack(player2.getBoard(),fireInput1);
+        player1.attack(player2.getBoard(), fireInput1);
 
         //called in Form controller, must call manually here in test since we have no form controllers
         game.updateScores();

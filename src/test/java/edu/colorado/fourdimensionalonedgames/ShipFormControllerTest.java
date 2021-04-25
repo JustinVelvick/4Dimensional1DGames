@@ -27,8 +27,8 @@ public class ShipFormControllerTest {
     }
 
     @Test
-    void testValidateForm(){
-        input = new PlayerShipInput("Down","Destroyer","B", "3");
+    void testValidateForm() {
+        input = new PlayerShipInput("Down", "Destroyer", "B", "3");
         badInput = new PlayerShipInput("", "Destroyer", "Applesauce", "032485*");
         assertTrue(controller.validateForm(input));
         assertFalse(controller.validateForm(badInput));

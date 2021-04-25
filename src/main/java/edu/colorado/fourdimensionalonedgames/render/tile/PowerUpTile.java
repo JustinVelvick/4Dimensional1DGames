@@ -4,9 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class PowerUpTile extends Tile{
+public class PowerUpTile extends Tile {
 
-    public PowerUpTile(int column, int row, int depth) { super(column, row, depth); }
+    public PowerUpTile(int column, int row, int depth) {
+        super(column, row, depth);
+    }
 
 
     @Override
@@ -15,8 +17,8 @@ public class PowerUpTile extends Tile{
     }
 
     @Override
-    public void draw(GraphicsContext gc){
+    public void draw(GraphicsContext gc) {
         Image image = new Image("powerUp.png");
-        gc.drawImage(image,getColumn()*40,getRow()*40,40,40);
+        gc.drawImage(image, getColumn() * 40, getRow() * 40, 40, 40);
     }
 }

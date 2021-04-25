@@ -7,7 +7,7 @@ public class GameSettings {
     private int depth;
     private int tileSize;
 
-    public GameSettings(int numberOfPlayers, int columns, int rows, int depth, int tileSize){
+    public GameSettings(int numberOfPlayers, int columns, int rows, int depth, int tileSize) {
         this.numberOfPlayers = numberOfPlayers;
         this.columns = columns;
         this.rows = rows;

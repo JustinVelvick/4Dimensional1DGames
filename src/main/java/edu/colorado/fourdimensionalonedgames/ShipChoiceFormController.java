@@ -55,23 +55,22 @@ public class ShipChoiceFormController implements Initializable {
     ChangeListener<String> changeHandler = new ChangeListener<>() {
         @Override
         public void changed(ObservableValue<? extends String> observableValue, String oldChoice, String newChoice) {
-            if(newChoice.equals("Submarine")){
+            if (newChoice.equals("Submarine")) {
                 submergeText.visibleProperty().setValue(true);
                 submergeChoiceBox.visibleProperty().setValue(true);
-            }
-            else{
+            } else {
                 submergeText.visibleProperty().setValue(false);
                 submergeChoiceBox.visibleProperty().setValue(false);
             }
         }
     };
 
-    public PlayerShipInput display(){
+    public PlayerShipInput display() {
         return this.input;
     }
 
     @FXML
-    public void handleConfirmButton(ActionEvent event){
+    public void handleConfirmButton(ActionEvent event) {
 
         PlayerShipInput tentativeInput = new PlayerShipInput();
 
@@ -80,37 +79,35 @@ public class ShipChoiceFormController implements Initializable {
         tentativeInput.setxCord(xCord.getText());
         tentativeInput.setyCord(yCord.getText());
 
-        if(shipChoiceBox.getSelectionModel().getSelectedItem().equals("Submarine")){
+        if (shipChoiceBox.getSelectionModel().getSelectedItem().equals("Submarine")) {
             tentativeInput.setSubmergeChoice(submergeChoiceBox.getSelectionModel().getSelectedItem());
         }
 
-        if(this.validateForm(tentativeInput)){
+        if (this.validateForm(tentativeInput)) {
             this.input = tentativeInput;
             //close this window (Stage)
             Stage currentStage = (Stage) confirmButton.getScene().getWindow();
             currentStage.close();
-        }
-        else{
+        } else {
             AlertBox.display("Invalid Input!", "Please enter valid coordinates for ship placement.");
         }
     }
 
-    public void populateShipForm(List<Ship> ships){
+    public void populateShipForm(List<Ship> ships) {
 
         //Delete existing to create a fresh set of choices
         shipChoiceBox.getItems().removeAll(shipChoiceBox.getItems());
         List<String> choices = new ArrayList<>();
-        for(Ship ship : ships){
+        for (Ship ship : ships) {
             choices.add(ship.getType());
         }
         //add all choices to the dropdown
         shipChoiceBox.getItems().addAll(choices);
 
         //if there are no choices left, hide the dropdown
-        if(shipChoiceBox.getItems().isEmpty()){
+        if (shipChoiceBox.getItems().isEmpty()) {
             shipChoiceBox.hide();
-        }
-        else{
+        } else {
             //Display the first choice as dropdown default
             shipChoiceBox.getSelectionModel().select(choices.get(0));
         }
@@ -120,7 +117,7 @@ public class ShipChoiceFormController implements Initializable {
     public boolean validateForm(PlayerShipInput input) {
 
         //check len
-        if((input.getxCord().length() != 1) || (input.getyCord().length() > 2) || (input.getyCord().length() < 1)) {
+        if ((input.getxCord().length() != 1) || (input.getyCord().length() > 2) || (input.getyCord().length() < 1)) {
             return false;
         }
 
@@ -129,14 +126,14 @@ public class ShipChoiceFormController implements Initializable {
         int xAscii = input.getxCord().charAt(0);
 
         //upper case A-J check
-        if(xAscii > 64 && xAscii < 75){
-            xValid=true;
+        if (xAscii > 64 && xAscii < 75) {
+            xValid = true;
             xAscii = xAscii - 64;
             input.setxCord(String.valueOf(xAscii));
         }
         //lower case a-j check
-        else if(xAscii > 96 && xAscii < 107){
-            xValid=true;
+        else if (xAscii > 96 && xAscii < 107) {
+            xValid = true;
             xAscii = xAscii - 96;
             input.setxCord(String.valueOf(xAscii));
         }
@@ -145,19 +142,18 @@ public class ShipChoiceFormController implements Initializable {
         boolean yValid = true;
         int y;
 
-        try{
+        try {
             y = Integer.parseInt(input.getyCord());
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             //e.printStackTrace();
             return false;
         }
 
-        if(y > 10 || y < 1){
+        if (y > 10 || y < 1) {
             yValid = false;
         }
 
-        boolean result = xValid&&yValid;
+        boolean result = xValid && yValid;
         return result;
     }
 

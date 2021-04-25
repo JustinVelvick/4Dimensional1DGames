@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class PlayerController implements Initializable {
     EventHandler<KeyEvent> handler = new EventHandler<>() {
         @Override
         public void handle(KeyEvent event) {
-            switch(event.getCode()){
+            switch (event.getCode()) {
                 case W:
                     player.getFleetController().moveFleet(Orientation.up);
                     break;
@@ -84,7 +85,7 @@ public class PlayerController implements Initializable {
             }
 
             //after each individual move, check if game ended from player ramming own ships into mines
-            if(game.isGameOver()){
+            if (game.isGameOver()) {
                 game.gameOver();
             }
         }
@@ -126,14 +127,14 @@ public class PlayerController implements Initializable {
         //checks for conditional items (such as gaining sonar pulse after sinking first ship of the game)
         game.updateScores();
         game.checkUpgrades();
-        if(game.isGameOver()){
+        if (game.isGameOver()) {
             game.gameOver();
         }
         fireWeaponButton.visibleProperty().setValue(false);
     }
 
     //generates appropriate AlertBox to user based on what resulted in attack
-    public void fireWeapon(Board opponentBoard, PlayerFireInput userInput){
+    public void fireWeapon(Board opponentBoard, PlayerFireInput userInput) {
 
         List<AttackResult> results;
 
@@ -143,31 +144,28 @@ public class PlayerController implements Initializable {
             results = player.attack(opponentBoard, userInput);
 
             //Inform player of result of attacking each enemy tile (could be 1 tile or many)
-            for(AttackResult attackResult : results){
+            for (AttackResult attackResult : results) {
                 Ship attackedShip = attackResult.getShip();
 
                 if (attackedShip == null) {
-                    if(!userInput.getWeaponChoice().equals("Nuke")){
+                    if (!userInput.getWeaponChoice().equals("Nuke")) {
                         AlertBox.display("Miss", "Shot missed");
                     }
-                }
-                else{
+                } else {
                     if (attackedShip.destroyed()) {
                         AlertBox.display("Ship Sunk", "The enemy's " + attackedShip.getType() + " has been sunk!");
-                    }
-                    else {
+                    } else {
                         AlertBox.display("Ship Hit", "Ship has been hit");
                     }
                 }
             }
-        }
-        catch (InvalidAttackException e) {
+        } catch (InvalidAttackException e) {
             AlertBox.display("Invalid Coordinates", e.getErrorMsg());
         }
     }
 
     //spawn a ShipChoiceForm, populate it's fields, and retrieve user input from ShipChoiceForm when it closes
-    public void handlePlaceShipButton(ActionEvent event) throws IOException{
+    public void handlePlaceShipButton(ActionEvent event) throws IOException {
         //load and pop up the ShipChoiceForm
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("shipChoiceForm.fxml"));
         Pane root = loader.load();
@@ -191,40 +189,38 @@ public class PlayerController implements Initializable {
     public void placeShip(PlayerShipInput input) {
 
         //if placing a ship down on player's board fails
-        if(!this.player.placeShip(input)){
+        if (!this.player.placeShip(input)) {
             AlertBox.display("Invalid Ship Placement", "Please place your ship on valid coordinates.");
-        }
-
-        else{
-            if(player.getShipsToPlace().size() == 0){
+        } else {
+            if (player.getShipsToPlace().size() == 0) {
                 passTurnButton.setVisible(true);
                 placeShipButton.setVisible(false);
             }
         }
     }
 
-    public void handleMoveFleetButton(ActionEvent e){
+    public void handleMoveFleetButton(ActionEvent e) {
         moveInstructionsPane.visibleProperty().setValue(true);
         passTurnButton.visibleProperty().setValue(false);
         moveFleetButton.visibleProperty().setValue(false);
         playerSceneHbox.getScene().addEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
 
-    public void handleDoneButton(ActionEvent e){
+    public void handleDoneButton(ActionEvent e) {
         moveInstructionsPane.visibleProperty().setValue(false);
         passTurnButton.visibleProperty().setValue(true);
         moveFleetButton.visibleProperty().setValue(true);
         playerSceneHbox.getScene().removeEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
 
-    public void handleUndoMoveFleetButton(ActionEvent e){
+    public void handleUndoMoveFleetButton(ActionEvent e) {
         player.getFleetController().undoMoveFleet();
     }
 
 
-    public void handlePassTurnButton(ActionEvent e){
+    public void handlePassTurnButton(ActionEvent e) {
         //one time if statement for passing to player 1's first combat turn
-        if(game.getGameState() == GameState.player2_setup){
+        if (game.getGameState() == GameState.player2_setup) {
             game.setGameState(GameState.first_turn);
             showCombatButtons();
             game.passTurn();
@@ -232,14 +228,14 @@ public class PlayerController implements Initializable {
         }
 
         //one time if statement for passing to player 2's setup turn
-        if(game.getGameState() == GameState.player1_setup){
+        if (game.getGameState() == GameState.player1_setup) {
             game.setGameState(GameState.player2_setup);
             showCombatButtons();
             game.passSetupTurn();
         }
 
         //normal game pass turn conditions
-        else{
+        else {
             //Turn is over when button is pressed
             this.game.passTurn();
             this.game.updateScene();
@@ -247,38 +243,36 @@ public class PlayerController implements Initializable {
     }
 
     //helper method to toggle visible tags on buttons we don't want the player seeing until game start
-    public void showAllButtons(){
+    public void showAllButtons() {
         List<Button> buttons = getButtons();
-        for(Button button : buttons){
+        for (Button button : buttons) {
             button.setVisible(true);
         }
     }
 
     //buttons to show for when in main game (after setup and ship placement)
-    public void showCombatButtons(){
+    public void showCombatButtons() {
 
         List<Button> buttons = getButtons();
 
-        for(Button button : buttons){
-            if(button.equals(placeShipButton)){
+        for (Button button : buttons) {
+            if (button.equals(placeShipButton)) {
                 button.setVisible(false);
-            }
-            else{
+            } else {
                 button.setVisible(true);
             }
         }
     }
 
     //buttons to show for when in setup and ship placement phase
-    public void showSetupButtons(){
+    public void showSetupButtons() {
 
         List<Button> buttons = getButtons();
 
-        for(Button button : buttons){
-            if(button.equals(placeShipButton)){
+        for (Button button : buttons) {
+            if (button.equals(placeShipButton)) {
                 button.setVisible(true);
-            }
-            else{
+            } else {
                 button.setVisible(false);
             }
         }
@@ -297,7 +291,7 @@ public class PlayerController implements Initializable {
         return enemyGrid;
     }
 
-    public List<Button> getButtons(){
+    public List<Button> getButtons() {
         List<Button> buttons = new ArrayList<>();
         buttons.add(fireWeaponButton);
         buttons.add(passTurnButton);

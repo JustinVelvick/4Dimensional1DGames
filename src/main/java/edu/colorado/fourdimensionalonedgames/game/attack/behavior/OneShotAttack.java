@@ -35,13 +35,13 @@ public class OneShotAttack implements IAttackBehavior {
 
             //if we hit a captains quarters, we must subtract hp first, then see if CC was destroyed,
             //if yes, destroy entire ship
-            if(attackedTile instanceof CaptainsQuartersTile){
+            if (attackedTile instanceof CaptainsQuartersTile) {
                 //drain HP to zero
-                while(((CaptainsQuartersTile) attackedTile).getHp() > 0){
+                while (((CaptainsQuartersTile) attackedTile).getHp() > 0) {
                     ((CaptainsQuartersTile) attackedTile).damage();
                 }
 
-                if(((CaptainsQuartersTile) attackedTile).getHp() == 0){
+                if (((CaptainsQuartersTile) attackedTile).getHp() == 0) {
                     attackedTile.shot = true;
                     attackedTile.revealed = true;
                     attackedTile.getShip().destroy();
@@ -53,11 +53,9 @@ public class OneShotAttack implements IAttackBehavior {
             Ship ship = attackedTile.getShip();
             if (ship == null) {
                 ret.add(new AttackResult(AttackResultType.MISS, null));
-            }
-            else if (ship.destroyed()){
+            } else if (ship.destroyed()) {
                 ret.add(new AttackResult(AttackResultType.SUNK, ship));
-            }
-            else{
+            } else {
                 ret.add(new AttackResult(AttackResultType.HIT, ship));
             }
         }

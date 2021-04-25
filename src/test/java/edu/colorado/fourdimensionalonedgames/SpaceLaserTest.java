@@ -57,7 +57,7 @@ public class SpaceLaserTest {
     Weapon singleShot, sonar, spaceLaser;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
         player1 = game.getPlayers().get(0);
@@ -76,17 +76,17 @@ public class SpaceLaserTest {
         player2.placeShip(shipInput1);
 
         //Player2 places a surface boat at 3,3 right
-        shipInput1 = new PlayerShipInput("Right", "Destroyer",  "3", "3");
+        shipInput1 = new PlayerShipInput("Right", "Destroyer", "3", "3");
         player2.placeShip(shipInput1);
 
         //Player2 places a submarine down at 3,3, submerged, right
-        shipInput2 = new PlayerShipInput("Right", "Submarine",  "3", "3");
+        shipInput2 = new PlayerShipInput("Right", "Submarine", "3", "3");
         shipInput2.setSubmergeChoice("Yes");
         player2.placeShip(shipInput2);
     }
 
     @Test
-    void testSurfaceSpaceLaser(){
+    void testSurfaceSpaceLaser() {
 
         fireInput1 = new PlayerFireInput("Space Laser", "2", "1");
         player1.addWeapon(spaceLaser);
@@ -97,12 +97,12 @@ public class SpaceLaserTest {
     }
 
     @Test
-    void testSubmergedSpaceLaser(){
+    void testSubmergedSpaceLaser() {
         //Player 1 fires a space laser at 3,3
         fireInput1 = new PlayerFireInput("Space Laser", "3", "3");
         player1.addWeapon(spaceLaser);
         player1.attack(player2.getBoard(), fireInput1);
-        for(int z = 0; z < depth; z++){
+        for (int z = 0; z < depth; z++) {
             assertTrue(player2.getBoard().tiles[3][3][z].shot);
         }
         assertTrue(player2Destroyer.getShipTiles().get(0).shot);

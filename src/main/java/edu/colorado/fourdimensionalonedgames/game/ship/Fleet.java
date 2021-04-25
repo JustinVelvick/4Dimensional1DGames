@@ -8,18 +8,19 @@ public class Fleet {
     private List<Ship> fleet = new ArrayList<>();
 
     //empty constructor
-    public Fleet(){
+    public Fleet() {
 
     }
 
     //ship list manipulation
-    public void addShip(Ship newShip){
+    public void addShip(Ship newShip) {
         this.fleet.add(newShip);
     }
 
-    public List<Ship> getShips(){
+    public List<Ship> getShips() {
         return this.fleet;
     }
+
     //check if any non-destroyed ships exist in the fleet
     public boolean hasShip() {
         for (Ship ship : fleet) {
@@ -31,10 +32,10 @@ public class Fleet {
     }
 
     //returns all destroyed ships in the fleet
-    public List<Ship> getDestroyedShips(){
+    public List<Ship> getDestroyedShips() {
         List<Ship> destroyedShips = new ArrayList<>();
-        for(Ship ship : fleet){
-            if(ship.destroyed()){
+        for (Ship ship : fleet) {
+            if (ship.destroyed()) {
                 destroyedShips.add(ship);
             }
         }

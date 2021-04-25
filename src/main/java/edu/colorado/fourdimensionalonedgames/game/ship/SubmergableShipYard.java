@@ -7,10 +7,10 @@ import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import java.util.List;
 
 //concrete factory for submergable ships
-public class SubmergableShipYard extends ShipYard{
+public class SubmergableShipYard extends ShipYard {
 
     @Override
-    public Ship createShip(String choice){
+    public Ship createShip(String choice) {
         Ship newShip = buildShip(choice);
         ///
         //do other things with freshly built ship (maybe in future requirements)
@@ -22,7 +22,7 @@ public class SubmergableShipYard extends ShipYard{
     }
 
     protected Ship buildShip(String choice) {
-        switch (choice){
+        switch (choice) {
             case "Submarine":
                 return new Submarine();
             default:
@@ -31,13 +31,13 @@ public class SubmergableShipYard extends ShipYard{
     }
 
     //generates default tiles whose coordinates will be updated later (these are all at col 0, row 0)
-    private void generateShipTiles(Ship newShip){
-        for(int i = 0; i < newShip.size; i++){
-            newShip.addTile(new ShipTile(newShip,0,0, 0));
+    private void generateShipTiles(Ship newShip) {
+        for (int i = 0; i < newShip.size; i++) {
+            newShip.addTile(new ShipTile(newShip, 0, 0, 0));
         }
     }
 
-    private void generateCaptainsQuarters(Ship newShip){
+    private void generateCaptainsQuarters(Ship newShip) {
 
         ShipTile newTile;
         List<ShipTile> tiles = newShip.getShipTiles();

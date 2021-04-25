@@ -12,8 +12,13 @@ public class AttackResult {
         this.ship = ship;
     }
 
-    public Ship getShip(){ return ship; }
-    public AttackResultType getType(){ return type; }
+    public Ship getShip() {
+        return ship;
+    }
+
+    public AttackResultType getType() {
+        return type;
+    }
 
     @Override
     public boolean equals(Object o) {

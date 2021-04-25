@@ -35,16 +35,15 @@ public class Attack implements IAttackBehavior {
 
             //if we hit a captains quarters, we must subtract hp first, then see if CC was destroyed,
             //if yes, destroy entire ship
-            if(attackedTile instanceof CaptainsQuartersTile){
+            if (attackedTile instanceof CaptainsQuartersTile) {
 
                 ((CaptainsQuartersTile) attackedTile).damage(); //subtracts 1 from captain's quarter's hp
 
-                if(((CaptainsQuartersTile) attackedTile).getHp() == 0){
+                if (((CaptainsQuartersTile) attackedTile).getHp() == 0) {
                     attackedTile.shot = true;
                     attackedTile.revealed = true;
                     attackedTile.getShip().destroy();
-                }
-                else{
+                } else {
                     //we return null in case of a miss, and we treat armored captains quarters hits as a miss
                     //additionally, we do not set the .shot flag for this "miss"
                     ret.add(new AttackResult(AttackResultType.MISS, attackedTile.getShip()));
@@ -57,11 +56,9 @@ public class Attack implements IAttackBehavior {
             Ship ship = attackedTile.getShip();
             if (ship == null) {
                 ret.add(new AttackResult(AttackResultType.MISS, null));
-            }
-            else if (ship.destroyed()){
+            } else if (ship.destroyed()) {
                 ret.add(new AttackResult(AttackResultType.SUNK, ship));
-            }
-            else{
+            } else {
                 ret.add(new AttackResult(AttackResultType.HIT, ship));
             }
         }

@@ -63,7 +63,7 @@ public class BasicAttacksTest {
 
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         renderer = new Render();
         game = new Game(renderer, numberOfPlayers, tileSize, columns, rows, depth);
         player1 = game.getPlayers().get(0);
@@ -97,7 +97,7 @@ public class BasicAttacksTest {
     }
 
     @Test
-    //player1 attacking player2
+        //player1 attacking player2
     void attackMiss() {
         //player 1 attacking player 2's minesweeper
         fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
@@ -111,7 +111,7 @@ public class BasicAttacksTest {
     }
 
     @Test
-    //player1 attacking player2
+        //player1 attacking player2
     void attackHit() {
         fireInput1 = new PlayerFireInput("Single Shot", "1", "2");
         AttackResult result = player1.attack(player2.getBoard(), fireInput1).get(0);
@@ -157,20 +157,20 @@ public class BasicAttacksTest {
     }
 
     @Test
-    void captainsQuartersDamaged(){
+    void captainsQuartersDamaged() {
         //destroyer is located at (4,4) down
         //CaptainsQuarters will be at (4,5) for a destroyer placed here
 
         fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
         player1.attack(player2.getBoard(), fireInput1);
 
-        CaptainsQuartersTile tile = (CaptainsQuartersTile)player2Destroyer.getShipTiles().get(1);
+        CaptainsQuartersTile tile = (CaptainsQuartersTile) player2Destroyer.getShipTiles().get(1);
         assertEquals(tile.getHp(), 1);
         assertFalse(player2Destroyer.destroyed());
     }
 
     @Test
-    void captainsQuartersSunk(){
+    void captainsQuartersSunk() {
         //destroyer ship is located at (4,4) down
         //CaptainsQuarters should be in the middle for destroyers, so (4,5)
         fireInput1 = new PlayerFireInput("Single Shot", "4", "5");
@@ -180,13 +180,13 @@ public class BasicAttacksTest {
         player1.attack(player2.getBoard(), fireInput1);
         player1.attack(player2.getBoard(), fireInput2);
 
-        CaptainsQuartersTile tile = (CaptainsQuartersTile)player2Destroyer.getShipTiles().get(1);
+        CaptainsQuartersTile tile = (CaptainsQuartersTile) player2Destroyer.getShipTiles().get(1);
         assertEquals(tile.getHp(), 0);
         assertTrue(player2Destroyer.destroyed());
     }
 
     @Test
-    void captainsQuartersSunkMinesweeper(){
+    void captainsQuartersSunkMinesweeper() {
         //CaptainsQuarters on minesweepers do not have armour, they get one shot
         //testMinesweeper ship is located at (2,2) right
         //CaptainsQuarters should on the origin for minesweepers, so (4,4)
@@ -196,7 +196,7 @@ public class BasicAttacksTest {
         player1.attack(player2.getBoard(), fireInput1);
 
 
-        CaptainsQuartersTile tile = (CaptainsQuartersTile)player2Minesweeper.getShipTiles().get(0);
+        CaptainsQuartersTile tile = (CaptainsQuartersTile) player2Minesweeper.getShipTiles().get(0);
         assertEquals(0, tile.getHp());
         assertTrue(player2Minesweeper.destroyed());
     }

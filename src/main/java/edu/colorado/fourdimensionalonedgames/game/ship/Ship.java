@@ -13,7 +13,7 @@ import java.util.List;
  * @size -A ship has a size (total number of tiles)
  * @shipTiles - List of tiles belonging to the ship
  */
-public abstract class Ship{
+public abstract class Ship {
 
     protected int size;
     protected List<ShipTile> shipTiles;
@@ -31,7 +31,7 @@ public abstract class Ship{
      * @param origin
      * @param direction
      */
-    public List<Point3D> generateCoordinates(Point3D origin, Orientation direction){
+    public List<Point3D> generateCoordinates(Point3D origin, Orientation direction) {
         double xCoordinate = origin.getX();
         double yCoordinate = origin.getY();
         double zCoordinate = origin.getZ();
@@ -40,24 +40,24 @@ public abstract class Ship{
         // get coordinate set of tiles ship would occupy if placed in given orientation
         switch (direction) {
             case up:
-                for(double y = yCoordinate; y > (yCoordinate - size); y--) {
+                for (double y = yCoordinate; y > (yCoordinate - size); y--) {
                     newCoordinates.add(new Point3D(xCoordinate, y, zCoordinate));
                 }
                 break;
 
             case down:
-                for(double y = yCoordinate; y < (yCoordinate + size); y++){
+                for (double y = yCoordinate; y < (yCoordinate + size); y++) {
                     newCoordinates.add(new Point3D(xCoordinate, y, zCoordinate));
                 }
                 break;
 
             case left:
-                for(double x = xCoordinate; x > (xCoordinate - size); x--){
+                for (double x = xCoordinate; x > (xCoordinate - size); x--) {
                     newCoordinates.add(new Point3D(x, yCoordinate, zCoordinate));
                 }
                 break;
             case right:
-                for(double x = xCoordinate; x < (xCoordinate + size); x++){
+                for (double x = xCoordinate; x < (xCoordinate + size); x++) {
                     newCoordinates.add(new Point3D(x, yCoordinate, zCoordinate));
                 }
                 break;
@@ -69,7 +69,7 @@ public abstract class Ship{
     //calculates total number of this ship's tiles that have been shot
     public int damage() {
         int damage = 0;
-        for (ShipTile tile : shipTiles){
+        for (ShipTile tile : shipTiles) {
             if (tile.shot) damage++;
         }
         return damage;
@@ -82,8 +82,8 @@ public abstract class Ship{
      */
     public boolean destroyed() {
         boolean allTilesShot = true;
-        for (ShipTile tile : shipTiles){
-            if (!tile.shot){
+        for (ShipTile tile : shipTiles) {
+            if (!tile.shot) {
                 allTilesShot = false;
                 break;
             }
@@ -93,17 +93,17 @@ public abstract class Ship{
     }
 
     //manually destroy this ship
-    public void destroy(){
+    public void destroy() {
         this.destroyed = true;
-        for (ShipTile tile : shipTiles){
+        for (ShipTile tile : shipTiles) {
             tile.shot = true;
         }
     }
 
     //give the entire ship a new depth
-    public void setShipTileDepth(int newDepth){
+    public void setShipTileDepth(int newDepth) {
         List<ShipTile> tilesToUpdate = this.getShipTiles();
-        for(ShipTile tile : tilesToUpdate){
+        for (ShipTile tile : tilesToUpdate) {
             tile.setDepth(newDepth);
         }
     }
@@ -118,7 +118,7 @@ public abstract class Ship{
         }
     }
 
-    public void incrementPowerups(){
+    public void incrementPowerups() {
         powerUps++;
     }
 
@@ -132,7 +132,11 @@ public abstract class Ship{
         shipTiles.add(tile);
     }
 
-    public int getSize(){return size;}
+    public int getSize() {
+        return size;
+    }
 
-    public int getPowerUps(){return powerUps;}
+    public int getPowerUps() {
+        return powerUps;
+    }
 }

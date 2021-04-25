@@ -103,9 +103,9 @@ public class SonarWeaponTest {
             for (int y = -2; y <= 2; y++) {
                 // math to check if tiles in the diamond are revealed
                 if (!((Math.abs(x) == 1 && Math.abs(y) == 2) || (Math.abs(x) == 2 && Math.abs(y) == 1)) && (Math.abs(x) != 2 || Math.abs(y) != 2)) {
-                    assertTrue(player2.getBoard().tiles[5+x][5+y][0].revealed);
+                    assertTrue(player2.getBoard().tiles[5 + x][5 + y][0].revealed);
                 } else {
-                    assertFalse(player2.getBoard().tiles[5+x][5+y][0].revealed);
+                    assertFalse(player2.getBoard().tiles[5 + x][5 + y][0].revealed);
                 }
             }
         }

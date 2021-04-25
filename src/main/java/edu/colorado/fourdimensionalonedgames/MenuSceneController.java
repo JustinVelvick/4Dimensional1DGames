@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,7 +23,7 @@ public class MenuSceneController implements Initializable {
     }
 
     @FXML
-    public void handleStartGameButton(ActionEvent event){
+    public void handleStartGameButton(ActionEvent event) {
         game.passSetupTurn();
     }
 

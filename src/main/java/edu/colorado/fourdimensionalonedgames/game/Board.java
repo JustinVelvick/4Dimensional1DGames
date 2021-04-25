@@ -16,6 +16,7 @@ import edu.colorado.fourdimensionalonedgames.render.gui.Subject;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,7 +43,7 @@ public class Board implements Subject {
     }
 
     //Method that only generates a board of sea tiles with accompanying letters and numbers in a grid shape
-    public void initializeBoard(){
+    public void initializeBoard() {
         Tile tile;
 
         for (int j = 0; j <= columns; j++) {
@@ -70,23 +71,23 @@ public class Board implements Subject {
     /**
      * placeShip() in the board places a newShip down at the given origin pointed in the given direction
      *
-     * @param direction     direction the ship points to relative to the origin
-     * @param origin        the origin tile to place at
-     * @param newShip       the ship to be placed
-     * @return              boolean indicating ship placement success, false when off the board or if colliding with
-     *                      another ship
+     * @param direction direction the ship points to relative to the origin
+     * @param origin    the origin tile to place at
+     * @param newShip   the ship to be placed
+     * @return boolean indicating ship placement success, false when off the board or if colliding with
+     * another ship
      */
     public boolean placeShip(Orientation direction, Point3D origin, Ship newShip) {
 
         List<Point3D> generatedCoordinates = newShip.generateCoordinates(origin, direction);
 
         // placeable returns a list of coordinates when placement is valid, null when not valid
-        if(placeable(generatedCoordinates)){
+        if (placeable(generatedCoordinates)) {
 
             ShipTile currentTile;
-           //update newShip's tiles to have newly generatedCoordinates
+            //update newShip's tiles to have newly generatedCoordinates
             List<ShipTile> tilesToAdd = newShip.getShipTiles();
-            for(int i = 0; i < newShip.getSize(); i++){
+            for (int i = 0; i < newShip.getSize(); i++) {
                 int x = (int) generatedCoordinates.get(i).getX();
                 int y = (int) generatedCoordinates.get(i).getY();
                 int z = (int) generatedCoordinates.get(i).getZ();
@@ -102,7 +103,7 @@ public class Board implements Subject {
             return true;
         }
         //ship placement was not valid
-        else{
+        else {
             return false;
         }
     }
@@ -127,21 +128,21 @@ public class Board implements Subject {
         return !(x < 1 || x > columns || y < 1 || y > rows || z < 0 || z >= this.getDepth());
     }
 
-    private Orientation findOrientation(Ship ship){
+    private Orientation findOrientation(Ship ship) {
         List<ShipTile> tiles = ship.getShipTiles();
         ShipTile origin = tiles.get(0);
         ShipTile next = tiles.get(1);
         Orientation ret = null;
-        if(origin.getRow() > next.getRow()){
+        if (origin.getRow() > next.getRow()) {
             ret = Orientation.up;
         }
-        if(origin.getRow() < next.getRow()){
+        if (origin.getRow() < next.getRow()) {
             ret = Orientation.down;
         }
-        if(origin.getColumn() < next.getColumn()){
+        if (origin.getColumn() < next.getColumn()) {
             ret = Orientation.right;
         }
-        if(origin.getColumn() > next.getColumn()){
+        if (origin.getColumn() > next.getColumn()) {
             ret = Orientation.left;
         }
         return ret;
@@ -151,16 +152,16 @@ public class Board implements Subject {
      * moveShip() in the board moves a single ship one tile in the given direction, attempts to handle replacing tiles
      * behind it as it moves (bugs related to this still exist as of 4/24)
      *
-     * @param ship: Ship to move
+     * @param ship:      Ship to move
      * @param direction: Direction to move the ship
      * @return: List of weapons that may have been picked up by ships via PowerUp tiles. Can be null.
      */
-    public List<Weapon> moveShip(Ship ship, Orientation direction){
+    public List<Weapon> moveShip(Ship ship, Orientation direction) {
         List<ShipTile> shipTiles = ship.getShipTiles();
         int x = shipTiles.get(0).getColumn();
         int y = shipTiles.get(0).getRow();
         int z = shipTiles.get(0).getDepth();
-        Point3D newOrigin = new Point3D(x,y,z);
+        Point3D newOrigin = new Point3D(x, y, z);
         List<Point3D> coords = new ArrayList<>();
         ShipTile currentTile;
         Point3D newCordinate;
@@ -171,7 +172,7 @@ public class Board implements Subject {
         int yChange = 0;
 
         //switch to determine x and y change based on direction given
-        switch (direction){
+        switch (direction) {
             case up:
                 xChange = 0;
                 yChange = -1;
@@ -194,47 +195,47 @@ public class Board implements Subject {
         }
 
         //origin AFTER moving for this ship
-        newOrigin = new Point3D(x+xChange,y+yChange,z);
+        newOrigin = new Point3D(x + xChange, y + yChange, z);
         //generate all other ship tile's coordinates based on that new origin and where the ship was originally facing
-        coords = ship.generateCoordinates(newOrigin,findOrientation(ship));
+        coords = ship.generateCoordinates(newOrigin, findOrientation(ship));
 
         //for loop generates appropriate wake behind the tile that is moving (ie. if tile behind was
-            //a SeaTile, then simply place a SeaTile in the spot you are leaving)
-        for(ShipTile tile : ship.getShipTiles()){
-            previousCoord = new Point3D(tile.getColumn()-xChange, tile.getRow()-yChange, tile.getDepth());
+        //a SeaTile, then simply place a SeaTile in the spot you are leaving)
+        for (ShipTile tile : ship.getShipTiles()) {
+            previousCoord = new Point3D(tile.getColumn() - xChange, tile.getRow() - yChange, tile.getDepth());
             //if shipTile was not up against the edge of the board
-            if(isWithinBounds(previousCoord)){
-                previous = tiles[tile.getColumn()-xChange][tile.getRow()-yChange][tile.getDepth()];
+            if (isWithinBounds(previousCoord)) {
+                previous = tiles[tile.getColumn() - xChange][tile.getRow() - yChange][tile.getDepth()];
 
-                if(previous instanceof SeaTile || previous instanceof MineTile || previous instanceof PowerUpTile){
+                if (previous instanceof SeaTile || previous instanceof MineTile || previous instanceof PowerUpTile) {
                     tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
                 }
             }
             //when spot ship is leaving is on edge of board, this guarantees it needs to be a sea tile in the ships wake
-            else{
+            else {
                 tiles[tile.getColumn()][tile.getRow()][tile.getDepth()] = new SeaTile(tile.getColumn(), tile.getRow(), tile.getDepth());
             }
         }
 
         //now ship needs to be moved to it's new location, List<Weapon> return is for if ship collects a powerUp
         List<Weapon> weaponsToAdd = new ArrayList<>();
-        for(int i = 0; i < ship.getSize(); i++){
+        for (int i = 0; i < ship.getSize(); i++) {
             currentTile = shipTiles.get(i);
             newCordinate = coords.get(i);
-            currentTile.setColumn((int)newCordinate.getX());
-            currentTile.setRow((int)newCordinate.getY());
-            currentTile.setDepth((int)newCordinate.getZ());
+            currentTile.setColumn((int) newCordinate.getX());
+            currentTile.setRow((int) newCordinate.getY());
+            currentTile.setDepth((int) newCordinate.getZ());
 
             boolean shotFlag = false;
             boolean powerUpFlag = false;
-            if (tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] instanceof MineTile && !currentTile.shot) {
+            if (tiles[(int) newCordinate.getX()][(int) newCordinate.getY()][(int) newCordinate.getZ()] instanceof MineTile && !currentTile.shot) {
                 shotFlag = true;
             }
-            if (tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] instanceof PowerUpTile) {
+            if (tiles[(int) newCordinate.getX()][(int) newCordinate.getY()][(int) newCordinate.getZ()] instanceof PowerUpTile) {
                 powerUpFlag = true;
             }
 
-            tiles[(int)newCordinate.getX()][(int)newCordinate.getY()][(int)newCordinate.getZ()] = currentTile;
+            tiles[(int) newCordinate.getX()][(int) newCordinate.getY()][(int) newCordinate.getZ()] = currentTile;
 
             //if we hit a mine on move, simulate the tile being damaged
             if (shotFlag) {
@@ -246,7 +247,7 @@ public class Board implements Subject {
                 ship.incrementPowerups();
                 if (Math.random() < 0.5)
                     weaponsToAdd.add(new MediumWeapon(new Attack(), Game.CLUSTER_BOMB, new PopCountAfterAttackBehavior(1)));
-                else{
+                else {
                     weaponsToAdd.add(new XLargeWeapon(new OneShotAttack(), Game.NUKE, new PopCountAfterAttackBehavior(1)));
                 }
             }
@@ -256,16 +257,16 @@ public class Board implements Subject {
 
     //method to actually place mines down on the board
     //will NOT place a mine down on an already occupied tile
-    public void placeMines(){
+    public void placeMines() {
         Random random = new Random();
         int minesToPlace = 5;
 
-        while(minesToPlace > 0){
+        while (minesToPlace > 0) {
             int i = random.nextInt(10) + 1;
             int j = random.nextInt(10) + 1;
             Tile oldTile = tiles[i][j][0];
-            if (oldTile instanceof SeaTile){
-                Tile mineTile = new MineTile(i,j,0);
+            if (oldTile instanceof SeaTile) {
+                Tile mineTile = new MineTile(i, j, 0);
                 tiles[i][j][0] = mineTile;
                 minesToPlace--;
             }
@@ -275,16 +276,16 @@ public class Board implements Subject {
 
     //method to actually place powerUps down on the board
     //will NOT place a powerUp on an already occupied tile
-    public void placePowerUps(){
+    public void placePowerUps() {
         Random random = new Random();
         int powerUpsToPlace = 2;
 
-        while(powerUpsToPlace > 0){
+        while (powerUpsToPlace > 0) {
             int i = random.nextInt(10) + 1;
             int j = random.nextInt(10) + 1;
             Tile oldTile = tiles[i][j][0];
-            if (oldTile instanceof SeaTile){
-                Tile powerUpTile = new PowerUpTile(i,j,0);
+            if (oldTile instanceof SeaTile) {
+                Tile powerUpTile = new PowerUpTile(i, j, 0);
                 tiles[i][j][0] = powerUpTile;
                 powerUpsToPlace--;
             }
@@ -309,7 +310,7 @@ public class Board implements Subject {
     //update all displays subscribed to this board (example usage would be a miss, both players need to see the miss
     @Override
     public void updateObservers() {
-        for(Observer observer : observers){
+        for (Observer observer : observers) {
             observer.update(tiles);
         }
         renderer.tick();
@@ -317,11 +318,11 @@ public class Board implements Subject {
 
     //only update your own display subscribed to this board
     //An example use of this would be for when the user moves their ship, you don't want the enemy to now be able
-        //to suddenly see where your ship moved to, so just update "local" displays, ie, your own
+    //to suddenly see where your ship moved to, so just update "local" displays, ie, your own
     @Override
     public void updateLocalObservers() {
-        for(Observer observer : observers){
-            if(observer instanceof Display){
+        for (Observer observer : observers) {
+            if (observer instanceof Display) {
                 observer.update(tiles);
             }
         }

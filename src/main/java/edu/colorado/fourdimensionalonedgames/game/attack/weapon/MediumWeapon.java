@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //attacks in the shape of a cross with 5 total tiles
-public class MediumWeapon extends Weapon{
+public class MediumWeapon extends Weapon {
 
     public MediumWeapon(IAttackBehavior behavior, String weaponName, IAfterAttackBehavior afterBehavior) {
         super(behavior, weaponName, afterBehavior);

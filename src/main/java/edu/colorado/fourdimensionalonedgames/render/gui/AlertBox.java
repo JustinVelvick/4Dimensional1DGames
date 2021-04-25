@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 //static method display for anyone to call at anytime they need a popup (ship has been hit, miss, etc)
 public class AlertBox {
     public static void display(String title, String message) {
-        if(Screen.getPrimary() == null){
+        if (Screen.getPrimary() == null) {
             return;
         }
         Stage popUp = new Stage();

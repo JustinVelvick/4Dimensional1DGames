@@ -98,9 +98,9 @@ class PlaceShipsTest {
     }
 
     @Test
-    void submergedPlaceShipTest(){
+    void submergedPlaceShipTest() {
         //placing a submarine at 8,2,1 down
-        testInput3 = new PlayerShipInput("Down", "Submarine","Yes", "8", "2");
+        testInput3 = new PlayerShipInput("Down", "Submarine", "Yes", "8", "2");
         assertTrue(player2.placeShip(testInput3));
         assertTrue(player2.getBoard().tiles[8][5][1] instanceof CaptainsQuartersTile);
         assertTrue(player2.getBoard().tiles[8][2][1] instanceof ShipTile);

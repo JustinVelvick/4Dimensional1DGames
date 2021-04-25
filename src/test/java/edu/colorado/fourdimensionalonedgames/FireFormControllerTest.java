@@ -22,9 +22,9 @@ public class FireFormControllerTest {
     }
 
     @Test
-    void testValidateForm(){
-        goodInput1 = new PlayerFireInput("Space Laser","B","2");
-        goodInput2 = new PlayerFireInput("Space Laser","b","7");
+    void testValidateForm() {
+        goodInput1 = new PlayerFireInput("Space Laser", "B", "2");
+        goodInput2 = new PlayerFireInput("Space Laser", "b", "7");
         badInput1 = new PlayerFireInput("Space Laser", "Destroyer", "");
         badInput2 = new PlayerFireInput("Space Laser", "C", "78");
         assertTrue(controller.validateForm(goodInput1));

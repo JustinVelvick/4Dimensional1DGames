@@ -4,7 +4,7 @@ package edu.colorado.fourdimensionalonedgames.game.ship;
 public abstract class ShipYard {
     protected abstract Ship buildShip(String choice);
 
-    public Ship createShip(String choice){
+    public Ship createShip(String choice) {
         Ship ship = buildShip(choice);
         return ship;
     }

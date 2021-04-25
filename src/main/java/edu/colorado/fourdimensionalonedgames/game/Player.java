@@ -14,6 +14,7 @@ import edu.colorado.fourdimensionalonedgames.render.gui.PlayerShipInput;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -37,7 +38,7 @@ public class Player {
     private MineCollection mines;
     private PowerUpsCollection powerUps;
 
-    public Player (Game game, Board board) {
+    public Player(Game game, Board board) {
         this.game = game;
         this.board = board;
         this.fleet = new Fleet();
@@ -51,7 +52,7 @@ public class Player {
         generateWeapons();
     }
 
-    private void generateShips(){
+    private void generateShips() {
         ShipYard defaultShipYard = new DefaultShipYard();
         ShipYard submergableShipYard = new SubmergableShipYard();
 
@@ -62,13 +63,13 @@ public class Player {
     }
 
     //creates starting weapons for the players, as of now that is just SingleShot
-    private void generateWeapons(){
+    private void generateWeapons() {
         weapons.add(new SmallWeapon(new Attack(), Game.SINGLE_SHOT));
     }
 
     /**
      * Mount an attack on the given enemy board at attackCoords with weaponChoice
-     *NOTE: PLAYER INPUT SHOULD BE VALIDATED AND FILTERED BY THIS POINT
+     * NOTE: PLAYER INPUT SHOULD BE VALIDATED AND FILTERED BY THIS POINT
      *
      * @return - list of resulting AttackResult objects in the form of {AttackResultType enum, Ship(if applicable)}
      */
@@ -81,23 +82,22 @@ public class Player {
         Point2D attackCoords = new Point2D(x, y);
 
         //if a finite weapon is being used, decrement uses. If decrement uses becomes zero, remove from player's weapons
-        if(weapon.doRemove()){
+        if (weapon.doRemove()) {
             this.weapons.remove(weapon);
         }
 
         List<AttackResult> results = weapon.useAt(opponentBoard, attackCoords);
         opponentBoard.updateObservers();
 
-        for(AttackResult attackResult : results){
+        for (AttackResult attackResult : results) {
             Ship attackedShip = attackResult.getShip();
 
             if (attackedShip == null) {
                 //when missed shot
                 missedShots++;
-            }
-            else if (attackedShip.destroyed()) {
+            } else if (attackedShip.destroyed()) {
                 //when ship has been destroyed
-                if(this.upgradeStatus == TierOneUpgrade.LOCKED){
+                if (this.upgradeStatus == TierOneUpgrade.LOCKED) {
                     this.upgradeStatus = TierOneUpgrade.UNLOCKED;
                 }
             }
@@ -106,11 +106,11 @@ public class Player {
     }
 
     //matches weapon that user picked in GUI with those stored in player's list of weapons avaliable
-    private Weapon stringToWeapon(String weaponChoice){
+    private Weapon stringToWeapon(String weaponChoice) {
         Weapon returnWeapon = null;
 
-        for( Weapon weapon : weapons){
-            if(weapon.getType().equals(weaponChoice)){
+        for (Weapon weapon : weapons) {
+            if (weapon.getType().equals(weaponChoice)) {
                 returnWeapon = weapon;
             }
         }
@@ -127,24 +127,24 @@ public class Player {
      * @param input: An object that contains all relevant data the user filled out in the GUI form
      * @return: returns true if placement succeeded, false otherwise
      */
-    public Boolean placeShip(PlayerShipInput input){
+    public Boolean placeShip(PlayerShipInput input) {
         Orientation direction = Orientation.down;
-        double x =  Double.parseDouble(input.getxCord());
-        double y =  Double.parseDouble(input.getyCord());
+        double x = Double.parseDouble(input.getxCord());
+        double y = Double.parseDouble(input.getyCord());
         Point3D origin = new Point3D(x, y, 0);
         Ship newShip = new Destroyer();
 
         String shipChoice = input.getShipChoice();
         String orientationChoice = input.getDirection();
 
-        for(Ship ship : this.getShipsToPlace()){
-            if(shipChoice.equals(ship.getType())){
+        for (Ship ship : this.getShipsToPlace()) {
+            if (shipChoice.equals(ship.getType())) {
                 newShip = ship;
             }
         }
 
         //Set z axis
-        if(input.getSubmergeChoice().equals("Yes")){
+        if (input.getSubmergeChoice().equals("Yes")) {
             newShip.setShipTileDepth(1);
             origin = new Point3D(origin.getX(), origin.getY(), 1);
         }
@@ -167,7 +167,7 @@ public class Player {
                 break;
         }
 
-        if(getBoard().placeShip(direction, origin, newShip)){
+        if (getBoard().placeShip(direction, origin, newShip)) {
             //add this completed, built ship to the fleet
             fleet.addShip(newShip);
             //Remove shipToPlace from player list of shipsToPlace since placement succeeded
@@ -175,18 +175,17 @@ public class Player {
             //add mines
             checkMines();
             checkPowerUps();
-        }
-        else{
+        } else {
             return false;
         }
         return true;
     }
 
-    private void checkMines(){
-        if(shipsToPlace.isEmpty()){
+    private void checkMines() {
+        if (shipsToPlace.isEmpty()) {
             mines = MineCollection.AVAILABLE;
         }
-        if(mines == MineCollection.AVAILABLE){
+        if (mines == MineCollection.AVAILABLE) {
             mines = MineCollection.PLACED;
             board.placeMines();
         }
@@ -205,17 +204,16 @@ public class Player {
      * @param direction: direction to attempt to move every ship in the fleet towards
      * @return: returns false if no movement was possible
      */
-    public boolean moveFleet(Orientation direction){
+    public boolean moveFleet(Orientation direction) {
         // check for border collision on all ships in the fleet
-        if(borderCollision(direction)){
+        if (borderCollision(direction)) {
             return false;
-        }
-        else{
+        } else {
             // actually move the fleet now that we confirmed it can be moved
             List<Weapon> weaponsToAdd = new ArrayList<>();
-            for (Ship ship : fleet.getShips()){
+            for (Ship ship : fleet.getShips()) {
                 //dead ships should not move
-                if(ship.destroyed()){
+                if (ship.destroyed()) {
                     continue;
                 }
                 weaponsToAdd.addAll(board.moveShip(ship, direction));
@@ -229,15 +227,15 @@ public class Player {
                     if (weapon2.getType().equals(weapon.getType())) {
                         isInAlreadyExistingWeapons = true;
                         weapon2.addCount(weapon.getCount());
-                        if(!game.isTestMode()){
+                        if (!game.isTestMode()) {
                             AlertBox.display("Power Up Acquired", "You just picked up another " + weaponsToAdd.get(0).getType() + "! Use it wisely, you now have " +
-                                    weaponsToAdd.get(0).getCount()+" left");
+                                    weaponsToAdd.get(0).getCount() + " left");
                         }
                     }
                 }
                 if (!isInAlreadyExistingWeapons) {
                     weapons.add(weapon);
-                    if(!game.isTestMode()){
+                    if (!game.isTestMode()) {
                         AlertBox.display("Power Up Acquired", "You just picked up a " + weaponsToAdd.get(0).getType() + "! Use it wisely, you only have one!");
                     }
                 }
@@ -247,39 +245,39 @@ public class Player {
     }
 
     //helper method for moveFleet to see if any ship cannot move (up against an edge of the board in desired direction)
-    private boolean borderCollision(Orientation direction){
-        switch (direction){
+    private boolean borderCollision(Orientation direction) {
+        switch (direction) {
             case up:
-                for (Ship ship : fleet.getShips()){
-                    for (ShipTile tile : ship.getShipTiles()){
-                        if (tile.getRow() - 1 < 1){
+                for (Ship ship : fleet.getShips()) {
+                    for (ShipTile tile : ship.getShipTiles()) {
+                        if (tile.getRow() - 1 < 1) {
                             return true;
                         }
                     }
                 }
                 break;
             case down:
-                for (Ship ship : fleet.getShips()){
-                    for (ShipTile tile : ship.getShipTiles()){
-                        if (tile.getRow() + 1 > 10){
+                for (Ship ship : fleet.getShips()) {
+                    for (ShipTile tile : ship.getShipTiles()) {
+                        if (tile.getRow() + 1 > 10) {
                             return true;
                         }
                     }
                 }
                 break;
             case right:
-                for (Ship ship : fleet.getShips()){
-                    for (ShipTile tile : ship.getShipTiles()){
-                        if (tile.getColumn() + 1 > 10){
+                for (Ship ship : fleet.getShips()) {
+                    for (ShipTile tile : ship.getShipTiles()) {
+                        if (tile.getColumn() + 1 > 10) {
                             return true;
                         }
                     }
                 }
                 break;
             case left:
-                for (Ship ship : fleet.getShips()){
-                    for (ShipTile tile : ship.getShipTiles()){
-                        if (tile.getColumn() - 1 < 1){
+                for (Ship ship : fleet.getShips()) {
+                    for (ShipTile tile : ship.getShipTiles()) {
+                        if (tile.getColumn() - 1 < 1) {
                             return true;
                         }
                     }
@@ -291,11 +289,11 @@ public class Player {
         return false;
     }
 
-    public void checkPowerUps(){
-        if(shipsToPlace.isEmpty()){
+    public void checkPowerUps() {
+        if (shipsToPlace.isEmpty()) {
             powerUps = PowerUpsCollection.AVAILABLE;
         }
-        if(powerUps == PowerUpsCollection.AVAILABLE){
+        if (powerUps == PowerUpsCollection.AVAILABLE) {
             powerUps = PowerUpsCollection.PLACED;
             board.placePowerUps();
         }
@@ -313,13 +311,15 @@ public class Player {
         return shipsToPlace;
     }
 
-    public List<Weapon> getWeapons(){return weapons;}
+    public List<Weapon> getWeapons() {
+        return weapons;
+    }
 
     public TierOneUpgrade getUpgradeStatus() {
         return upgradeStatus;
     }
 
-    public Fleet getFleet(){
+    public Fleet getFleet() {
         return fleet;
     }
 
@@ -335,15 +335,15 @@ public class Player {
         return score;
     }
 
-    public Game getGame(){
+    public Game getGame() {
         return game;
     }
 
-    public FleetControl getFleetController(){
+    public FleetControl getFleetController() {
         return fleetController;
     }
 
-    public void refreshFleetController(){
+    public void refreshFleetController() {
         fleetController = new FleetControl(this);
     }
 
@@ -351,7 +351,7 @@ public class Player {
         this.upgradeStatus = upgradeStatus;
     }
 
-    public void setScore(int newScore){
+    public void setScore(int newScore) {
         this.score = newScore;
     }
 
@@ -359,7 +359,7 @@ public class Player {
         this.weapons.add(weapon);
     }
 
-    public void removeShipToPlace(Ship ship){
+    public void removeShipToPlace(Ship ship) {
         this.shipsToPlace.remove(ship);
     }
 }

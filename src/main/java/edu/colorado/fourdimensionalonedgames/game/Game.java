@@ -23,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class Game {
 
     //implements Singleton design pattern for Game object (only one is allowed to exist)
     public static synchronized Game getInstance(Stage primaryStage, Render renderer, GameSettings settings) throws IOException {
-        if(uniqueInstance == null){
+        if (uniqueInstance == null) {
             uniqueInstance = new Game(primaryStage, renderer, settings);
         }
         return uniqueInstance;
@@ -77,12 +78,13 @@ public class Game {
 
 
     //Game constructor which creates the Player objects
+
     /**
      * @param primaryStage (Stage which the application will display on user's computer)
-     * @param renderer (One renderer to contain all IRenderable objects)
-     * @param settings (Package of various game settings)
+     * @param renderer     (One renderer to contain all IRenderable objects)
+     * @param settings     (Package of various game settings)
      */
-    private Game(Stage primaryStage, Render renderer, GameSettings settings){
+    private Game(Stage primaryStage, Render renderer, GameSettings settings) {
 
         //set all of our private game attributes
         this.renderer = renderer;
@@ -92,13 +94,13 @@ public class Game {
         this.depth = settings.getDepth();
         this.numberofPlayers = settings.getNumberOfPlayers();
 
-        this.width = columns*tileSize;
-        this.height = columns*tileSize;
+        this.width = columns * tileSize;
+        this.height = columns * tileSize;
         this.player1Turn = false;
         this.gameState = GameState.player1_setup;
 
         //create the players for this game (and their boards in the process)
-        for(int i = 0; i < this.numberofPlayers; i++){
+        for (int i = 0; i < this.numberofPlayers; i++) {
             Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
@@ -109,21 +111,21 @@ public class Game {
 
     //Overloaded constructor for testing, the only difference is that this method does not call startGame (loads GUI)
     //This constructor does NOT take in a stage as it's just for non visual, logic testing
-    public Game(Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth){
+    public Game(Render renderer, int numberofPlayers, int tileSize, int columns, int rows, int depth) {
         //set all of our private game attributes
         this.renderer = renderer;
         this.tileSize = tileSize;
         this.columns = columns;
         this.rows = rows;
         this.depth = depth;
-        this.width = columns*tileSize;
-        this.height = columns*tileSize;
+        this.width = columns * tileSize;
+        this.height = columns * tileSize;
         this.numberofPlayers = numberofPlayers;
         this.player1Turn = true;
         this.gameState = GameState.player1_setup;
 
         //create the players for this game (and their boards in the process)
-        for(int i = 0; i < this.numberofPlayers; i++){
+        for (int i = 0; i < this.numberofPlayers; i++) {
             Player newPlayer = new Player(this, new Board(columns, rows, depth, this.renderer));
             this.players.add(newPlayer);
         }
@@ -131,15 +133,15 @@ public class Game {
     }
 
     //called ONCE on game start
-    private void startGame(Stage primaryStage){
+    private void startGame(Stage primaryStage) {
 
-        try{
+        try {
             //Store our application's parent stage (the stage we set all our scenes to upon turn switch)
             this.primaryStage = primaryStage;
             //Load our menu scene and accompying controller and store them
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("menuScene.fxml"));
             Pane menuRoot = loader.load();
-            this.menuScene = new Scene(menuRoot, (width*2), (height*1.2));
+            this.menuScene = new Scene(menuRoot, (width * 2), (height * 1.2));
 
             this.menuSceneController = loader.getController();
             this.menuSceneController.initialize(this);
@@ -148,7 +150,7 @@ public class Game {
             //Load our player1Scene and accompying controller and store them
             loader = new FXMLLoader(getClass().getClassLoader().getResource("player1Scene.fxml"));
             HBox player1Root = loader.load();
-            this.player1Scene = new Scene(player1Root, (width*2.3) , (height*1.3));
+            this.player1Scene = new Scene(player1Root, (width * 2.3), (height * 1.3));
 
             this.player1Controller = loader.getController();
             this.player1Controller.initialize(this, getPlayers().get(0), getPlayers().get(1));
@@ -157,9 +159,9 @@ public class Game {
             //Load our player2Scene and accompying controller and store them
             loader = new FXMLLoader(getClass().getClassLoader().getResource("player2Scene.fxml"));
             HBox player2Root = loader.load();
-            this.player2Scene = new Scene(player2Root, (width*2.3) , (height*1.3));
+            this.player2Scene = new Scene(player2Root, (width * 2.3), (height * 1.3));
 
-            this.player2Controller= loader.getController();
+            this.player2Controller = loader.getController();
             this.player2Controller.initialize(this, getPlayers().get(1), getPlayers().get(0));
 
             //initialize both player's boards (visually via linking board Tiles with FXML GridPanes)
@@ -184,12 +186,12 @@ public class Game {
         }
     }
 
-    public void startNewGame(){
+    public void startNewGame() {
         startGame(primaryStage);
         setGameState(GameState.player1_setup);
     }
 
-    private void initializeBoards(){
+    private void initializeBoards() {
         //Player 1's own board
         players.get(0).getBoard().initializeBoard();
         //Player 2's own board
@@ -197,7 +199,7 @@ public class Game {
     }
 
     ////////////////////////////////////  GUI RELATED METHODS //////////////////////////////////////////////
-    private void linkBoardVisuals(Canvas p1Grid, Canvas p1EnemyGrid, Canvas p2Grid, Canvas p2EnemyGrid){
+    private void linkBoardVisuals(Canvas p1Grid, Canvas p1EnemyGrid, Canvas p2Grid, Canvas p2EnemyGrid) {
 
         Board player1Board = players.get(0).getBoard();
         Board player2Board = players.get(1).getBoard();
@@ -226,9 +228,9 @@ public class Game {
 
     //called once user presses start game from the main menu, gives restricted environment to force players to
     //put all of their ships down before they can pass turns
-    public void passSetupTurn(){
+    public void passSetupTurn() {
 
-        if(gameState == GameState.player1_setup){
+        if (gameState == GameState.player1_setup) {
             //Player 1's placing of ships
             this.primaryStage.setTitle("Player 1: Ship Placement");
             this.primaryStage.setScene(this.player1Scene);
@@ -237,7 +239,7 @@ public class Game {
             this.primaryStage.show();
         }
 
-        if(gameState == GameState.player2_setup){
+        if (gameState == GameState.player2_setup) {
             //Player 2's placing of ships
             this.primaryStage.setTitle("Player 2: Ship Placement");
             this.primaryStage.setScene(this.player2Scene);
@@ -250,53 +252,51 @@ public class Game {
     }
 
     //called when a player's turn is over
-    public void passTurn(){
+    public void passTurn() {
         this.player1Turn = !this.player1Turn;
         //to give each player a fresh, empty fleet movement stack for the next turn
-        for(Player player : players){
+        for (Player player : players) {
             player.refreshFleetController();
         }
     }
 
     //called when turns are passed back and forth
-    public void updateScene(){
+    public void updateScene() {
         //have JavaFX open up our player1Scene.fxml
-        if(this.player1Turn){
+        if (this.player1Turn) {
             this.primaryStage.setTitle("Player 1's Turn");
             this.primaryStage.setScene(this.player1Scene);
             this.primaryStage.show();
-            if(gameState == GameState.first_turn){
+            if (gameState == GameState.first_turn) {
                 AlertBox.display("Begin Combat!", "Welcome to the first turn Player 1! Please update this bland message :)");
-            }
-            else{
+            } else {
                 player1Controller.showAllButtons();
             }
         }
         //have JavaFX open up our player2Scene.fxml
-        else{
+        else {
             this.primaryStage.setTitle("Player 2's Turn");
             this.primaryStage.setScene(this.player2Scene);
             this.primaryStage.show();
-            if(gameState == GameState.first_turn){
+            if (gameState == GameState.first_turn) {
                 AlertBox.display("Begin Combat!", "Welcome to the first turn Player 2! Please update this bland message :)");
                 setGameState(GameState.main_state);
-            }
-            else{
+            } else {
                 player2Controller.showAllButtons();
             }
         }
     }
 
-    public void updateScores(){
+    public void updateScores() {
         Player player1 = getPlayers().get(0);
         Player player2 = getPlayers().get(1);
         int player1score = player1.getScore();
         int player2score = player2.getScore();
 
-        for(Ship ship : player1.getFleet().getDestroyedShips()){
+        for (Ship ship : player1.getFleet().getDestroyedShips()) {
             player2score += ship.getSize();
         }
-        for(Ship ship : player2.getFleet().getDestroyedShips()){
+        for (Ship ship : player2.getFleet().getDestroyedShips()) {
             player1score += ship.getSize();
         }
 
@@ -306,8 +306,8 @@ public class Game {
 
     public void checkUpgrades() {
         //CHECKING FOR UPGRADE UNLOCKS
-        for(Player player : players){
-            if(player.getUpgradeStatus() == TierOneUpgrade.UNLOCKED){
+        for (Player player : players) {
+            if (player.getUpgradeStatus() == TierOneUpgrade.UNLOCKED) {
                 player.setUpgradeStatus(TierOneUpgrade.USED);
                 //player gets 2 sonar pulses for the rest of the game to use
                 player.addWeapon(new LargeWeapon(new Reveal(), Game.SONAR_PULSE, new PopCountAfterAttackBehavior(2)));
@@ -319,28 +319,27 @@ public class Game {
     }
 
     //checks if someone has won the game
-    public boolean isGameOver(){
+    public boolean isGameOver() {
         boolean over = true;
-        if (getPlayers().get(0).getFleet().hasShip() && getPlayers().get(1).getFleet().hasShip()){
+        if (getPlayers().get(0).getFleet().hasShip() && getPlayers().get(1).getFleet().hasShip()) {
             over = false;
         }
         return over;
     }
 
     //goes through various tasks that need to happen when the game ends (one player has no ships remaining)
-    public void gameOver(){
+    public void gameOver() {
         Player player1 = getPlayers().get(0);
         Player player2 = getPlayers().get(1);
 
         //player 1 lost
-        if(!player1.getFleet().hasShip()){
-            AlertBox.display("GAME OVER", "Congratulations Player 2, you won!" );
-        }
-        else if(!player2.getFleet().hasShip()){
-            AlertBox.display("GAME OVER", "Congratulations Player 1, you won!" );
+        if (!player1.getFleet().hasShip()) {
+            AlertBox.display("GAME OVER", "Congratulations Player 2, you won!");
+        } else if (!player2.getFleet().hasShip()) {
+            AlertBox.display("GAME OVER", "Congratulations Player 1, you won!");
         }
 
-        try{
+        try {
             //Load our play again pop up scene
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("endCredits.fxml"));
             Pane endSceenRoot = loader.load();
@@ -366,7 +365,7 @@ public class Game {
         return renderer;
     }
 
-    public GameState getGameState(){
+    public GameState getGameState() {
         return gameState;
     }
 
@@ -390,7 +389,7 @@ public class Game {
         return player2Controller;
     }
 
-    public boolean isPlayer1Turn(){
+    public boolean isPlayer1Turn() {
         return player1Turn;
     }
 }

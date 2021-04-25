@@ -112,12 +112,12 @@ class ShipTest {
     }
 
     @Test
-    void shipCreation(){
+    void shipCreation() {
 
         //Minesweeper
         List<ShipTile> tiles = player2Minesweeper.getShipTiles();
 
-        for(ShipTile tile : tiles){
+        for (ShipTile tile : tiles) {
             assertFalse(tile.shot);
             assertFalse(tile.revealed);
         }
@@ -127,7 +127,7 @@ class ShipTest {
         //Destroyer
         tiles = player2Destroyer.getShipTiles();
 
-        for(ShipTile tile : tiles){
+        for (ShipTile tile : tiles) {
             assertFalse(tile.shot);
             assertFalse(tile.revealed);
         }
@@ -138,7 +138,7 @@ class ShipTest {
         //Battleship
         tiles = player2Battleship.getShipTiles();
 
-        for(ShipTile tile : tiles){
+        for (ShipTile tile : tiles) {
             assertFalse(tile.shot);
             assertFalse(tile.revealed);
         }
@@ -147,12 +147,12 @@ class ShipTest {
     }
 
     @Test
-    void submergableShipCreation(){
+    void submergableShipCreation() {
 
         //Submarine
         List<ShipTile> tiles = player2Submarine.getShipTiles();
 
-        for(ShipTile tile : tiles){
+        for (ShipTile tile : tiles) {
             assertFalse(tile.shot);
             assertFalse(tile.revealed);
         }
@@ -162,66 +162,66 @@ class ShipTest {
 
     //sub specific shape only
     @Test
-    void testSubmarineGenerateCoordinates(){
+    void testSubmarineGenerateCoordinates() {
 
         //////////////See if sub generates correct coordinates for itself on SURFACE (9,9 up)///////////////
-        Point3D origin = new Point3D(9,9,0);
+        Point3D origin = new Point3D(9, 9, 0);
         List<Point3D> results = player2Submarine.generateCoordinates(origin, Orientation.up);
         List<Point3D> expected = new ArrayList<>();
         //for the 4 submarine tiles lined up in a row
-        for(int y = 9; y > 5; y--){
-            expected.add(new Point3D(9,y,0));
+        for (int y = 9; y > 5; y--) {
+            expected.add(new Point3D(9, y, 0));
         }
         //for the weird submarine protrusion tile
-        expected.add(new Point3D(8,7,0));
+        expected.add(new Point3D(8, 7, 0));
 
-        for(int i = 0; i < player2Submarine.getSize(); i++){
+        for (int i = 0; i < player2Submarine.getSize(); i++) {
             assertEquals(expected.get(i), results.get(i));
         }
 
         /////////See if sub generates correct coordinates for itself below sea level (z=1)////////////////
-        origin = new Point3D(9,9,1);
+        origin = new Point3D(9, 9, 1);
         results = player2Submarine.generateCoordinates(origin, Orientation.up);
         expected = new ArrayList<>();
         //for the 4 submarine tiles lined up in a row
-        for(int y = 9; y > 5; y--){
-            expected.add(new Point3D(9,y,1));
+        for (int y = 9; y > 5; y--) {
+            expected.add(new Point3D(9, y, 1));
         }
         //for the weird submarine protrusion tile
-        expected.add(new Point3D(8,7,1));
+        expected.add(new Point3D(8, 7, 1));
 
-        for(int i = 0; i < player2Submarine.getSize(); i++){
+        for (int i = 0; i < player2Submarine.getSize(); i++) {
             assertEquals(expected.get(i), results.get(i));
         }
 
         /////////Since sub protrustion tile is wacky, test again but with down and left to be sure///////////////
         //NOTE: 10 will be the y of the protruding tile, which is a good edge case to test anyways (still on board)
-        origin = new Point3D(9,9,0);
+        origin = new Point3D(9, 9, 0);
         results = player2Submarine.generateCoordinates(origin, Orientation.left);
         expected = new ArrayList<>();
         //for the 4 submarine tiles lined up in a row
-        for(int x = 9; x > 5; x--){
-            expected.add(new Point3D(x,9,0));
+        for (int x = 9; x > 5; x--) {
+            expected.add(new Point3D(x, 9, 0));
         }
         //for the weird submarine protrusion tile
-        expected.add(new Point3D(7,10,0));
+        expected.add(new Point3D(7, 10, 0));
 
-        for(int i = 0; i < player2Submarine.getSize(); i++){
+        for (int i = 0; i < player2Submarine.getSize(); i++) {
             assertEquals(expected.get(i), results.get(i));
         }
 
         ////////Sub placement down//////////////////////////////////////////////////////////////////////////////////
-        origin = new Point3D(8,1,0);
+        origin = new Point3D(8, 1, 0);
         results = player2Submarine.generateCoordinates(origin, Orientation.down);
         expected = new ArrayList<>();
         //for the 4 submarine tiles lined up in a row
-        for(int y = 1; y < 5; y++){
-            expected.add(new Point3D(8,y,0));
+        for (int y = 1; y < 5; y++) {
+            expected.add(new Point3D(8, y, 0));
         }
         //for the weird submarine protrusion tile
-        expected.add(new Point3D(9,3,0));
+        expected.add(new Point3D(9, 3, 0));
 
-        for(int i = 0; i < player2Submarine.getSize(); i++){
+        for (int i = 0; i < player2Submarine.getSize(); i++) {
             assertEquals(expected.get(i), results.get(i));
         }
 
@@ -236,7 +236,7 @@ class ShipTest {
         List<Point3D> results = player2Battleship.generateCoordinates(origin, Orientation.down);
         List<Point3D> expected = new ArrayList<>();
         //for the 4 battleship tiles lined up in a row
-        for(int y = 1; y < 5; y++) {
+        for (int y = 1; y < 5; y++) {
             expected.add(new Point3D(9, y, 0));
         }
 
@@ -257,13 +257,13 @@ class ShipTest {
     }
 
     @Test
-    void testCaptainQuarters(){
+    void testCaptainQuarters() {
         //damage Minesweeper's CQ (one shots it)
         fireInput1 = new PlayerFireInput("Single Shot", "1", "1");
         List<AttackResult> results = player1.attack(player2.getBoard(), fireInput1);
         AttackResult result = results.get(0);
         assertTrue(result.getShip().destroyed());
-        CaptainsQuartersTile captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(0);
+        CaptainsQuartersTile captainsQ = (CaptainsQuartersTile) result.getShip().getShipTiles().get(0);
         assertEquals(captainsQ.getHp(), 0);
         assertSame(result.getType(), AttackResultType.SUNK);
 
@@ -273,7 +273,7 @@ class ShipTest {
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
         assertFalse(result.getShip().destroyed());
-        captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(1);
+        captainsQ = (CaptainsQuartersTile) result.getShip().getShipTiles().get(1);
         assertEquals(captainsQ.getHp(), 1);
         assertSame(result.getType(), AttackResultType.MISS);
 
@@ -289,7 +289,7 @@ class ShipTest {
         fireInput1 = new PlayerFireInput("Single Shot", "5", "7");
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(2);
+        captainsQ = (CaptainsQuartersTile) result.getShip().getShipTiles().get(2);
         assertEquals(captainsQ.getHp(), 1);
         assertFalse(result.getShip().destroyed());
         assertSame(result.getType(), AttackResultType.MISS);
@@ -306,7 +306,7 @@ class ShipTest {
         fireInput1 = new PlayerFireInput("Space Laser", "2", "5");
         results = player1.attack(player2.getBoard(), fireInput1);
         result = results.get(0);
-        captainsQ = (CaptainsQuartersTile)result.getShip().getShipTiles().get(3);
+        captainsQ = (CaptainsQuartersTile) result.getShip().getShipTiles().get(3);
         assertEquals(captainsQ.getHp(), 1);
         assertFalse(result.getShip().destroyed());
         assertSame(result.getType(), AttackResultType.MISS);

@@ -34,16 +34,16 @@ public abstract class Tile implements IDrawable {
     }
 
     public void draw(GraphicsContext gc) {
-        int xOrigin = this.getColumn()*40;
-        int yOrigin = this.getRow()*40;
+        int xOrigin = this.getColumn() * 40;
+        int yOrigin = this.getRow() * 40;
 
         gc.setStroke(Color.BLACK);
         gc.setFill(getColor());
         gc.fillRect(xOrigin, yOrigin, 40, 40);
-        gc.strokeLine(xOrigin,yOrigin,xOrigin+40,yOrigin);
-        gc.strokeLine(xOrigin+40,yOrigin,xOrigin+40,yOrigin+40);
-        gc.strokeLine(xOrigin+40,yOrigin+40,xOrigin,yOrigin+40);
-        gc.strokeLine(xOrigin,yOrigin+40,xOrigin,yOrigin);
+        gc.strokeLine(xOrigin, yOrigin, xOrigin + 40, yOrigin);
+        gc.strokeLine(xOrigin + 40, yOrigin, xOrigin + 40, yOrigin + 40);
+        gc.strokeLine(xOrigin + 40, yOrigin + 40, xOrigin, yOrigin + 40);
+        gc.strokeLine(xOrigin, yOrigin + 40, xOrigin, yOrigin);
     }
 
     public abstract Color getColor();
