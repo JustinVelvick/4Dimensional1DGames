@@ -2,7 +2,7 @@
 
 ## Running the BattleShip Game:
 ### Option 1: Jar Executable
--In the main directory of our repo (same as README.md), there is an executable jar file. If everything went as planned and nothing unexpected occurs, opening this file should run the game just fine.
+-In the main directory of our repo (same as README.md), there is an executable jar file called "4Dimensional1DGames.jar". If everything went as planned and nothing unexpected occurs, opening this file should run the game just fine.
 ### Option 2: Through IDE
 <ol>
   <li> Open Intellij</li>
