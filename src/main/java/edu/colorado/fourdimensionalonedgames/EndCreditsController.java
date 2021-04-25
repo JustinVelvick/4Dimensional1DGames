@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * EndCreditsController handles events that result from the user interacting with the endCredits.fxml form.
+ *
+ * This controller tells the Game class what the user decided
+ */
 public class EndCreditsController implements Initializable {
 
     private Game game;

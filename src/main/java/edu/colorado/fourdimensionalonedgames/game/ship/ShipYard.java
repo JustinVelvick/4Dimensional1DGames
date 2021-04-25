@@ -1,6 +1,9 @@
 package edu.colorado.fourdimensionalonedgames.game.ship;
 
-//abstract factory for ship creation
+/**
+ *  ShipYard is an abstract factory for ship creation, some concrete implementation examples include DefaultShipYard
+ *  and SubmergableShipYard
+ */
 public abstract class ShipYard {
     protected abstract Ship buildShip(String choice);
 

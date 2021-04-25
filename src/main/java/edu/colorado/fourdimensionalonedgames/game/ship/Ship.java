@@ -2,6 +2,7 @@ package edu.colorado.fourdimensionalonedgames.game.ship;
 
 import edu.colorado.fourdimensionalonedgames.render.IRenderable;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
@@ -65,6 +66,26 @@ public abstract class Ship {
 
         return newCoordinates;
     }
+
+    public Point2D findAveragePostion(){
+        Point2D average;
+
+        double xAverage = 0;
+        double yAverage = 0;
+
+        for(ShipTile tile: this.getShipTiles()){
+            xAverage+= tile.getColumn();
+            yAverage+= tile.getRow();
+        }
+
+        xAverage = xAverage/this.size;
+        yAverage = yAverage/this.size;
+
+        average = new Point2D(xAverage, yAverage);
+        return average;
+    }
+
+
 
     //calculates total number of this ship's tiles that have been shot
     public int damage() {

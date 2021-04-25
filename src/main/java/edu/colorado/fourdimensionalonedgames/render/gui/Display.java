@@ -1,24 +1,22 @@
 package edu.colorado.fourdimensionalonedgames.render.gui;
 
-import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.IRenderable;
-import edu.colorado.fourdimensionalonedgames.render.Render;
-import edu.colorado.fourdimensionalonedgames.render.tile.CaptainsQuartersTile;
-import edu.colorado.fourdimensionalonedgames.render.tile.GenericTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.ShipTile;
 import edu.colorado.fourdimensionalonedgames.render.tile.Tile;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static java.lang.Math.floor;
 
-//Contains all that is needed for a player to see their own board
-//This class differs from EnemyDisplay in how tiles are selected before they are actually drawn on the Canvas
+/**
+ * Display contains all that is needed for a player to see and update their own board. Display implements Observer as
+ * part of the Observer pattern, receiving updates from Board when available.
+ *
+ * This class differs from EnemyDisplay in how tiles are selected before they are actually drawn on the Canvas
+ */
+
 public class Display implements Observer, IRenderable {
     protected Canvas grid;
     protected Tile[][][] boardState;

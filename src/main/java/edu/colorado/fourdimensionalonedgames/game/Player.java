@@ -16,9 +16,16 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Player class deals with all player related actions and data, including placing ships onto their Board, attacking
+ * the enemy board, and moving the fleet. Player tracks user related things as well like ign, victories, score, etc.
+ * For this reason, the Player class CAN exist without game, but more practically we would export these fields to a
+ * database on game close, and reload them into a new player object once that same user comes back.
+ */
 public class Player {
     //account specific info
     private String ign;
@@ -211,7 +218,32 @@ public class Player {
         } else {
             // actually move the fleet now that we confirmed it can be moved
             List<Weapon> weaponsToAdd = new ArrayList<>();
-            for (Ship ship : fleet.getShips()) {
+            List<Ship> correctlyOrdered = new ArrayList<>();
+
+            for(Ship ship : fleet.getShips()){
+                correctlyOrdered.add(ship);
+            }
+
+            switch (direction){
+                case down:
+                    //sort all average ship positions by largest y axis
+                    correctlyOrdered.sort(Comparator.comparingInt((Ship s) -> (int) s.findAveragePostion().getY()).reversed());
+                    break;
+                case up:
+                    //sort all average ship positions by smallest y axis
+                    correctlyOrdered.sort(Comparator.comparingInt((Ship s) -> (int) s.findAveragePostion().getY()));
+                    break;
+                case left:
+                    //sort all average ship positions by smallest x axis
+                    correctlyOrdered.sort(Comparator.comparingInt((Ship s) -> (int) s.findAveragePostion().getX()));
+                    break;
+                case right:
+                    //sort all average ship positions by largest x axis
+                    correctlyOrdered.sort(Comparator.comparingInt((Ship s) -> (int) s.findAveragePostion().getX()).reversed());
+                    break;
+            }
+
+            for (Ship ship : correctlyOrdered) {
                 //dead ships should not move
                 if (ship.destroyed()) {
                     continue;
@@ -249,6 +281,9 @@ public class Player {
         switch (direction) {
             case up:
                 for (Ship ship : fleet.getShips()) {
+                    if(ship.destroyed()){
+                        continue;
+                    }
                     for (ShipTile tile : ship.getShipTiles()) {
                         if (tile.getRow() - 1 < 1) {
                             return true;
@@ -258,6 +293,9 @@ public class Player {
                 break;
             case down:
                 for (Ship ship : fleet.getShips()) {
+                    if(ship.destroyed()){
+                        continue;
+                    }
                     for (ShipTile tile : ship.getShipTiles()) {
                         if (tile.getRow() + 1 > 10) {
                             return true;
@@ -267,6 +305,9 @@ public class Player {
                 break;
             case right:
                 for (Ship ship : fleet.getShips()) {
+                    if(ship.destroyed()){
+                        continue;
+                    }
                     for (ShipTile tile : ship.getShipTiles()) {
                         if (tile.getColumn() + 1 > 10) {
                             return true;
@@ -276,6 +317,9 @@ public class Player {
                 break;
             case left:
                 for (Ship ship : fleet.getShips()) {
+                    if(ship.destroyed()){
+                        continue;
+                    }
                     for (ShipTile tile : ship.getShipTiles()) {
                         if (tile.getColumn() - 1 < 1) {
                             return true;

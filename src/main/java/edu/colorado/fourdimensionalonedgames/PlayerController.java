@@ -109,7 +109,7 @@ public class PlayerController implements Initializable {
 
         FireFormController formController = loader.getController();
         //populate weapons list
-        formController.initialize(this.game);
+        formController.initialize();
         formController.populateFireForm(this.player.getWeapons());
 
         Stage stage = new Stage();
@@ -219,27 +219,29 @@ public class PlayerController implements Initializable {
 
 
     public void handlePassTurnButton(ActionEvent e) {
-        //one time if statement for passing to player 1's first combat turn
-        if (game.getGameState() == GameState.player2_setup) {
-            game.setGameState(GameState.first_turn);
-            showCombatButtons();
-            game.passTurn();
-            game.updateScene();
-        }
 
         //one time if statement for passing to player 2's setup turn
         if (game.getGameState() == GameState.player1_setup) {
             game.setGameState(GameState.player2_setup);
             showCombatButtons();
             game.passSetupTurn();
+            return;
         }
 
-        //normal game pass turn conditions
-        else {
-            //Turn is over when button is pressed
-            this.game.passTurn();
-            this.game.updateScene();
+        //one time if statement for passing to player 1's first combat turn
+        if (game.getGameState() == GameState.player2_setup) {
+            game.setGameState(GameState.first_turn);
+            showCombatButtons();
+            game.passTurn();
+            game.updateScene();
+            return;
         }
+        //normal game pass turn conditions
+
+        //Turn is over when button is pressed
+        this.game.passTurn();
+        this.game.updateScene();
+
     }
 
     //helper method to toggle visible tags on buttons we don't want the player seeing until game start

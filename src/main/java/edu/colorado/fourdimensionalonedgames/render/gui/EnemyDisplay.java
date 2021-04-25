@@ -5,8 +5,13 @@ import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-//Contains all that is needed for a player to see the ENEMY'S BOARD (what they have seen so far)
-//This class differs from Display in how tiles are selected before they are actually drawn on the Canvas
+/**
+ * EnemyDisplay contains all that is needed for a player to see the ENEMY'S BOARD (what they have seen so far)
+ *
+ * This class differs from Display in how tiles are selected before they are actually drawn on the Canvas, a sort of
+ * filtering effect since an enemy should not be able to see your ships unless they were hit or revealed
+ */
+
 public class EnemyDisplay implements Observer, IRenderable {
 
     private GenericTile[][] displayTiles;

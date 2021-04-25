@@ -1,9 +1,6 @@
 package edu.colorado.fourdimensionalonedgames;
 
-import edu.colorado.fourdimensionalonedgames.game.Game;
-import edu.colorado.fourdimensionalonedgames.game.Player;
 import edu.colorado.fourdimensionalonedgames.game.attack.weapon.Weapon;
-import edu.colorado.fourdimensionalonedgames.game.ship.Ship;
 import edu.colorado.fourdimensionalonedgames.render.gui.AlertBox;
 import edu.colorado.fourdimensionalonedgames.render.gui.PlayerFireInput;
 import javafx.event.ActionEvent;
@@ -13,16 +10,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * FireFormController handles events that result from the user interacting with the fireForm.fxml form.
+ *
+ * On clicking the submit button, this controller packages up all the user input for attacking and creates a
+ * PlayerFireInput object to send back to whoever spawned this form.
+ */
 public class FireFormController implements Initializable {
 
-    private Game game;
     @FXML
     private TextField xCord;
     @FXML
@@ -34,11 +34,9 @@ public class FireFormController implements Initializable {
 
     private PlayerFireInput input;
 
-    public void initialize(Game game) {
-
+    public void initialize() {
         //field initialization on form creation
         this.input = new PlayerFireInput("", "0", "0");
-        this.game = game;
     }
 
     public void populateFireForm(List<Weapon> weapons) {
@@ -84,7 +82,6 @@ public class FireFormController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
 
     //helper method to validate form before sending a PlayerShipInput object
     //NOTE: Since weapons are selected from dropdown populated by player object, no need to check for bad weapon input

@@ -16,11 +16,17 @@ import edu.colorado.fourdimensionalonedgames.render.gui.Subject;
 import edu.colorado.fourdimensionalonedgames.render.tile.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Board class holds a 3D array of tiles and handles anything related to putting things on the board or effecting
+ * already placed objects
+ *
+ * Board class implements Subject as part of the Observer pattern, where Displays and EnemyDisplays are the observers
+ * and Board class is the Subject that sends updates to it's observers.
+ */
 public class Board implements Subject {
 
     private final int rows;

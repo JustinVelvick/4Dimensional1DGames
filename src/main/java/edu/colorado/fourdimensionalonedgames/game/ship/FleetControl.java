@@ -4,9 +4,14 @@ import edu.colorado.fourdimensionalonedgames.game.Player;
 
 import java.util.Stack;
 
-//FleetControl is what the client interacts with when wanting to move their fleet
-//The stack holds the history of all moves the player has made this turn
-//Every turn, we will spawn a new FleetControl object which will have a "fresh" empty stack
+/**
+ * FleetControl is what the client interacts with when wanting to move their fleet
+ *
+ * The stack holds the history of all moves the player has made this turn
+ *
+ * Every turn, the player will have a new FleetControl object which will have a "fresh" empty stack, since the user
+ * cannot undo moves done last turn, so they get a "fresh slate" every turn.
+ */
 public class FleetControl {
     private Stack<MoveFleetCommand> fleetCommandStack;
     private Player player;

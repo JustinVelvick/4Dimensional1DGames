@@ -296,7 +296,6 @@ public class FleetMovementTest {
         controller.undoMoveFleet();
         controller.undoMoveFleet();
 
-
         List<ShipTile> movedTiles = new ArrayList<>();
         for (Ship ship : player2.getFleet().getShips()) {
             movedTiles.addAll(ship.getShipTiles());

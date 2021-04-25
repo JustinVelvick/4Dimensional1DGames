@@ -28,8 +28,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Game class handles game wide events like the passing of turns, or handling when the game is possible over.
+ * Game "has" players, GUI controllers, game settings and tracks various states
+ *
+ * Our Game class utilizes the Singleton pattern, so only one game may exist at a time in our application
+ */
 public class Game {
     //most important game related objects
+
     private static Game uniqueInstance;
     private GameState gameState;
     private Stage primaryStage;
